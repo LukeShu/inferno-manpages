@@ -11,7 +11,7 @@
 | `  *` | 2001-06    |                 | 3.0 Build 1                     |                     |                                                                                          |
 | `  *` | 2003-06-03 |                 | 3.0 Build <last>                | [./inferno-3e/]     | https://github.com/inferno-os/inferno-3e                                                 |
 | `  *` | 2004       |                 | 4.0 Build 1                     |                     |                                                                                          |
-| `  *` | 2006-03-03 |                 | 4.0 imported to Git             | [./inferno-4e0git/] | https://github.com/inferno-os/inferno-os/commit/74a4d8c26dd3c1e9febcb717cfd6cb6512991a7a |
+| `  *` | 2006-03-03 |                 | 4.0 imported to Mercurial       | [./inferno-4e0hg/]  | https://github.com/inferno-os/inferno-os/commit/74a4d8c26dd3c1e9febcb717cfd6cb6512991a7a |
 | `  *` | 2006-12-19 |                 | 4.0 end-of-2006 snapshot        | [./inferno-4e2006/] | https://github.com/inferno-os/inferno-os/commit/0e96539ff7cff23233d3f0a64bb285b385a3a1f4 |
 | `  *` | 2007-12-27 |                 | 4.0 end-of-2007 snapshot        | [./inferno-4e2007/] | https://github.com/inferno-os/inferno-os/commit/b43c1ca5eb5fc65b93ae935a568432712797b049 |
 | `  *` | 2008-11-19 |                 | 4.0 end-of-2008 snapshot        | [./inferno-4e2008/] | https://github.com/inferno-os/inferno-os/commit/35da2feea738176e4f6e98e412f28e4fdb79ceac |
@@ -26,3 +26,7 @@
 | `  *` | 2019-12-31 |                 | 4.0 end-of-2019 snapshot        | [./inferno-4e2019/] | https://github.com/inferno-os/inferno-os/commit/7828d5d2aa2aeba1588dba190fd80dcab95d982b |
 | `  *` | 2020-12-29 |                 | 4.0 end-of-2020 snapshot        | [./inferno-4e2020/] | https://github.com/inferno-os/inferno-os/commit/c5728686379484100b7d59abf4f0b47928b1631e |
 | `  *` | 2024-06-13 |                 | 4.0 end-of-2024 snapshot        | [./inferno-4e2024/] | https://github.com/inferno-os/inferno-os/commit/67e70befb2ad0058fd7894be34c492ddb6d09988 |
+
+- 2006: Mercurial repo (on BitBucket?)
+- 2019-12: Mercurial repo converted to Git on BitBucket (8c6479d1d73b82a8a0bb407f9a508cab2832a067 is https://bitbucket.org/inferno-os/inferno-os/pull-requests/1)
+- 2022?: Git repo moved to GitHub
