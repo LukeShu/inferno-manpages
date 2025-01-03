@@ -1,0 +1,20 @@
+.TH RM 5
+.PP
+.SH NAME
+rm \- remove file(s)
+.SH SYNOPSYS
+.IP
+.EX
+rm file...
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I rm
+command removes the specified files and/or directories.
+A directory is removed only if it is empty.
+Removal of a file requires write permission in its directory, but does not require read nor write permission on the file itself.
+.PP
+.SH SEE ALSO
+.I remove \- remove a file
+in Chapter 8

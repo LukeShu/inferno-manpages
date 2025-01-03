@@ -1,0 +1,113 @@
+.TH SIGNER 9
+.PP
+.SH NAME
+signer, countersigner \- daemons for set\-top box authentication
+.SH SYNOPSYS
+.IP
+.EX
+lib/signer
+lib/countersigner
+.EE
+.PP
+.SH DESCRIPTION
+The signer and countersigner daemons listen for requests on the service ports infsigner and infcsigner, respectively.
+.PP
+.SS THE SIGNER DAEMON
+The 
+.I signer
+daemon constructs an authentication certificate from the local key (in /keydb/signerkey) and information from the requesting client (including 
+.I set\-top\-box\-id
+).
+.PP
+If non\-existent, the 
+.I signer
+daemons creates and initializes /keydb/signerkey with an owner name of \[aq]*\[aq].
+That file can also be created with the createsignerkey command (see 
+.I createsignerkey \- command to create signer key on authentication server
+).
+.PP
+The signer daemon \[aq]blinds\[aq] the certificate by the technique of XOR\-ing it with a random bit mask, then sends the result to the requesting client.
+The client\[aq]s user uses that information to establish identity with a human agent on the \[aq]signer\[aq].
+The signer daemon also saves the both the \[aq]blinded\[aq] and \[aq]unblinded\[aq] result in the input for the verify command (/keydb/signed/
+.I set\-top\-box\-id)
+.
+.PP
+.SH THE COUNTERSIGNER DAEMON
+The countersigner daemon sends the contents of /keydb/countersigned/
+.I set\-top\-box\-id
+to the requesting client.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/keydb/signerkey
+T}@T{
+Secret key of the \[aq]signer\[aq] host.
+T}
+T{
+/keydb/signed/set\-top\-box\-id
+T}@T{
+Repository of \[aq]blinded\[aq] and clear certificates.
+T}
+T{
+/keydb/countersigned/set\-top\-box\-id
+T}@T{
+Repository of \[aq]unblinded\[aq] certificates.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I createsignerkey \- command to create signer key on authentication server
+
+.PP
+T}@T{
+Initialization of 
+.I /keydb/signerkey
+.
+T}
+T{
+.I register \- command to register set\-top\-box identity with signer
+
+.PP
+T}@T{
+Client side of set\-top\-box registration.
+T}
+T{
+.I srv \- start server daemons
+
+T}@T{
+Launching signer and countersigner daemons.
+T}
+T{
+.I verify \- command to authenticate receiver of blinded certificate
+
+T}@T{
+Extract the \[aq]unblinded\[aq] certificate from /keydb/signed/
+.I set\-top\-box\-id
+and save in /keydb/countersigned/
+.I set\-top\-box\-id
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

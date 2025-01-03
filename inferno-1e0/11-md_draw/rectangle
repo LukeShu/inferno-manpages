@@ -1,0 +1,220 @@
+.TH RECTANGLE 11
+.PP
+.SH NAME
+rectangle \- rectangular portion of the plane
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+Rect: adt
+{
+ min:      Point;
+ max:      Point;
+ canon:    fn(r: self Rect)          : Rect;
+ dx:       fn(r: self Rect)          : int;
+ dy:       fn(r: self Rect)          : int;
+ eq:       fn(r: self Rect, s: Rect) : int;
+ Xrect:    fn(r: self Rect, s: Rect) : int;
+ inrect:   fn(r: self Rect, s: Rect) : int;
+ clip:     fn(r: self Rect, s: Rect) : (Rect, int);
+ contains: fn(r: self Rect, p: Point): int;
+ addpt:    fn(r: self Rect, p: Point): Rect;
+ subpt:    fn(r: self Rect, p: Point): Rect;
+ inset:    fn(r: self Rect; n: int)  : Rect;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The type 
+.I Rect
+defines a rectangular portion of the integer grid.
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I min
+, 
+.I max
+
+T}@T{
+These members define the upper left (min) and lower right (max) points for the rectangle.
+The rectangle contains the pixels 
+.I min.x <= x < max.x
+and 
+.I min.y <= y <max.y
+.
+In general, 
+.I Rect
+coordinates should be in canonical form: 
+.I min.x <= max.x
+and 
+.I min.y <= max.y
+Some functions give undefined results if the input rectangles are not canonical.
+T}
+T{
+
+.I r
+.canon ( )
+T}@T{
+Returns a canonical rectangle by sorting the coordinates of 
+.I r
+.
+T}
+T{
+
+.I r
+.dx ( )
+T}@T{
+Returns the horizontal dimension of 
+.I r
+.
+T}
+T{
+
+.I r
+.dy ( )
+T}@T{
+Returns the vertical dimension of 
+.I r
+.
+T}
+T{
+
+.I r
+.eq (
+.I s
+)
+T}@T{
+Returns non\-zero if the rectangles 
+.I r
+and 
+.I s
+have the same coordinates and zero otherwise.
+T}
+T{
+
+.I r
+.Xrect (
+.I s
+)
+T}@T{
+Returns non\-zero if the rectangles 
+.I r
+and 
+.I s
+intersect and zero otherwise.
+
+.I Intersection
+means the rectangles share at least one pixel; zero\-sized rectangles do not intersect.
+T}
+T{
+
+.I r
+.inrect (
+.I s
+)
+T}@T{
+Returns non\-zero if 
+.I r
+is completely inside 
+.I s
+and zero otherwise.
+Rectangles with equal coordinates are considered to be inside each other.
+Zero\-sized rectangles contain no rectangles.
+T}
+T{
+
+.I r
+.clip (
+.I s
+)
+T}@T{
+Computes the intersection between 
+.I r
+and 
+.I s
+.
+If the input rectangles intersect, 
+.I clip
+returns the resulting rectangle and a non\-zero integer value.
+If the rectangles do not intersect, ~clip~ returns 
+.I r
+and a zero value.
+T}
+T{
+
+.I r
+.contains (
+.I p
+)
+T}@T{
+Returns non\-zero if the rectangle 
+.I r
+contains the pixel with the coordinates of p 
+.I and
+zero otherwise.
+Zero\-sized rectangles contain no points.
+T}
+T{
+
+.I r
+.addpt (
+.I p
+)
+T}@T{
+Returns the rectangle (
+.I r.min.add
+(
+.I p
+), 
+.I r.max.add
+(
+.I p
+)).
+T}
+T{
+
+.I r
+.subpt (
+.I p
+)
+T}@T{
+Returns the rectangle (
+.I r.min.sub
+(
+.I p
+), 
+.I r.max.sub
+(
+.I p
+)).
+T}
+T{
+
+.I r
+.inset (
+.I n
+)
+T}@T{
+Returns the rectangle (
+.I r.min.add
+((
+.I n,n
+)), 
+.I r.max.sub
+((
+.I n,n
+)).
+The result will not be in canonical form if the inset amount is too large for the rectangle.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

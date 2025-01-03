@@ -1,0 +1,85 @@
+.TH REGISTER 9
+.PP
+.SH NAME
+register \- command to register set\-top\-box identity with signer
+.SH SYNOPSYS
+.IP
+.EX
+mux/register [signer]
+.EE
+.PP
+.SH DESCRIPTION
+The register command contacts a \[aq]signer\[aq] host and obtains an authenticated certificate based on the contents of /nvfs/ID (the set\-top\-box\-id in non\-volatile memory).
+The certificate is deposited in file /nvfs/default for later use.
+.PP
+The \[aq]signer\[aq] host contacted is defined by signer, the first option to the command.
+If missing, the \[aq]signer\[aq] defined by the /services/cs/db file is used.
+.PP
+There are several phases to obtaining the certificate:
+.IP "1." 3
+First, the register command interacts with the \[aq]signer daemon\[aq] (the thread listening on the infsigner port on the \[aq]signer\[aq] host) to construct the certificate.
+This certificate is \[aq]blinded\[aq] by a random bit mask, sent back to the register command and displayed textually or graphically, as appropriate.
+.IP "2." 3
+The user running the register command must contact a human agent at the \[aq]signer\[aq] host by an independent, secure mechanism (for example, a telephone call).
+The agent at the \[aq]signer\[aq] host there runs the verify command (see 
+.I verify \- command to authenticate receiver of blinded certificate
+) to display the same \[aq]blinded\[aq] certificate being displayed to the user of register on the client.
+Once the agent is convinced that the \[aq]blinded\[aq] certificate has been delivered to the correct party, the agent tells verify to accept the identify of the caller.
+.IP "3." 3
+The register command contacts the \[aq]countersigner\[aq] daemon (the thread listening on the infcsigner port of the \[aq]signer\[aq] host) to obtain the bitmask needed to \[aq]unblind\[aq] the previously received certificate.
+This step can only be validly performed after the completion of the verify command on the \[aq]signer\[aq] host.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/nvfs/ID
+T}@T{
+File representing set\-top\-box\-id in ROM.
+T}
+T{
+/nvfs/default
+T}@T{
+Repository of authenticated certificate.
+T}
+T{
+/services/cs/db
+T}@T{
+Default definition of \[aq]signer\[aq] host.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I manufacture \- command to emulate set\-top\-box\-id in ROM
+
+T}
+T{
+.I db \- connection service database
+in Appendix A
+T}
+T{
+.I signer, countersigner \- daemons for set\-top box authentication
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

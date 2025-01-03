@@ -1,0 +1,54 @@
+.TH ASM 4
+.PP
+.SH NAME
+asm \- Dis assembler
+.SH SYNOPSYS
+.IP
+.EX
+asm [\-l] file
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I asm
+command reads one Dis assembly language 
+.I file
+and translates it into instructions for the Dis virtual machine.
+The output is written to a file whose name is created by taking the last element of the input file, stripping any extension, and appending 
+.I .dis
+.
+For example, the output file for 
+.I abc
+would be 
+.I abc.dis
+; the output file for 
+.I dir/def.s
+, would be 
+.I def.dis
+.
+.PP
+.SH OPTION
+The assembler has one option:
+.PP
+.TS
+tab(@);
+l l.
+T{
+-l
+T}@T{
+Generate a listing that shows the generated object code.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I emu \- Inferno emulator
+
+.PP
+.I limbo \- Limbo compiler

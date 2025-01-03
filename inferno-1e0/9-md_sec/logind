@@ -1,0 +1,114 @@
+.TH LOGIND 9
+.PP
+.SH NAME
+logind \- login daemon
+.SH SYNOPSYS
+.IP
+.EX
+lib/logind
+.EE
+.PP
+.SH DESCRIPTION
+Started by 
+.I lib/srv
+(see 
+.I srv \- start server daemons
+in Chapter 6) to service request on the 
+.I inflogin
+port and provide a identity authentication (that is, \[aq]
+.I signer\[aq]
+) service.
+Ultimately the client receives authentication information (a 
+.I certificate
+) that can be used to establish identity with other hosts who are willing to honor certificates from this signer.
+.PP
+The signer constructs the certificate from:
+.IP \[bu] 2
+The contents of the signer\[aq]s 
+.I /keydb/signerkey
+file.
+.PD 0
+.P
+.PD
+(This file is generated if it does not exist)
+.IP \[bu] 2
+The id string and password supplied from the client.
+This is used to access the 
+.I /keydb/password
+file via the 
+.I Password
+module.
+(See 
+.I get, put \- read and write password entries in the password file
+).
+.RS 2
+.PP
+The protocol involves an exchange of information between the client and server.
+The client side of this exchange can be managed by the 
+.I Login
+module.
+See 
+.I login, getauthinfo \- get an Authinfo adt from a certificate authority
+for a description of the module and the protocol.
+.PP
+Client and server communicate over the Secure Socket Layer Device (see 
+.I ssl \- secure sockets layer device
+).
+.RE
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l.
+T{
+/keydb
+T}
+T{
+/keydb/signerkey
+T}
+T{
+/keydb/password
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I changelogin \- command to create/update the password file
+
+T}
+T{
+.I login, getauthinfo \- get an Authinfo adt from a certificate authority
+
+T}
+T{
+.I ssl \- secure sockets layer device
+
+T}
+T{
+.I ssl \- secure sockets layer device
+in Chapter 2
+T}
+T{
+.I srv \- start server daemons
+in Chapter 6
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

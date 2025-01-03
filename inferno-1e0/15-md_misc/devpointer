@@ -1,0 +1,89 @@
+.TH DEVPOINTER 15
+.PP
+.SH NAME
+devpointer \- I/O interface for the pointer device
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]draw.m\[dq];   #for Draw\->Pointer
+include \[dq]devpointer.m\[dq];
+ptr:= load Devpointer Devpointer\->PATH;
+Devpointer: module
+{
+  PATH:    con \[dq]/dis/lib/devpointer.dis\[dq];
+   Size:   con 1+3*12;  # \[aq]m\[aq] plus 3 12\-byte decimal integers
+   init:   fn(file: string, posn: 
+                chan of ref Draw\->Pointer): int;
+  bytes2ptr: fn(buf: array of byte)    : ref Draw\->Pointer;
+  ptr2bytes: fn(ptr: ref Draw\->Pointer): array of byte;
+};
+.EE
+.PP
+.SH DESCRIPTION
+.SS INIT (FILE, POSN)
+The 
+.I init
+function spawns a thread to continually read the pointer device specified by 
+.I file
+and sends a 
+.I Pointer
+adt (see 
+.I pointer \- state of a pointer device such as a mouse
+in Chapter 11) over the channel specified by 
+.I posn
+.
+If 
+.I file
+is 
+.I nil
+, the default device is 
+.I /dev/pointer
+.
+.PP
+.SS BYTES2PTR (BUF)
+The 
+.I bytes2ptr
+function converts the array of bytes in 
+.I buf
+to a 
+.I Pointer
+and returns a reference to it.
+The 
+.I buf
+array should consist of exactly 
+.I Size
+bytes and be in the format returned by 
+.I /dev/pointer
+.
+.PP
+.SS PTR2BYTES (PTR)
+The 
+.I ptr2bytes
+function provides an inverse transformation of the 
+.I bytes2ptr
+function.
+.PP
+.SH FILES
+/dev/pointer
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I pointer \- state of a pointer device such as a mouse
+in Chapter 11
+T}
+T{
+.I draw \- graphics device
+in Chapter 2
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

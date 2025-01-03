@@ -1,0 +1,111 @@
+.TH CP 5
+.PP
+.SH NAME
+cp \- copy files
+.SH SYNOPSYS
+.IP
+.EX
+cp     fromfile tofile
+cp     fromfile... todir
+cp \-r  fromdir... todir
+.EE
+.PP
+.SH DESCRIPTION
+In the first form, 
+.I fromfile
+is any name and 
+.I tofile
+is any name except an existing directory.
+.PP
+In the second form, the commands copy one or more 
+.I fromfiles
+into a 
+.I todir
+under their original file names, as if by a sequence of commands in the first form.
+For example:
+.IP
+.EX
+.EE
+.IP
+.EX
+ 
+   cp f1 dir/f1;  cp f2 dir/f2
+.EE
+.PP
+When the 
+.I cp
+command copies the contents of plain (non\-directory) files 
+.I fromfile
+to 
+.I tofile
+, the mode and owner of 
+.I tofile
+are preserved if it already exists; otherwise the mode of 
+.I fromfile
+is used.
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+-r
+T}@T{
+The 
+.I \-r
+option directs cp to recursively copy the named directories (
+.I fromdir
+\[aq]s) to the target direction (
+.I todir
+), the last entry on the command line.
+.PP
+.PP
+   *   *   *   *   *
+
+.B NOTE:
+
+.PP
+
+.I This option should not be used on file systems with 
+cycles
+.I  in the namespace.
+
+.PP
+   *   *   *   *   *
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH DIAGNOSTICS
+The 
+.I cp
+command refuses to copy files onto themselves.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I cat \- concatenate files
+
+T}
+T{
+.I stat, fstat, fwstat, wstat \- get and put file status
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

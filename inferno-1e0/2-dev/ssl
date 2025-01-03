@@ -1,0 +1,143 @@
+.TH SSL 2
+.PP
+.SH NAME
+ssl \- secure sockets layer device
+.SH SYNOPSYS
+bind \[aq]#D\[aq] /
+.I <n>
+/ssl /
+.I <n>
+/ssl/data /
+.I <n>
+/ssl/ctl /
+.I <n>
+/ssl/secretin /
+.I <n>
+/ssl/secretout
+.SH DESCRIPTION
+The 
+.I ssl
+device implements the link layer of the secure sockets layer defined by Netscape.
+Each binding of 
+.I #D
+into the name space creates a new 
+.I ssl
+device.
+Once associated with a network connection, the 
+.I ssl
+device can be thought of as a filter for the connection.
+The 
+.I ssl
+device can send data in the clear, digested or encrypted.
+In all cases, if an 
+.I ssl
+device is associated with both ends of a connection, all messages are delimited.
+As long as reads always specify buffers that are of equal or greater lengths than the writes at the other end of the connection, one write will correspond to one read.
+.PP
+Writing to 
+.I /<n>/ssl/ctl
+controls the 
+.I ssl
+device.
+The following control messages are possible:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+fd n
+T}@T{
+Associate the network connection on file descriptor 
+.I n
+with the 
+.I ssl
+device.
+T}
+T{
+alg clear
+T}@T{
+Allow data to pass in the clear with only message delimiters added.
+The device starts in this mode.
+T}
+T{
+alg sha
+T}@T{
+Append a 
+.I sha
+digest to each buffer written to
+.PD 0
+.P
+.PD
+/<n>/ssl/data.
+The digest covers the outgoing secret (written to 
+.I /<n>/ssl/secretout
+), the message, and a message number which starts at 0 and increments by one each message.
+Messages read have their appended digests compared to a digest computed using the incoming secret (written to 
+.I /<n>/ssl/secretin
+).
+If the comparison fails, so will the read.
+T}
+T{
+alg md5
+T}@T{
+Like 
+.I sha
+but using the 
+.I md5
+message digest algorithm.
+T}
+T{
+alg rc4
+T}@T{
+RC4 encrypt each message written to 
+.I /<n>/ssl/data
+with the key written to 
+.I /<n>/ssl/secretout
+.
+T}
+T{
+Decrypt
+T}@T{
+Incoming messages with the key written to
+.PD 0
+.P
+.PD
+
+.I /<n>/ssl/secretin
+.
+T}
+T{
+alg descbc
+T}@T{
+Available only by agreement in the US
+T}
+T{
+alg desecb
+T}@T{
+Available only by agreement in the US
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Files 
+.I /<n>/ssl/secretin
+and 
+.I /<n>/ssl/secretout
+must be written before the digesting or encryption is turned on.
+If only one is written, they are both assumed to be the same.
+.PP
+The mode may be changed at any time during a connection.
+.PP
+.SH SEE ALSO
+B. Schneier, 
+.I Applied Cryptography
+, 1996, J. Wiley & Sons, Inc.
+.PP
+.I connect, secret \- interface to the Secure Sockets Layer device
+in Chapter 7

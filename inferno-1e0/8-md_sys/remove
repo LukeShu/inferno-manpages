@@ -1,0 +1,35 @@
+.TH REMOVE 8
+.PP
+.SH NAME
+remove \- remove a file
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+remove: fn(file: string): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS REMOVE (FILE)
+The 
+.I remove
+function removes 
+.I file
+from the directory containing it.
+The contents of the file are discarded.
+The user must have write permission in the containing directory.
+.PP
+The 
+.I file
+argument can be a directory.
+If so, it must be empty for 
+.I remove
+to succeed.
+.PP
+The 
+.I remove
+function returns zero if it deletes the file, \-1 otherwise.
+.PP
+.SH SEE ALSO
+.I Limbo System Module

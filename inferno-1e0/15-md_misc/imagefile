@@ -1,0 +1,137 @@
+.TH IMAGEFILE 15
+.PP
+.SH NAME
+imagefile \- processing external image file formats
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]imagefile.m\[dq];
+gifreader := load RImagefile RImagefile\->READGIFPATH;
+jpgreader := load RImagefile RImagefile\->READJPGPATH;
+imageremap:= load Imageremap Imageremap\->PATH;
+Rawimage: adt
+{
+  r        : Draw\->Rect;
+  cmap     : array of byte;
+  nchans   : int;
+  chans    : array of array of byte;
+  chandesc : int;
+  fields   : int;  #defined by format
+};
+remap      : fn(i: ref RImagefile\->Rawimage,
+                d: ref Draw\->Display,
+          errdiff: int)          
+                 : (ref Draw\->Image, string);
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Rawimage
+adt of module 
+.I RImagefile
+defines an internal representation and routines for reading images such as GIF and JPEG files.
+To read a set of files of a given format, load the appropriate module, pass its 
+.I init
+function an instance of a 
+.I Bufio
+module, and pass 
+.I read
+an 
+.I Iobuf
+for each file.
+The 
+.I read
+function returns a tuple, a 
+.I ref
+.I Rawimage
+that holds the image and an error string.
+If the 
+.I Rawimage
+is 
+.I nil
+, the error string will report the reason.
+Files, particularly GIF files, are often incorrectly encoded but yield usable pictures, so even if a 
+.I Rawimage
+is returned, the error string may still report problems.
+.PP
+The 
+.I Rawimage
+is always defined as one or more bytes per pixel, with 
+.I nchans
+channels of data stored in the array 
+.I chans
+.
+The 
+.I chandesc
+field, described in this section, specifies the contents of 
+.I chans
+.
+The rectangle 
+.I r
+describes the shape of the picture.
+.PP
+The 
+.I Rawimage
+type can be converted to a regular 
+.I Image
+(see 
+.I Image \- pictures and drawing
+in Chapter 11) by calling function 
+.I remap
+in the 
+.I Imageremap
+module.
+The 
+.I remap
+function is passed the 
+.I Rawimage
+, a 
+.I Display
+on which to create the image, and a flag that specifies whether to apply Floyd\-Steinberg error diffusion code to the result for smoother rendering of colors at the cost of some noise in the image.
+.PP
+Remapping is defined by the 
+.I RImagefile
+itself.
+The field 
+.I chandesc
+specifies the type of the various 
+.I chans
+of data.
+The file readers set 
+.I chandesc
+as appropriate for the format of the file.
+.PP
+.TS
+tab(@);
+l l.
+T{
+CRGB
+T}@T{
+3\-color RGB image with no color map
+T}
+T{
+CY
+T}@T{
+monotone (luminance\-only, grey\-scale) image with no color map
+T}
+T{
+CRGB1
+T}@T{
+single\-channel image with RGB color map in 
+.I cmap
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+These functions are split into separate modules to give applications control over the memory they need to process images.
+.PP
+.SH NOTES
+The JPEG reader handles only the Baseline sequential format as defined by the JFIF 1.02 file exchange format.
+Functions to write these formats are unimplemented.

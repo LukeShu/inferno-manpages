@@ -1,0 +1,86 @@
+.TH DIRREAD 8
+.PP
+.SH NAME
+dirread \- read directory
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+dirread: fn(fd: ref FD, dir: array of Dir): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS DIRREAD (FD, DIR)
+The 
+.I dirread
+function reads the contents of the directory pointed to by the open file descriptor 
+.I fd
+, filling in the array 
+.I dir
+with one 
+.I Dir
+structure for each element.
+These 
+.I Dir
+structures are equivalent to the result of a 
+.I stat
+call on each file in the directory.
+See 
+.I stat, fstat, fwstat, wstat \- get and put file status
+for a description of 
+.I stat
+and 
+.I Dir
+.
+.PP
+A successful 
+.I dirread
+returns the number of entries read up to the length of array 
+.I dir
+.
+The number returned may be less than the number requested.
+The file offset is advanced by the number of bytes actually read.
+A return of 0 indicates the end of the directory.
+.PP
+Seeks (see 
+.I seek \- change file offset
+) are not allowed on directories.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Limbo System Module
+
+T}
+T{
+.I open, create \- open/create a file for reading or writing
+
+T}
+T{
+.I read, write, stream \- read, write, or stream file
+
+T}
+T{
+.I seek \- change file offset
+
+T}
+T{
+.I stat, fstat, fwstat, wstat \- get and put file status
+
+T}
+T{
+.I readdir \- read directory and sort files
+in Chapter 15
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

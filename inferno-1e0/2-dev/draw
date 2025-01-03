@@ -1,0 +1,127 @@
+.TH DRAW 2
+.PP
+.SH NAME
+draw \- graphics device
+.SH SYNOPSYS
+.IP
+.EX
+bind \[aq]#d\[aq] /dev
+
+/dev/draw/new
+/dev/draw/<n>/ctl
+/dev/draw/<n>/data
+/dev/draw/<n>/refresh
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I draw
+device serves a two\-level file system providing an interface to the graphics facilities of the system; the Limbo Draw module (see 
+.I Draw Module
+in Chapter 11) accesses the device to implement its functions.
+.PP
+Each client of the device connects by opening 
+.I /dev/draw/new
+and reading back seven decimal numbers in the standard 12\-character format.
+The seven values are:
+.IP \[bu] 2
+The connection number, 
+.I n
+
+.IP \[bu] 2
+The image id of the display image (always zero)
+.IP \[bu] 2
+The 
+.I ldepth
+of the display image
+.IP \[bu] 2
+Four values (
+.I min.x
+, 
+.I min.y
+, 
+.I max.x
+, and 
+.I max.y
+) that define the display image.
+.RS 2
+.PP
+The client can then open the directory 
+.I /dev/draw/<n>/
+(where 
+.I n
+is the connection number) to access the 
+.I ctl
+, 
+.I data
+, and 
+.I refresh
+files associated with the connection.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+ctl
+T}@T{
+The 
+.I ctl
+file accepts no messages; its only purpose is to return the initialization information.
+T}
+T{
+data
+T}@T{
+The 
+.I data
+file accepts messages corresponding to procedures in the Draw module, such as:
+.PP
+Allocate a window or image
+.PP
+Draw on the image.
+.PP
+Paint text
+.PP
+Such messages generate data to be returned to the client which can be recovered by reading the 
+.I data
+file.
+The format of the messages to and from the 
+.I data
+file is described later.
+T}
+T{
+refresh (read\-only)
+T}@T{
+As windows owned by the client are uncovered, they may not be refreshed by the server.
+For example, they could have refresh functions associated with them.
+In this case, the client is notified by a message 
+.I refresh
+file reporting what needs to be repainted by the client.
+The message has five decimal integers formatted as in the 
+.I ctl
+message:
+.PP
+The image id of the window.
+.PP
+Four decimal values (
+.I min.x
+, 
+.I min.y
+, 
+.I max.x
+, and 
+.I max.y
+) that define the display image in need of refreshment.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.RE
+.PP
+.SH SEE ALSO
+.I Draw Module
+in Chapter 11

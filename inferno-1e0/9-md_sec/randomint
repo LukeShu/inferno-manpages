@@ -1,0 +1,43 @@
+.TH RANDOMINT 9
+.PP
+.SH NAME
+randomint, randombuf \- interface to random number device
+.SH SYNOPSYS
+include \[dq]security.m\[dq]; Random : module { PATH: con \[dq]/dis/lib/random.dis\[dq]; randomint: fn(): int; randombuf: fn(buf:array of byte, n: int); int; }
+.SH DESCRIPTION
+The Random module provides a convenient interface to /dev/random, a part of the console driver.
+.PP
+.TS
+tab(@);
+l l.
+T{
+randomint()
+T}@T{
+Return a random integer value.
+T}
+T{
+randombuf(buf,n)
+T}@T{
+Initialize array 
+.I buf
+with 
+.I n
+random bytes.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I random (read\-only)
+of 
+.I cons \- console device
+in Chapter 2
+.PP
+The /dev/random file is implemented as part of the console device.
+.PP

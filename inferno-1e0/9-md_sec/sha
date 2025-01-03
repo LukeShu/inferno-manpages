@@ -1,0 +1,78 @@
+.TH VERIFY 9
+.PP
+.SH NAME
+verify \- command to authenticate receiver of blinded certificate
+.SH SYNOPSYS
+.IP
+.EX
+lib/verify set\-top\-box\-id
+.EE
+.PP
+.SH DESCRIPTION
+The verify command is used at a \[aq]signer\[aq] server to extract information from the /keydb/signed/
+.I set\-top\-box\-id
+file previously created by the signer daemon.
+That information consists of the previously crafted authentication certificate and the \[aq]blinded\[aq] version of the certificate that was sent to the requesting client.
+.PP
+The verify command displays the \[aq]blinded\[aq] version textually or graphically, as appropriate, so that it can be compared to that reported by the set\-top\-box owner over a secure independent mechanism (for example, telephone).
+If the operator of verify is convinced of the identity of the caller, the operator should reply affirmatively when prompted for acceptance.
+.PP
+If the owner\[aq]s identity is accepted, the verify command writes the authentication certificate to the /keydb/countersigned/
+.I set\-top\-box\-id
+file, input for the countersigner daemon.
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I After the operator of verify accepts the identity, the set\-top\-box owner should be informed to respond affirmatively to the prompt being displayed by the register command.
+The order of acceptance (first on the signer host) then on the client is important.
+
+.PP
+   *   *   *   *   *
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l.
+T{
+/keydb/signed/set\-top\-box\-id
+T}
+T{
+/keydb/countersigned/set\-top\-box\-id
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I signer, countersigner \- daemons for set\-top box authentication
+
+T}
+T{
+.I register \- command to register set\-top\-box identity with signer
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

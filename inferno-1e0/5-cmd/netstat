@@ -1,0 +1,51 @@
+.TH NETSTAT 5
+.PP
+.SH NAME
+netstat \- summarize network connections
+.SH SYNOPSYS
+.IP
+.EX
+bind \[aq]#I\[aq] /net
+netstat
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I netstat
+command prints information about TCP and UDP network connections.
+The information is obtained from the 
+.I status
+file of each entry under the corresponding network directories, 
+.I /dev/net/tcp
+and 
+.I /dev/net/udp
+.
+The 
+.I clone
+files are omitted from this report.
+.PP
+The following items are presented for each connection:
+.IP \[bu] 2
+connection name
+.IP \[bu] 2
+user name
+.IP \[bu] 2
+IP number of each end of the connection
+.IP \[bu] 2
+status of the connection
+.PP
+.SH FILES
+/net/tcp/*
+.PP
+/net/udp/*
+.PP
+.SH CAVEAT
+This command requires a populated 
+.I /net
+directory; therefore, there must be a prior binding of the system\[aq]s 
+.I #I
+driver to that directory.
+.PP
+.SH SEE ALSO
+.I ip \- TCP, UDP network protocols over IP
+in Chapter 2

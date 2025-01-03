@@ -1,0 +1,74 @@
+.TH TOKENIZE 8
+.PP
+.SH NAME
+tokenize \- split string into words
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+tokenize: fn(s, delim: string): (int, list of string);
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I tokenize
+function breaks 
+.I s
+into words separated by characters in 
+.I delim
+.
+.PP
+The returned tuple, (
+.I n
+, 
+.I list
+), holds the number of words, 
+.I n
+, and an ordered list, 
+.I list
+, of those words.
+The first item on 
+.I list
+(for example, 
+.I hd list
+) is the leftmost word from 
+.I s
+.
+.PP
+Words are delimited by the maximal sequences of any character from the 
+.I delim
+string.
+The 
+.I tokenize
+function skips delimiter characters at the beginning and end of 
+.I s
+, so each element in the returned list has non\-zero length.
+.PP
+If 
+.I s
+is 
+.I nil
+or contains no words, 
+.I tokenize
+returns a count of zero and a 
+.I nil
+list.
+.PP
+The 
+.I delim
+argument may be 
+.I nil
+or the empty string specifying no delimiter characters.
+The resulting word list will be 
+.I nil
+(if 
+.I s
+is 
+.I nil,
+or the empty string) or a single\-item list with a copy of 
+.I s
+.
+.PP
+.SH SEE ALSO
+.I Limbo System Module

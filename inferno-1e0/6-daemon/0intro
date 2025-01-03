@@ -1,0 +1,53 @@
+.TH 0INTRO 6
+.PP
+.PP
+.SH NAME
+Inferno Daemons
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+The Inferno daemons are as follows:
+.PP
+.TS
+tab(@);
+l.
+T{
+.I cs \- connection server daemon
+
+T}
+T{
+.I httpd, echo, stats \- HTTP server
+
+T}
+T{
+.I srv \- start server daemons
+
+T}
+T{
+.I virgild \- connection service for remote clients
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I The daemons related to security are found in 
+Inferno Security Modules and Utilities
+.I  in Chapter 9
+
+.PP
+   *   *   *   *   *

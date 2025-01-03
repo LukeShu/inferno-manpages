@@ -1,0 +1,199 @@
+.TH CONTEXT 11
+.PP
+.SH NAME
+context \- graphics environment
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+Context: adt
+{
+  screen:  ref Screen;
+  display: ref Display;
+  cir:     chan of int;
+  ckbd:    chan of int;
+  cptr:    chan of ref Pointer;
+  ctoappl: chan of int;
+  ctomux:  chan of int;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Context
+abstract data type encapsulates the data types and channels used by an interactive application.
+A reference to the 
+.I Context
+is passed as the first argument to an application when it begins execution:
+.IP
+.EX
+include \[dq]draw.m\[dq]; 
+Command: module 
+{
+     init:  fn(nil: ref Draw\->Context; nil: list of string);
+};
+.EE
+.PP
+Most programs do not create a 
+.I Context
+but inherit one from their parent, typically a shell or window system.
+.PP
+.SS GENERAL INTERFACES
+.PP
+.TS
+tab(@);
+l l.
+T{
+screen
+T}@T{
+The 
+.I Screen
+adt to which the application is connected; can be 
+.I nil
+.
+See 
+.I screen \- type to define the abstract data structures for the windows on a display
+.
+T}
+T{
+display
+T}@T{
+The 
+.I Display
+adt to which the application is connected; can be 
+.I nil
+.
+See 
+.I display \- connection to draw device
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS MUX INTERFACES
+.PP
+.TS
+tab(@);
+l l l.
+T{
+cir
+T}@T{
+A channel of type 
+.I int
+that delivers events from an infrared remote control device, if one is present.
+See the following discussion and 
+.I ir
+for more information.
+T}@T{
+T}
+T{
+ckbd
+T}@T{
+A channel of type 
+.I int
+that delivers keystrokes from a keyboard.
+T}@T{
+T}
+T{
+cptr
+T}@T{
+A channel of type 
+.I ref
+Pointer that delivers events from a pointing device such as a mouse.
+T}@T{
+T}
+T{
+ctoappl
+T}@T{
+A channel of type 
+.I int
+that delivers control messages to the application from the Mux application multiplexer.
+One message is defined:
+T}@T{
+T}
+T{
+T}@T{
+MAtop
+T}@T{
+Requests the application to make its set of windows fully visible.
+T}
+T{
+ctomux
+T}@T{
+A channel of type 
+.I int
+used by the application to send messages to the Mux regarding the application\[aq]s use of system devices.
+The defined messages are:
+T}@T{
+T}
+T{
+T}@T{
+AMstartir
+T}@T{
+The application is ready to accept IR\-data on the 
+.I cir
+channel.
+T}
+T{
+T}@T{
+AMstartkbd
+T}@T{
+The application is ready to accept keyboard data on the 
+.I ckbd
+channel.
+T}
+T{
+T}@T{
+AMstartptr
+T}@T{
+The application is ready to accept 
+.I Pointer
+data on the 
+.I cptr
+channel.
+T}
+T{
+T}@T{
+AMnewpin
+T}@T{
+The application needs a PIN.
+T}
+T{
+T}@T{
+AMexit
+T}@T{
+An application should send this message before it exits, to allow Mux to recover resources.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I ir \- infrared remote control
+in Chapter 15
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

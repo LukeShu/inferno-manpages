@@ -1,0 +1,63 @@
+.TH P 5
+.PP
+.SH NAME
+p \- paginate
+.SH SYNOPSYS
+.IP
+.EX
+p [\-number] [file ...]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I p
+command copies its standard input, or the named files if given, to its standard output.
+The command stops at the end of every 22nd line, and between files, to wait for a newline from the user.
+.PP
+While waiting for a newline, 
+.I p
+interprets the commands:
+.PP
+.TS
+tab(@);
+l l.
+T{
+!
+T}@T{
+Pass the rest of the line to the shell as a command.
+T}
+T{
+q
+T}@T{
+Quit
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I number
+
+T}@T{
+Number of lines per page.
+The default is 22.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

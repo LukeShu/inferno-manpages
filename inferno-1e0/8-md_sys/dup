@@ -1,0 +1,64 @@
+.TH DUP 8
+.PP
+.SH NAME
+dup \- duplicate an open file descriptor
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+dup:    fn(oldfd, newfd: int): int;
+fildes: fn(fd: int):           ref FD;
+.EE
+.PP
+.SH DESCRIPTION
+The Limbo programming language and its libraries manage I/O via references to instances of an abstract data type, 
+.I FD
+, called a 
+.I file
+.I descriptor
+.
+This command duplicates an open file descriptor.
+.PP
+.SS DUP (OLDFD, NEWFD)
+The 
+.I dup
+function takes a valid integer file descriptor, 
+.I oldfd
+, referring to an open file, and returns a new integer file descriptor referring to the same file.
+If 
+.I newfd
+is in the range of legal file descriptors, 
+.I dup
+will use that for the new file descriptor (closing any old file associated with 
+.I newfd
+).
+If 
+.I newfd
+is \-1, the system chooses the lowest available file descriptor.
+If a suitable file descriptor cannot be found, 
+.I dup
+returns \-1.
+.PP
+.SS FILDES (FD)
+The 
+.I fildes
+function uses the integer file descriptor 
+.I fd
+to create a new Limbo file descriptor, suitable for other 
+.I Sys
+module functions.
+It returns 
+.I nil
+if it cannot convert 
+.I fd
+.
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo System Module
+.I  
+.I  and 
+open, create \- open/create a file for reading or writing
+.I 

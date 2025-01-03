@@ -1,0 +1,302 @@
+.TH CMD 2
+.PP
+.SH NAME
+cmd \- interface to host operating system commands
+.SH SYNOPSYS
+.IP
+.EX
+bind \-a \[aq]#C\[aq] /
+
+/cmd/clone
+/cmd/<n>/ctl
+/cmd/<n>/data
+/cmd/<n>/status
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I cmd
+device provides an interface to commands on the host operating system.
+By convention, this kernel device (
+.I #C
+) is bound to the root directory (with the 
+.I \-a
+option).
+After binding the entry point to this facility, the file 
+.I /cmd/clone
+is available.
+Opening that file provides a handle for launching a command, managing the command\[aq]s I/O, and checking the command\[aq]s status.
+.PP
+.SS CLONE
+Opening 
+.I /cmd/clone
+creates or allocates a currently unused directory, <
+.I n>
+(where 
+.I n
+is a decimal 
+.I 
+integer
+.I )
+, under 
+.I /cmd.
+Directory 
+.I n
+contains 
+.I 
+files 
+.I ctl
+, 
+.I data
+, and 
+.I status.
+The file descriptor returned from the open of 
+.I clone
+provides access to the 
+.I /cmd/<n>/ctl
+file selected by 
+.I cmd
+for subsequent operations.
+.PP
+.SS CTL
+Reading 
+.I /cmd/<n>/ctl
+via the file descriptor returned from opening
+.I 
+.PD 0
+.P
+.PD
+/cmd/clone
+provides 
+.I n
+, a value that can be used to construct filenames for the related files.
+Writes to 
+.I /cmd/<n>/ctl
+must be of the format:
+.IP
+.EX
+   exec oscmd args...
+.EE
+.PP
+Prior to launching the command 
+.I cmd
+prints at the console a line (128 bytes, maximum) of the format:
+.IP
+.EX
+   devcmd: \[aq]oscmd args...\[aq] pid pid
+.EE
+.PP
+
+.B 
+The string between the single quotes matches the command written to
+.I 
+.PD 0
+.P
+.PD
+/cmd/<n>/ctl
+and 
+.I pid
+is the number in decimal format of the process running the emulator.
+Each field is separated by a single blank.
+.PP
+File offset is ignored for both reading and writing.
+.PP
+.SS DATA
+Reading 
+.I 
+.I /cmd/<n>/data
+.I 
+obtains the data that the command is writing to its standard output and standard error.
+.PP
+Writing to 
+.I 
+.I /cmd/<n>/data
+sends the data into the command\[aq]s standard input.
+.PP
+.SS STATUS (READ\-ONLY)
+Reading 
+.I /cmd/<n>/status
+provides a status line (to a maximum of 128 bytes) of the format:
+.IP
+.EX
+   cmd/n refcnt state cmd args...
+.EE
+.PP
+where each field separator is a single blank.
+The meaning of each field is:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+
+.I n
+
+T}@T{
+The directory 
+.I n
+where 
+.I status
+resides.
+T}
+T{
+
+.I refcnt
+
+T}@T{
+The number (decimal) of open file descriptors for
+.PD 0
+.P
+.PD
+
+.I /cmd/<n>/ctl.
+
+T}
+T{
+
+.I state
+
+T}@T{
+The status of the interface in directory 
+.I /cmd/<n>
+.
+States are shown below.
+T}
+T{
+
+.I cmd [args]...
+
+T}@T{
+The active command.
+Output only for state 
+.I Execute
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS STATES
+A 
+.I cmd
+directory 
+.I <n>
+.I 
+can be in one of the following states
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+
+.I Open
+
+T}@T{
+Allocated for use but not yet running a command.
+T}
+T{
+
+.I Execute
+
+T}@T{
+Running a command
+T}
+T{
+
+.I Close
+
+T}@T{
+Command completed.
+Available for reallocation via
+.I 
+.PD 0
+.P
+.PD
+/cmd/clone
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS DIRECTORY MANAGEMENT
+Once closed, a directory <
+.I n>
+created by 
+.I cmd
+persists and is reused by 
+.I cmd
+in response to later openings of 
+.I /cmd/clone
+.
+The 
+.I cmd
+device only creates a new directory when all others, if any, are in use.
+.PP
+.SS COMMAND EXECUTION
+.SS UNIX\-HOSTED SYSTEMS
+The command is run via the 
+.I /bin/sh
+program as follows
+.IP
+.EX
+   /bin/sh \-c \[aq]cmd args...\[aq]
+.EE
+.PP
+Emulator run by root:
+.PP
+If available, the emulator runs the command with a host user ID (
+.I uid
+) and host group ID (
+.I gid
+) corresponding to Inferno\[aq]s representation for the user\[aq]s identity.
+If not available, the emulator runs the command with 
+.I uidnobody
+and 
+.I gidnobody
+.
+.PP
+Emulator not run by root:
+.PP
+Commands are run on the host with the same host identity as the emulator
+.PP
+.SS WINDOWS\-HOSTED SYSTEMS
+The command must be a binary executable (not a command interpreter built\-in) in the emulator\[aq]s path.
+.PP
+The command is always run with the same host identity as the emulator.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+
+.I emu \- Inferno emulator in Chapter 4
+.I 
+
+T}
+T{
+
+.I os \- interface OS commands (hosted Inferno only) in Chapter 5
+.I 
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

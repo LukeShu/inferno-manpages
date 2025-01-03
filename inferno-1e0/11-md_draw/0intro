@@ -1,0 +1,305 @@
+.TH 0INTRO 11
+.PP
+.SH NAME
+Limbo Draw Module
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+.SH DRAW MODULE
+.PP
+.TS
+tab(@);
+l.
+T{
+.I context \- graphics environment
+
+T}
+T{
+.I display \- connection to draw device
+
+T}
+T{
+.I font \- character images for Unicode text
+
+T}
+T{
+.I Image \- pictures and drawing
+
+T}
+T{
+.I point \- coordinate position
+
+T}
+T{
+.I pointer \- state of a pointer device such as a mouse
+
+T}
+T{
+.I rectangle \- rectangular portion of the plane
+
+T}
+T{
+.I screen \- type to define the abstract data structures for the windows on a display
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:=  load Draw Draw\->PATH;
+.EE
+.PP
+.SH DESCRIPTION
+Inferno\[aq]s 
+.I Draw
+module provides basic graphics facilities, defining drawing contexts, images, character fonts, and rectangular geometric operations.
+See 
+.I Limbo Prefab Module
+in Chapter 12 and 
+.I Tk \-graphics toolkit
+in Chapter 13 for higher level operations, such as windows and menu handling.
+.PP
+.SS PIXELS
+Images are defined on a rectangular region of an integer plane with a picture element, or 
+.I pixel
+, at each grid point.
+Pixel values are integers with 1, 2, 4, or 8 bits per pixel, and all pixels in a given image have the same size, or 
+.I depth
+.
+Some operations allow images with different depths to be combined, for example to do masking.
+.PP
+When an image is displayed, the value of each pixel determines the color of the display.
+For color displays, Inferno uses a fixed color map for each display depth (see 
+.I rgbv \- color map
+in Appendix A), and the application is responsible for mapping its desired colors to the values available.
+Facilities exist to convert from red, green, blue triplets to pixel values.
+.PP
+.SS TERMINOLOGY
+.PP
+.TS
+tab(@);
+l l.
+T{
+Point
+T}@T{
+The graphics plane is defined on an integer grid, with each (
+.I x, y
+) coordinate identifying the upper left corner of the corresponding pixel.
+The plane\[aq]s origin, (
+.I 0, 0
+), resides at the upper left corner of the screen; 
+.I x
+and 
+.I y
+coordinates increase to the right and down.
+The abstract data type 
+.I Point
+defines a coordinate position.
+T}
+T{
+Rect
+T}@T{
+The type 
+.I Rect
+defines a rectangular region of the plane.
+It comprises two 
+.I Points
+, 
+.I min
+and 
+.I max
+, and specifies the region defined by pixels with coordinates greater than or equal to min and strictly less than max, in both 
+.I x
+and 
+.I y
+.
+This 
+.I half\-open
+property allows rectangles that share an edge to have equal coordinates on the edge.
+T}
+T{
+Display
+T}@T{
+The type 
+.I Display
+represents a physical display, corresponding to a single connection to a 
+.I draw
+device.
+Besides the image of the display itself, the 
+.I Display
+type also stores references to off\-screen images, fonts, and so on.
+The contents of such images are stored in the display device, not in the client of the display, which affects how they are allocated and used.
+See 
+.I Image \- pictures and drawing
+.
+T}
+T{
+Screen
+T}@T{
+The 
+.I Screen
+type is used to manage a set of windows on an image, typically but not necessarily that of a display.
+Screens and hence windows may be built recursively upon windows for subwindowing or even on off\-screen images.
+T}
+T{
+Image
+T}@T{
+The 
+.I Image
+type provides basic operations on groups of pixels.
+Through a few simple operations, especially the draw image combination operator (see 
+.I Image \- pictures and drawing
+), the Image type provides the building blocks for 
+.I Display
+, 
+.I Screen
+, and 
+.I Font
+.
+T}
+T{
+Font
+T}@T{
+A 
+.I Font
+defines which character image to draw for each character code value.
+Although all character drawing operations ultimately use the draw primitive on the underlying images, 
+.I Fonts
+provide convenient and efficient management of display text.
+Inferno uses the 16\-bit Unicode character encoding, so 
+.I Fonts
+are managed hierarchically to control their size and to make common subsets such as ASCII or Greek efficient in practice.
+(See 
+.I font \- character images for Unicode text
+, 
+.I UTF, Unicode, ASCII \- character set and format
+in Appendix A, and 
+.I font, subfont \- external format for character fonts and subfonts
+in Appendix A)
+T}
+T{
+Context
+T}@T{
+A 
+.I Context
+provides an interface to the system graphics and interactive devices.
+The system creates this context when it starts an application.
+T}
+T{
+Pointer
+T}@T{
+The 
+.I Pointer
+type conveys information for pointing devices, such as mice or trackballs.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS MORE ABOUT IMAGES
+An image occupies a rectangle, 
+.I Image.r
+, of the graphics plane.
+A second rectangle, 
+.I Image.clipr
+, defines a clipping region for the image.
+Typically, the clipping rectangle is the same as the basic image, but they may differ.
+For example, the clipping region may be made smaller and centered on the basic image to define a protected border.
+.PP
+The pixel depth of an 
+.I Image
+is stored as a logarithm called 
+.I Image.ldepth
+; pixels with 1, 2, 4, and 8 bits correspond to 
+.I ldepth
+values 0, 1, 2, and 3.
+.PP
+An image may be marked for replication.
+When set, the boolean 
+.I Image.repl
+causes the image to behave as if replicated across the entire integer plane, thus tiling the destination graphics area with copies of the source image.
+When replication is turned on, the clipping rectangle limits the extent of the replication and may even usefully be disjoint from 
+.I Image.r
+.
+See 
+.I Image \- pictures and drawing
+for examples.
+.PP
+The 
+.I Image
+member functions provide facilities for drawing text and geometric objects, manipulating windows, and so on.
+.PP
+Objects of type 
+.I Display
+, 
+.I Font
+, 
+.I Screen
+, and 
+.I Image
+must be allocated by the member functions.
+If such objects are created with a regular Limbo definition, they will not behave properly and may generate run\-time errors.
+.PP
+There are no routines to free for graphics objects.
+Instead Limbo\[aq]s garbage collection frees them automatically.
+In Limbo, references can be eliminated by assigning 
+.I nil
+to reference variables, returning from functions whose local variables hold references, and so on.
+.PP
+.SH RETURN VALUES
+Most drawing operations operate asynchronously, so they have no error return.
+Functions that allocate objects return 
+.I nil
+for failure.
+In such cases the system error string may be interrogated (such as by the 
+.I %r
+print format) for more information.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I ir \- infrared remote control
+in Chapter 15
+T}
+T{
+.I Limbo Prefab Module
+in Chapter 12
+T}
+T{
+.I Tk \-graphics toolkit
+in Chapter 13
+T}
+T{
+.I font, subfont \- external format for character fonts and subfonts
+in Appendix A
+T}
+T{
+.I image \- external format for images
+in Appendix A
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

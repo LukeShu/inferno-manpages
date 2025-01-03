@@ -1,0 +1,235 @@
+.TH OPEN 8
+.PP
+.SH NAME
+open, create \- open/create a file for reading or writing
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+open:  fn(file: string, omode: int)      : ref FD;
+create:fn(file: string, omode, perm: int): ref FD;
+.EE
+.PP
+.SH DESCRIPTION
+.SS OPEN (FILE, OMODE)
+The 
+.I open
+function opens the 
+.I file
+for I/O and returns an associated file descriptor.
+The 
+.I omode
+argument is one of
+.PP
+.TS
+tab(@);
+l l.
+T{
+OREAD
+T}@T{
+open for reading
+T}
+T{
+OWRITE
+T}@T{
+open for writing
+T}
+T{
+ORDWR
+T}@T{
+open for reading and writing
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+the following:
+.PP
+The following values may be OR\[aq]ed with the above values for additional actions:
+.PP
+.TS
+tab(@);
+l l.
+T{
+OTRUNC
+T}@T{
+Truncate the file before opening it; this requires write permission even if 
+.I omode
+is 
+.I OREAD
+.
+T}
+T{
+ORCLOSE
+T}@T{
+Remove the file on closure.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The 
+.I open
+function returns 
+.I nil
+if the file does not exist or the user does not have permission to open it as requested (see 
+.I stat, fstat, fwstat, wstat \- get and put file status
+for a description of permissions).
+.PP
+.SS CREATE (FILE, OMODE, PERM)
+The 
+.I create
+function creates a new 
+.I file
+or prepares to rewrite an existing 
+.I file
+.
+The function opens it according to 
+.I omode
+as described for 
+.I open
+, and returns an associated file descriptor.
+.PP
+If the file is new, the owner is set to the 
+.I user
+.I id
+of the creating process group, the group to that of the containing directory.
+Also the permissions to 
+.I perm
+are 
+.I AND\[aq]ed
+with the permissions of the containing directory.
+See the section \- 
+.I The create Transaction
+in Chapter 3 of 
+.I open
+.
+.PP
+If the file already exists, it is truncated to 0 length, and the permissions, owner, and group remain unchanged.
+.PP
+.SS FILE MODE BITS IN PERM
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+16r80000000
+T}@T{
+Directory.
+.PD 0
+.P
+.PD
+The 
+.I Sys
+module defines this as 
+.I CHDIR
+.
+T}
+T{
+8r400
+T}@T{
+Read permission by owner.
+T}
+T{
+8r200
+T}@T{
+Write permission by owner.
+T}
+T{
+8r100
+T}@T{
+Execute permission (search on directory) by owner
+T}
+T{
+8r070
+T}@T{
+Read, write, execute (search) by group.
+T}
+T{
+8r007
+T}@T{
+Read, write, execute (search) by others.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The created file will be a directory if the 
+.I CHDIR
+bit is set in 
+.I omode
+.
+.PP
+The 
+.I create
+function returns 
+.I nil
+if the path up to the last element of file 
+.I cannot
+be evaluated, if the user does not have write permission in the final directory, or if the file already exists and does not permit the access defined by 
+.I omode
+.
+.PP
+If the file is new and the directory in which it is created is a union directory (see 
+.I Limbo System Module
+), then the directory where the file is created depends on the structure of the union: see 
+.I bind, mount, unmount \- change file name space
+.
+.PP
+.SH CAVEAT
+There is no explicit close routine; when the last reference to the file descriptor is released, the system closes the associated file.
+.PP
+For devices and network protocols where shutdown must be guaranteed, write a 
+.I hangup
+message to the associated control file and use the return value of the 
+.I write
+to verify closure.
+For example, see 
+.I ip \- TCP, UDP network protocols over IP
+in Chapter 2.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Limbo System Module
+
+T}
+T{
+.I bind, mount, unmount \- change file name space
+
+T}
+T{
+.I stat, fstat, fwstat, wstat \- get and put file status
+
+T}
+T{
+.I open, create \- prepare a fid for I/O on a file
+in Chapter 3
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

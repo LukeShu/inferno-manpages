@@ -1,0 +1,54 @@
+.TH CAT 5
+.PP
+.SH NAME
+cat \- concatenate files
+.SH SYNOPSYS
+.IP
+.EX
+cat [\-] [file...]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I cat
+command reads each 
+.I file
+in sequence and writes it on the standard output.
+The following command prints the file to standard output:
+.PP
+cat file The following command concatenates two files into a third:
+.PP
+cat file1 file2 >file3 If no 
+.I file
+is given, or if minus (\-) is given as an argument 
+.I cat
+reads from the standard input.
+.PP
+.SH CAVEAT
+Beware of 
+.I cat a b >a
+and 
+.I cat a b >b,
+which destroy input files before reading them.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I read, write, stream \- read, write, or stream file
+in Chapter 8
+T}
+T{
+.I Integer File Descriptor
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

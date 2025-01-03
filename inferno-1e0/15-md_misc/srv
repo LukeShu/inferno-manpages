@@ -1,0 +1,59 @@
+.TH SRV 15
+.PP
+.SH NAME
+srv \- miscellaneous services from the host operating system
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]srv.m\[dq]
+srv:= load Srv Srv\->PATH;
+Srv: module
+{
+  PATH:  con \[dq]$Srv\[dq];
+  reads:  fn(str: string, off, nbytes: int): 
+                               (array of byte, string);
+  iph2a: fn(host: string)                : list of string;
+  ipn2p: fn(net, service: string)        : string;
+};
+.EE
+.PP
+.SH DESCRIPTION
+.SS READS (STRING, OFF, NBYTES)
+The 
+.I reads
+function converts a substring of the given string 
+.I str
+into a returned 
+.I array of byte
+.
+The substring is defined by arguments 
+.I off
+(offset) and 
+.I nbytes
+(length).
+.PP
+.SS IPH2A (HOST)
+The 
+.I iph2a
+function calls the host\[aq]s 
+.I gethostbyname
+function for the argument 
+.I host
+.
+The matching addresses are returned as a list of strings.
+.PP
+.SS IPN2P (NET, SERVICE)
+The 
+.I ipn2p
+function calls the host\[aq]s 
+.I getservbyname
+function for the specified network (
+.I net
+) and service name (
+.I service
+).
+The port number is returned as a string.
+.PP
+.SH SEE ALSO
+.I cs \- start connection server daemon
+in Chapter 5

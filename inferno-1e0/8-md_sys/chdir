@@ -1,0 +1,30 @@
+.TH CHDIR 8
+.PP
+.SH NAME
+chdir \- change working directory
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+chdir: fn(path: string): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS CHDIR (PATH)
+The 
+.I chdir
+function changes the working directory of the invoking process and its file name space group to 
+.I path
+.
+.PP
+The working directory is the starting point for evaluating file names that do not begin with / or #, as explained in 
+.I Limbo System Module
+.
+.PP
+When Inferno boots, the initial process has / for its working directory.
+.PP
+.SH SEE ALSO
+.I Limbo System Module
+, 
+.I File Name Space

@@ -1,0 +1,355 @@
+.TH PRINT 8
+.PP
+.SH NAME
+print, fprint, sprint \- print formatted output
+.SH SYNOPSYS
+
+.B 
+include \[dq]sys.m\[dq]; sys:= load Sys Sys\->PATH; fprint: fn(fd: ref FD, format: string, *): int; print: fn(format: string, *): int; sprint: fn(format: string, *): string;
+.SH DESCRIPTION
+These functions format and print their arguments as UTF text.
+.PP
+.TS
+tab(@);
+l l.
+T{
+print (
+.I format
+, *)
+T}@T{
+Write text to the standard output.
+Return the number of bytes transmitted or a negative value if an error was encountered when writing the output.
+T}
+T{
+fprint (
+.I fd
+, *)
+T}@T{
+Write to the 
+.I fd
+file descriptor.
+Return the number of bytes transmitted or a negative value, if an error was encountered when writing the output.
+T}
+T{
+sprint (
+.I format
+, *)
+T}@T{
+Format text into a string and return the string.
+Returns the formatted string.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Each of these functions converts, formats, and prints its trailing arguments under control of a 
+.I format
+string.
+The format contains two types of objects:
+.PP
+.TS
+tab(@);
+l l.
+T{
+plain characters
+T}@T{
+Plain characters are simply copied to the output stream.
+T}
+T{
+conversion specifications
+T}@T{
+Each conversion results in fetching of zero or more arguments.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The Limbo compiler recognizes calls to these functions and checks that the arguments match the format specifications in number and type.
+.PP
+Each conversion specification has the following format:
+.PP
+
+.B 
+.I %[flags]verb
+
+.PP
+The 
+.I verb
+is a single character and each flag is a single character or a (decimal) numeric string.
+Up to two numeric strings may be used.
+The first string is called 
+.I f1
+, the second 
+.I f2
+.
+A period can be used to separate them, and if the period is present, then 
+.I f1
+and 
+.I f2
+are taken to be zero if missing, otherwise they are omitted.
+Either or both of the numbers may be replaced with the character *, meaning that the actual number will be obtained from the argument list as an integer.
+.PP
+The flags and numbers are arguments to the 
+.I verb
+defined as follows:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+d, x
+T}@T{
+The numeric verbs 
+.I d
+and 
+.I x
+format their 
+.I int
+arguments in decimal and hexadecimal, respectively.
+Address values of lists, arrays, etc.
+can also be printed
+.PP
+Each verb interprets the flags 
+.I #
+and 
+.I \-
+to mean alternate format and left justified and the flag 
+.I b
+is used to allow big\[aq]s to be printed.
+.PP
+If 
+.I f2
+is not omitted, the number is padded on the left with zeros until at least 
+.I f2
+digits appear.
+If alternate format is specified for 
+.I x
+conversion, the number is preceded by 
+.I 16r
+.
+Finally, if 
+.I f1
+is not omitted, the number is padded on the left (or right, if left justification is specified) with enough blanks to make the field at least 
+.I f1
+characters long.
+T}
+T{
+e, f, g
+T}@T{
+The floating point verbs 
+.I e
+, 
+.I f
+, and g take a 
+.I real
+argument.
+.PP
+Each interprets the flags +, \-, and # to mean always print a sign, left justified, and alternate format.
+.PP
+The 
+.I e
+conversion appends an exponent 
+.I e
+[\-]
+.I digits
+.
+.PP
+The 
+.I f
+verb produces output of the form [\-]
+.I digits
+[
+.I .digits
+].
+.PP
+The 
+.I g
+verb will output the argument in either 
+.I e
+or 
+.I f
+with the goal of producing the smallest output.
+Also, trailing zeros are omitted from the fraction part of the output, and a trailing decimal point appears only if it is followed by a digit.
+When alternate format is specified, the result will always contain a decimal point, and for 
+.I g
+conversions, trailing zeros are not removed.
+.PP
+The 
+.I f1
+flag is the minimum field width and, if the converted value takes up less than 
+.I f1
+characters, it is padded on the left (or right, if \[aq]left justified\[aq]) with spaces.
+.PP
+The 
+.I f2
+flag is the number of digits that are converted after the decimal place for 
+.I e
+and 
+.I f
+conversions, and 
+.I f2
+is the maximum number of significant digits for 
+.I g
+conversions.
+T}
+T{
+c
+T}@T{
+The 
+.I c
+verb copies a single character (integer) argument justified within a field of 
+.I f1
+characters as described above.
+T}
+T{
+r
+T}@T{
+The 
+.I r
+verb takes no arguments.
+It prints the error string associated with the most recent system error.
+T}
+T{
+s
+T}@T{
+The 
+.I s
+verb copies a 
+.I string
+to the output.
+The number of characters copied (
+.I n
+) is the minimum of the size of the string and 
+.I f2
+.
+These 
+.I n
+.I characters
+are justified within a field of 
+.I f1
+characters as described above.
+T}
+T{
+u
+T}@T{
+The 
+.I u
+verb treats the argument as unsigned.
+T}
+T{
+%
+T}@T{
+The 
+.I %
+verb is used for printing a literal.
+T}
+T{
+E
+T}@T{
+The 
+.I E
+verb is the same as 
+.I e
+, but specify exponent using E rather than e.
+T}
+T{
+G
+T}@T{
+The 
+.I G
+verb is the same as 
+.I g
+, but specify exponent using E rather than e.
+T}
+T{
+X
+T}@T{
+The 
+.I X
+verb is the same as 
+.I x
+, but print hex digits in upper\-case (and print 0X rather than 0x if # flag present).
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH EXAMPLE
+.SS PROGRAM
+.IP
+.EX
+implement print;
+include \[dq]sys.m\[dq];
+sys: Sys;
+include \[dq]draw.m\[dq];
+print: module
+{
+        init: fn(ctxt: ref Draw\->Context, argv: list of string);
+};
+init(ctxt: ref Draw\->Context, argv: list of string)
+{
+        sys = load Sys sys\->PATH;
+        sys\->print(\[dq][%%%%]\[rs]t%%\[rs]n\[dq]);
+        i : int = 16rab9cd;
+        sys\->print(\[dq][%%#x]\[rs]t%#x\[rs]n\[dq], i);
+        sys\->print(\[dq][%%#X]\[rs]t%#X\[rs]n\[dq], i);
+        r : real = 0.00000345;
+        sys\->print(\[dq][%%e]\[rs]t%e\[rs]n\[dq], r);
+        sys\->print(\[dq][%%E]\[rs]t%E\[rs]n\[dq], r);
+        sys\->print(\[dq][%%g]\[rs]t%g\[rs]n\[dq], r);
+        sys\->print(\[dq][%%G]\[rs]t%G\[rs]n\[dq], r);
+        i = \-1;
+        sys\->print(\[dq][%%d]\[rs]t%d\[rs]n\[dq], i);
+        sys\->print(\[dq][%%ud]\[rs]t%ud\[rs]n\[dq], i);
+}
+.EE
+.PP
+.SS OUTPUT DATA
+.IP
+.EX
+[%%]    %
+[%#x]   0xab9cd
+[%#X]   0XAB9CD
+[%e]    3.450000e\-06
+[%E]    3.450000E\-06
+[%g]    3.45e\-06
+[%G]    3.45E\-06
+[%d]    \-1
+[%ud]   4294967295
+ 
+.EE
+.PP
+.SH ERRORS
+Output longer than 256 bytes is truncated.
+.PP
+The 
+.I x
+verb does not apply the 
+.I 0x
+prefix when 
+.I f2
+is present.
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo System Module
+.I  
+.I  and 
+open, create \- open/create a file for reading or writing
+.I 

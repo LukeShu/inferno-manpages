@@ -1,0 +1,39 @@
+.TH CLUNK 3
+.PP
+.SH NAME
+clunk \- forget about a fid
+.SH SYNOPSYS
+.IP
+.EX
+Tclunk tag [2] fid [2]
+Rclunk tag [2] fid [2]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I clunk
+request informs the file server that the current file represented by 
+.I fid
+is no longer needed by the client.
+The actual file is not removed on the server.
+.PP
+Once a fid has been clunked, the same fid can be reused in a new 
+.I clone
+request.
+.PP
+Even if the 
+.I clunk
+returns an error, the 
+.I fid
+is no longer valid.
+.PP
+.SH ENTRY POINTS
+A 
+.I clunk
+message is generated when a file descriptor is closed (usually by the garbage collector) and indirectly by other actions such as failed 
+.B open
+calls.
+.PP
+.SH SEE ALSO
+.I open, create \- open/create a file for reading or writing
+in Chapter 8

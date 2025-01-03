@@ -1,0 +1,89 @@
+.TH PIPE 15
+.PP
+.SH NAME
+pipe: fds, files \- get read/write file pair for a pipe
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]pipe.m\[dq];
+pipe:= load Pipe Pipe\->PATH;
+fds:    fn(): (ref Sys\->FD, ref Sys\->FD);
+files:  fn(): (string, string);
+.EE
+.PP
+.SH DESCRIPTION
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+fds ( )
+T}@T{
+The 
+.I fds
+opens a pair of files.
+One file is the read end of a simulation of a pipe for thread\-to\-thread communication and the other is the write end.
+The function returns a tuple with the read and write file descriptors, respectively.
+.PP
+In case the pipe cannot be created, 
+.I fds
+returns 
+.I (nil, nil)
+.
+T}
+T{
+files ( )
+T}@T{
+The 
+.I files
+function returns a pair of file names to be opened.
+The first name is for the read end of a pipe and the second name is for the write end of a pipe.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+In case the pipe cannot be created, 
+.I files
+returns 
+.I (\[aq] \[aq], \[aq] \[aq])
+.
+.PP
+.SH NOTES
+The pipes are implemented by creating channels and associated files, which are uniquely named, in the 
+.I /chan
+directory.
+.PP
+.SH FILES
+/chan
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I file2chan \- create file connected to Limbo channel
+in Chapter 8
+T}
+T{
+.I open, create \- open/create a file for reading or writing
+in Chapter 8
+T}
+T{
+.I read, write, stream \- read, write, or stream file
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,24 @@
+.TH MATHCALC 5
+.PP
+.SH NAME
+mathcalc \- interface to a TclLib calculator module
+.SH SYNOPSYS
+.IP
+.EX
+mathcalc
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I mathcalc
+command provides a command line interface to a 
+.I TclLib
+calculator module.
+The user is prompted (
+.I calc%
+) for input from standard input.
+The user\[aq]s input is relayed to the calculator module and the results are displayed on standard output.
+.PP
+.SH SEE ALSO
+.I tklib: tkquote, is_err, tkcmds, dialog, getstring, notice, mktabs, tabsctl \- Tk user interface functions
+in Chapter 13

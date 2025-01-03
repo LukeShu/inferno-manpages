@@ -1,0 +1,56 @@
+.TH DB A
+.PP
+.SH NAME
+db \- connection service database
+.SH SYNOPSYS
+/services/cs/db
+.SH DESCRIPTION
+The connection service database file is read by the connection server daemon, 
+.I cs
+, when it receives a request with a machine name of the form 
+.I $service
+.
+.PP
+The file consists of a two column list (separated by tabs and/or blanks) of the form
+.PP
+$service hostname
+.PP
+Once the hostname for a given service is identified, the connection server converts the hostname into an internet address.
+.PP
+Blank lines and comments (lines beginning with 
+.I #
+) are ignored.
+.PP
+A running connection server daemon notes the modification time of the database file before each use.
+If the file has changed, the daemon uses the latest definitions.
+.PP
+.SH EXAMPLE
+.IP
+.EX
+$MPEG          infernocpu
+$SIGNER         dante
+$FilesERVER         dante
+$MAILSERVER         dante
+.EE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I cs \- start connection server daemon
+in Chapter 5
+T}
+T{
+.I cs \- connection server daemon
+in Chapter 6
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

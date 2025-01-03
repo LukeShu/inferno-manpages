@@ -1,0 +1,166 @@
+.TH CHMOD 5
+.PP
+.SH NAME
+chmod \- change file mode (permissions)
+.SH SYNOPSYS
+.IP
+.EX
+chmod mode file... 
+chmod [augo][+\-=][rwx]  file...
+.EE
+.PP
+.SH DESCRIPTION
+The mode of each named file is changed according to 
+.I mode,
+which may be an integer number in octal format or a symbolic change to the existing mode.
+.PP
+A 
+.I mode
+can be numerically constructed from the INCLUSIVE OR of the following VALUES:
+.PP
+.TS
+tab(@);
+l l.
+T{
+0400
+T}@T{
+read by owner
+T}
+T{
+0200
+T}@T{
+write by owner
+T}
+T{
+0100
+T}@T{
+execute (search in directory) by owner
+T}
+T{
+0070
+T}@T{
+read, write, execute (search) by group
+T}
+T{
+0007
+T}@T{
+read, write, execute (search) by others
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+A symbolic 
+.I mode
+has the form:
+.PP
+
+.I [who] op permission
+
+.PP
+The 
+.I who
+part is a combination of the letters 
+.I u
+(for user\[aq]s permissions), 
+.I g
+(group) and 
+.I o
+(other).
+The letter 
+.I a
+stands for 
+.I ugo
+.
+If 
+.I who
+is omitted, the default is 
+.I a
+.
+.PP
+The 
+.I op
+field can be:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
++
+T}@T{
+to add 
+.I permission
+to the file\[aq]s mode
+T}
+T{
+-
+T}@T{
+to take away 
+.I permission
+
+T}
+T{
+=
+T}@T{
+to assign 
+.I permission
+absolutely
+.PD 0
+.P
+.PD
+(all other bits will be reset)
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The 
+.I permission
+field is any combination of the letters r (read), w (write), and x (execute).
+.PP
+.SH CAVEATS
+.IP \[bu] 2
+The 
+.I #r
+format for expressing integer values is not recognized.
+.IP \[bu] 2
+The standard format for octal numbers (
+.I 8r...
+) is not recognized.
+.PP
+.SH NOTES
+See 
+.I stat, fstat, fwstat, wstat \- get and put file status
+in Chapter 8 for interpretation of permissions on Windows\-hosted systems.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I ls \- list contents of directory
+
+T}
+T{
+.I stat, fstat, fwstat, wstat \- get and put file status
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

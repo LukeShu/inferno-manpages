@@ -1,0 +1,52 @@
+.TH PS 5
+.PP
+.SH NAME
+ps \- thread status
+.SH SYNOPSYS
+.IP
+.EX
+bind \[aq]#p\[aq] /prog
+ps
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I ps
+command prints to standard output information about all current threads.
+The information provided is a formatted version of what is obtained from the 
+.I status
+file for each thread.
+.PP
+.SH CAVEAT
+This command requires a populated 
+.I /prog
+directory; therefore, there must be a prior binding of the system\[aq]s 
+.I #p
+driver to that directory.
+.PP
+.SH FILES
+
+.I /prog/pid/status
+
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I kill \- terminate process(es)
+
+T}
+T{
+.I prog \- interface to running programs
+in Chapter 2
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

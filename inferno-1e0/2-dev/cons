@@ -1,0 +1,272 @@
+.TH CONS 2
+.PP
+.SH NAME
+cons \- console device
+.SH SYNOPSYS
+.IP
+.EX
+bind \[aq]#c\[aq] /dev
+
+/dev/cons
+/dev/consctl
+/dev/keyboard
+/dev/memory
+/dev/pin
+/dev/pointer
+/dev/random
+/dev/sysname
+/dev/time
+/dev/user
+.EE
+.PP
+.SH DESCRIPTION
+The console device serves a one\-level directory giving access to the console and miscellaneous information.
+.PP
+.SS CONS (READ\-WRITE)
+Reading the 
+.I cons
+file returns characters typed on the keyboard.
+Normally, characters are buffered until a newline (
+.I \[rs]n
+) is entered to enable erase and kill processing via special characters:
+.PP
+.TS
+tab(@);
+l l.
+T{
+[ha]U
+T}@T{
+A control\-U, 
+.I \[ha]U
+, typed at the keyboard kills the current input line (removes all characters from the buffer of characters not yet read via cons).
+T}
+T{
+[rs]b
+T}@T{
+A backspace 
+.I erases
+the previous non\-kill, non\-erase character from the input buffer.
+Killing and erasing only delete characters back to, but not including, the last newline.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Typed keystrokes produce 16\-bit characters that are translated into the variable\-length UTF encoding (see 
+.I UTF, Unicode, ASCII \- character set and format
+in Chapter A) before putting them into the buffer.
+A 
+.I read, write, stream \- read, write, or stream file
+in Chapter 8 of length greater than zero causes the process to wait until a newline or a 
+.I \[ha]D
+ends the buffer, and then returns as much of the buffer as the argument to 
+.B read
+allows, but only up to one complete line.
+.PP
+A terminating 
+.I \[ha]D
+is not put into the buffer.
+The next 
+.B read
+will return immediately with unread bytes typed since the last newline but before the 
+.I \[ha]D
+.
+Thus, a 
+.I \[ha]D
+entered at the start of a line will cause a 
+.B read
+system call to return 0 bytes, the equivalent of reading at the end of a file.
+.PP
+A 
+.I write
+to the system call 
+.I cons
+causes the characters to be printed on the console screen.
+.PP
+.SS CONSCTL (WRITE\-ONLY)
+The behavior of the keyboard input can be changed by writing certain control strings to the 
+.I consctl
+file.
+.PP
+.SS RAWON
+If the string 
+.I rawon
+has been written to the 
+.I consctl
+file and the file is still open, 
+.I cons
+is in 
+.I raw
+mode with the following attributes:
+.IP \[bu] 2
+Characters are not echoed as they are typed.
+.IP \[bu] 2
+Backspace and 
+.I \[ha]D
+are not treated specially.
+.IP \[bu] 2
+Characters are available to 
+.I read
+as soon as they are typed.
+.PP
+.SS RAWOFF
+Ordinary mode is reentered when 
+.I rawoff
+is written to 
+.I consctl,
+or this file is closed.
+.PP
+.SS KEYBOARD (READ\-ONLY)
+The 
+.I keyboard
+file returns the underlying tokens produced by the keyboard hardware as they are produced; in the emulation environment, it is like an always\-
+.I raw mode
+cons file.
+.PP
+.SS NULL (READ\-WRITE)
+The 
+.I null
+file throws away anything written to it and always returns zero bytes when read.
+.PP
+.SS POINTER (READ\-ONLY)
+A read of the 
+.I pointer
+file returns the status of the mouse or other pointing device: its position and button state.
+The read blocks until the state has changed since the last read.
+The read returns an 
+.I m
+character followed by three integers in the standard Inferno 12\-character decimal format.
+See 
+.I Limbo Miscellaneous Modules
+in Chapter 15.
+.PP
+The integers are the device\[aq]s coordinates on the screen (
+.I x
+and 
+.I y
+) and a bit mask with the 1, 2, and 4 bits set when the pointer\[aq]s left, middle, and right buttons, respectively, are down.
+.PP
+.SS PIN (READ\-WRITE)
+The 
+.I pin
+file, when read, returns either the string \[aq]
+.I no pin\[aq]
+if no PIN has been set for authentication, or \[aq]
+.I pin set\[aq]
+, if one has.
+The 
+.I pin
+file may be written once per process group with a decimal representation of the PIN to use on this Inferno machine.
+.PP
+.SS RANDOM (READ\-ONLY)
+The 
+.I random
+device returns as many bytes of random data as are requested in the 
+.I read
+.
+.PP
+.SH OTHER FILES
+The rest of the files contain (mostly) read\-only strings.
+Each string has a fixed length: a 
+.I read
+of more than that gives a result of that fixed length (the result does not include a terminating zero byte); a 
+.I read
+of less than that length leaves the file offset so the rest of the string (but no more) will be read the next time.
+To reread the file without closing it, the system module 
+.I seek
+call must be used to reset the offset.
+.PP
+When the file contains numeric data, each number is formatted in decimal as an 11\-digit number with leading blanks and one trailing blank (twelve bytes total).
+There is no trailing newline character.
+.PP
+.SS SYSNAME (READ\-WRITE)
+The 
+.I sysname
+file holds the text name of the machine.
+No privilege is needed to write to this file.
+.PP
+.SS USER (READ\-WRITE)
+The 
+.I user
+file contains the name of the user associated with the current process group.
+.PP
+On hosted systems, this value can be changed only by processes owned by the initiator of the 
+.I emu
+program.
+.PP
+.SS MEMORY (READ\-ONLY)
+The 
+.I memory
+file returns a formatted presentation of the state of the memory allocation pools in the system.
+Each line of output returned reports the following parameters for a single pool:
+.IP \[bu] 2
+amount of memory in use
+.IP \[bu] 2
+upper size limit
+.IP \[bu] 2
+number of allocations done
+.IP \[bu] 2
+number of frees done
+.IP \[bu] 2
+number of extensions done
+.IP \[bu] 2
+name of the pool
+.PP
+.SS TIME (READ\-WRITE)
+Reading the 
+.I time
+file obtains in decimal format (
+.I %.lld
+) the number of microseconds since the epoch 00:00:00 GMT, Jan.
+1, 1970.
+This \[ga]clock\[aq] can be reset by writing the desired time value (in decimal format) to the 
+.I time
+file.
+.PP
+.SH NOTES
+When running the Inferno native kernel, two control\-T\[aq]s followed by certain letters generate console output for debugging:
+.PP
+.TS
+tab(@);
+l l.
+T{
+[ha]T\[ha]Tp
+T}@T{
+prints data about kernel processes
+T}
+T{
+[ha]T\[ha]Ts
+T}@T{
+prints the kernel stack
+T}
+T{
+[ha]T\[ha]Tx
+T}@T{
+prints data about memory allocation
+T}
+T{
+[ha]T\[ha]Tr
+T}@T{
+reboots the system
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+These sequences have no special meaning when running the emulator (
+.I emu
+).
+.PP
+.SH SEE ALSO
+.I UTF, Unicode, ASCII \- character set and format
+in Chapter A

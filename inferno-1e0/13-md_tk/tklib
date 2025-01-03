@@ -1,0 +1,173 @@
+.TH TKLIB 13
+.PP
+.SH NAME
+tklib: tkquote, is_err, tkcmds, dialog, getstring, notice, mktabs, tabsctl \- Tk user interface functions
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+include \[dq]tk.m\[dq];
+include \[dq]tklib.m\[dq];
+tklib:=  load Tklib Tklib\->PATH;
+init:      fn(ctxt: ref Draw\->Context);
+tkquote:   fn(s: string): string;
+is_err:    fn(e: string): int;
+tkcmds:    fn(top: ref Tk\->Toplevel, cmds: array of string);
+dialog:    fn(p:  ref Tk\->Toplevel, msg: string, dflt: int,
+              labs: list of string): int;
+getstring: fn(p: ref Tk\->Toplevel, s:  string): string;
+notice:    fn(p: ref Tk\->Toplevel, msg: string);
+mktabs:    fn(p: ref Tk\->Toplevel, book: string,
+             tabs: array of (string, string), dflt: int):
+                    chan of string;
+tabsctl:   fn(p: ref Tk\->Toplevel, book: string,
+                 tabs: array of (string, string), curid:
+                             int, newid: string): int;
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Tklib
+module builds on the 
+.I Tk
+module to provide some common user interface functions.
+.PP
+.SS INIT (CTXT)
+The 
+.I init
+function must be called before using any of these functions, with a 
+.I ctxt
+argument holding the screen on which to draw.
+.PP
+.SS TKQUOTE (S)
+The 
+.I tkquote
+function returns a string that is the same as its arguments, but enclosed in curly braces and with internal curly braces escaped.
+The 
+.I tkquote
+function can be used to make an arbitrary string, 
+.I s
+, into a 
+.I word
+suitable as an argument to a Tk function.
+.PP
+.SS IS_ERR (E)
+The 
+.I is_err
+function can be called with a return value from 
+.I tkcmd
+.
+It returns 1 if the string, 
+.I e
+, represents an error (begins with an exclamation mark).
+.PP
+.SS TKCMDS (TOP, CMDS)
+The 
+.I tkcmds
+function executes 
+.I tkcmd
+on all strings in the argument array, 
+.I cmds
+, using 
+.I top
+for the first argument of 
+.I Tkcmd
+.
+It does not check for error returns.
+.PP
+.SS DIALOG (P, MSG, DFLT, LABS)
+The 
+.I dialog
+function pops up a dialog box near the corner of the parent top level widget, 
+.I p
+.
+It displays the given 
+.I msg
+and a number of buttons, labeled with the strings in 
+.I labs
+.
+The dialog box waits for the user to push a button, and then returns the index of the button pushed (the first element of labs 
+.I is
+index 0).
+If the user types a newline, the 
+.I dflt
+value is returned.
+The button with the 
+.I dflt
+index is specially outlined in the dialog box.
+.PP
+.SS GETSTRING (P, S)
+The 
+.I getstring
+function pops up a dialog box near the corner of the parent top level widget, 
+.I p
+.
+The box contains the 
+.I msg
+and an entry widget.
+It waits for the user to type a string and a newline, and then returns the typed string without the newline.
+.PP
+.SS NOTICE (P, MSG)
+The 
+.I notice
+function pops up a dialog box near the corner of the parent top level widget, 
+.I p
+.
+It displays the given 
+.I msg
+and an OK button.
+It waits for the user to click 
+.B OK
+and then returns.
+.PP
+.SS MKTABS (P, BOOK, TABS, DFLT)
+The 
+.I mktabs
+function creates a pseudo tabbed notebook widget, 
+.I book
+, for insertion into widget 
+.I p
+.
+Once created, 
+.I book
+can be packed like any other Tk widget.
+The notebook will initially display the page indexed by 
+.I dflt
+.
+.PP
+Information for specific tab pages is contained in the 
+.I tabs
+array.
+For each page, 
+.I tabs
+contains the name displayed in the tab and a Tk widget name.
+Whenever a page is selected, its widget is packed in 
+.I book
+and displayed.
+.PP
+The 
+.I mktabs
+functions returns a Tk event channel.
+Messages received on this channel should be passed as the 
+.I newid
+argument to 
+.I tabsctl
+.
+.PP
+.SS TABSCTL (P, BOOK, TABS, CURID, NEWID)
+The 
+.I tabsctl
+function controls a tabbed notebook.
+The 
+.I curid
+parameter is the index of the page currently selected in the notebook.
+The 
+.I newid
+parameter is a string containing the index of the new page to be displayed.
+This is usually the information received by the channel returned from 
+.I mktabs
+.
+The index of the newly selected page is returned.
+.PP
+.SH SEE ALSO
+.I Tk \-graphics toolkit

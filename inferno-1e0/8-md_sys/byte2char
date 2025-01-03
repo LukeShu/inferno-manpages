@@ -1,0 +1,116 @@
+.TH BYTE2CHAR 8
+.PP
+.SH NAME
+byte2char, char2byte \- convert between bytes and characters
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+byte2char: fn(buf: array of byte, n: int): (int, int, int);
+char2byte: fn(c: int, buf: array of byte, n: int): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS BYTE2CHAR (BUF, N)
+The 
+.I byte2char
+function converts a byte sequence to the corresponding Unicode character.
+The 
+.I buf
+argument gives an array of bytes holding the sequence and 
+.I n
+is an index in 
+.I buf
+where the scanning of the UTF\-8 bytes begins.
+The returned tuple, 
+.I (c, len, status)
+, specifies the result of the translation:
+.PP
+.TS
+tab(@);
+l l.
+T{
+c
+T}@T{
+The resulting Unicode character.
+T}
+T{
+len
+T}@T{
+The number of bytes consumed by the translation.
+T}
+T{
+status
+T}@T{
+Non\-zero if the bytes are a valid UTF sequence and zero otherwise.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+If the input sequence is not long enough to determine its validity, 
+.I byte2char
+consumes zero bytes.
+If the input sequence is otherwise invalid, 
+.I byte2char
+consumes one input byte and generates an error character (
+.I UTFerror
+), which prints in most fonts as a boxed question mark.
+.PP
+.SS CHAR2BYTE (C, BUF, N)
+The 
+.I char2byte
+performs the inverse of 
+.I byte2char
+.
+It translates a Unicode character, 
+.I c
+, to a UTF byte sequence which is placed in 
+.I buf
+.
+The byte sequence is starts at the index n.
+The longest UTF sequence for a single Unicode character is 
+.I UTFmax
+bytes.
+.PP
+If the translation succeeds, 
+.I char2byte
+returns the number of bytes placed in the buffer.
+If the space between n and the end of the buffer is too small to hold the result, 
+.I char2byte
+returns zero and leaves the array unchanged.
+.PP
+.SH NOTES
+If the array bounds are invalid or insufficient to hold results, a run\-time error occurs.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Limbo System Module
+
+T}
+T{
+.I utfbytes \- compute the Unicode length of a UTF byte sequence
+
+T}
+T{
+.I UTF, Unicode, ASCII \- character set and format
+in Appendix A
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

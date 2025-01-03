@@ -1,0 +1,134 @@
+.TH TK 13
+.PP
+.SH NAME
+Tk \-graphics toolkit
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]tk.m\[dq];
+tk:= load Tk Tk\->PATH;
+Toplevel: adt
+{
+    id:    int;
+    image: ref Draw\->Image;
+};
+toplevel: fn(screen: ref Draw\->Screen, arg: string): 
+                    ref Toplevel;
+namechan: fn(t: ref Toplevel, c: chan of string, n: string):
+                          string;
+cmd:      fn(t: ref Toplevel, arg: string): string;
+mouse:    fn(x, y, button: int);
+keyboard: fn(key: int);
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Tk
+module provides primitives for building user interfaces, based on Ousterhout\[aq]s Tcl/Tk.
+The interface to the toolkit itself is primarily the passing of strings to and from the elements of the toolkit using the cmd function.
+.PP
+.SS TOPLEVEL (SCREEN, ARG)
+The 
+.I toplevel
+function, given an existing 
+.I Screen
+(usually one inherited from the graphics 
+.I Context
+; see 
+.I context \- graphics environment
+in Chapter 11), creates a new window, called a Toplevel, under the control of the Tk toolkit.
+The 
+.I Toplevel
+is passed to the 
+.I cmd
+and 
+.I namechan
+functions to drive the widgets in the window.
+The 
+.I arg
+parameter is a string containing creation options (such as 
+.I \-borderwidth 2
+) that are applied when creating the 
+.I toplevel
+window.
+.PP
+.SS CMD (T, ARG)
+The cmd function passes command strings to the widgets in the Toplevel 
+.I t
+and returns the string resulting from their execution.
+For example, given a canvas .c in the 
+.I Toplevel t
+,
+.IP
+.EX
+   x:= int tk\->cmd (t, \[dq].c cget \-actx\[dq]); 
+.EE
+.PP
+returns the integer 
+.I x
+coordinate of the canvas.
+.PP
+.SS NAMECHAN (T, C, N)
+Bindings can be created in a 
+.I Toplevel
+that trigger strings to be sent on Limbo channels.
+Such channels must be declared to the 
+.I Tk
+module using 
+.I namechan
+.
+The following example creates a button that sends the word 
+.I Ouch
+when it is pressed:
+.IP
+.EX
+hitchannel:= chan of string;
+tk\->namechan(t, hitchannel, \[dq]channel\[dq]);
+tk\->cmd(t, \[dq]button.b.Hit \-text Hit \-command {send channel
+        Ouch}\[dq]);
+expl:= <\-hitchannel; # will see \[dq]Ouch\[dq] when button pressed
+.EE
+.PP
+.SS MOUSE ( ) AND KEYBOARD ( )
+The 
+.I mouse
+and 
+.I keyboard
+functions deliver mouse and keyboard events to Tk for delivery to widgets.
+They are usually called only by the Window Manager.
+.PP
+.SH CAVEAT
+Because 
+.I Tk
+input is handled globally, there can be only one instance of a Tk implementation on a given machine or a given emulator.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I context \- graphics environment
+in Chapter 11
+T}
+T{
+.I tklib: tkquote, is_err, tkcmds, dialog, getstring, notice, mktabs, tabsctl \- Tk user interface functions
+
+T}
+T{
+.I wmlib \- window manager toolkit
+in Chapter 15
+T}
+T{
+John K. Ousterhout, 
+.I Tcl and the Tk Toolkit
+, Addison\-Wesley Publishing Company, Reading, Massachusetts, 1994.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

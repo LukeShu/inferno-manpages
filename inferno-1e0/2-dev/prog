@@ -1,0 +1,521 @@
+.TH PROG 2
+.PP
+.SH NAME
+prog \- interface to running programs
+.SH SYNOPSYS
+.IP
+.EX
+bind \[aq]#p\[aq] /prog
+
+/prog/<n>/ctl
+/prog/<n>/dbgctl
+/prog/<n>/heap
+/prog/<n>/ns
+/prog/<n>/nsgrp
+/prog/<n>/pgrp
+/prog/<n>/stack
+/prog/<n>/status
+/prog/<n>/text
+/prog/<n>/wait
+&...
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I prog
+device serves a two\-level structure.
+The first level contains numbered directories corresponding to pids of live Inferno processes.
+The second level, for each such directory, contains a set of files representing the corresponding process.
+All files operate on 
+.I utf
+strings.
+.PP
+.SS STATUS (READ\-ONLY)
+The status 
+.I file
+contains six fields, each separated by a blank.
+The fields are: 
+.B 
+
+.PP
+.TS
+tab(@);
+l l.
+T{
+process identifiers
+T}@T{
+8 characters right justified
+T}
+T{
+process group identifiers
+T}@T{
+8 characters right justified
+T}
+T{
+user name
+T}@T{
+at least 10 characters left justified
+T}
+T{
+process state
+T}@T{
+10 characters left justified
+T}
+T{
+process memory
+T}@T{
+amount of memory used by the process in units of 1024 bytes with at least 5 characters, right justified, followed by a K
+T}
+T{
+name of the current program module
+T}@T{
+up to 28 characters, left justified
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS PGRP (READ\-ONLY)
+The 
+.I pgrp
+file contains the process group identifier in decimal format.
+.PP
+.SS NSGRP (READ\-ONLY)
+The 
+.I nsgrp
+file contains the name space group identifier in decimal format.
+.PP
+.SS NS (READ\-ONLY)
+The 
+.I ns
+file contains an ordered set of triples, separated by a space, which describe the 
+.B bind
+and 
+.B mount
+operations used to construct the name space.
+The fields are: the integer 
+.I flags
+, the 
+.I to
+file, and the 
+.I from
+file.
+.PP
+.SS WAIT (READ\-ONLY)
+The 
+.I wait
+file may be read to recover information about the exiting children of the process.
+A read of 
+.I wait
+will block until a child of the process, created after 
+.I wait
+was opened, exits.
+When such a child exits, the read returns a string with three fields:
+.PP
+.TS
+tab(@);
+l l.
+T{
+pid of exiting process
+T}@T{
+decimal value, followed by a space
+T}
+T{
+module name
+T}@T{
+string, enclosed in double\-quotes
+T}
+T{
+error message
+T}@T{
+zero to 64 characters
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS CTL
+Messages written to the 
+.I ctl
+file control the execution of the process.
+.PP
+.TS
+tab(@);
+l l.
+T{
+kill
+T}@T{
+Kill the process.
+T}
+T{
+killgrp
+T}@T{
+Kill all processes in the same group as the process.
+A process writing to its own 
+.I ctl
+file does not kill itself.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS DBGCTL
+The 
+.I dbgctl
+file provides facilities for debugging a process.
+Messages written to the file control the execution of the process.
+.PP
+.TS
+tab(@);
+l l.
+T{
+step 
+.I n
+
+T}@T{
+Step the interpreter for at most 
+.I n
+instructions
+.I ,
+or until a breakpoint is reached.
+T}
+T{
+toret
+T}@T{
+Step the interpreter until a return from the current activation frame or a breakpoint is reached.
+T}
+T{
+cont
+T}@T{
+Step the interpreter until a breakpoint is reached.
+T}
+T{
+start
+T}@T{
+Run the process, ignoring any breakpoints.
+T}
+T{
+bpt set 
+.I pc path
+
+T}@T{
+Set a breakpoint at 
+.I pc
+(program counter) for the module given by 
+.I path
+.
+T}
+T{
+bpt del 
+.I pc path
+
+T}@T{
+Clear a breakpoint if one exists.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Reading 
+.I dbgctl
+gives updates for some state transitions, while the process is being debugged.
+Each update is terminated by a newline, and includes the following messages:
+.PP
+.TS
+tab(@);
+l l.
+T{
+exited
+T}@T{
+The process exited without error.
+T}
+T{
+broken: 
+.I error
+
+T}@T{
+The process died due to 
+.I error
+, a string with up to 64 characters.
+T}
+T{
+send
+T}@T{
+The process is blocked sending on a channel.
+T}
+T{
+recv
+T}@T{
+The process is blocked receiving on a channel.
+T}
+T{
+alt
+T}@T{
+The process is blocked in an alt statement.
+T}
+T{
+run
+T}@T{
+The process is unblocked and now ready to run.
+T}
+T{
+new 
+.I pid
+
+T}@T{
+The process has spawned a new process identified by 
+.I pid
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS STACK (READ\-ONLY)
+The 
+.I stack
+file contains the dynamic call stack trace.
+Each activation frame is described by one line with six fields, each separated by a space:
+.PP
+.TS
+tab(@);
+l l.
+T{
+Frame pointer
+T}@T{
+8 hexadecimal digits
+T}
+T{
+Program counter
+T}@T{
+8 hexadecimal digits
+T}
+T{
+Module data pointer
+T}@T{
+8 hexadecimal digits
+T}
+T{
+Module code pointer
+T}@T{
+8 hexadecimal digits
+T}
+T{
+Execution method for the module
+T}@T{
+0 means interpreted, 1 compiled
+T}
+T{
+The path name of the module
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The top activation frame starts at offset 0.
+.PP
+.SS HEAP
+The 
+.I heap
+file may be queried to examine the state of the process.
+The file must be opened for both read and write (
+.I ORDWR
+).
+Moreover, access to this debugging facility may be not be allowed in production systems.
+.PP
+A data query contains an address, a period, a format character, and a count.
+.PP
+An instruction query contains a 
+.I pc
+(program counter), a plus, a mode address, a period, the format 
+.I I
+, and a count.
+.PP
+The addresses in the query may be decimal, hexadecimal preceded by 
+.I 0x
+or 
+.I 0X
+, or octal preceded by 
+.I 0
+.
+Count gives the number of consecutive data items retrieved by reading 
+.I heap
+starting at offset 0; the format varies according to the format character.
+.PP
+All data items other than strings are terminated by a newline.
+.PP
+.TS
+tab(@);
+l l.
+T{
+W
+T}@T{
+32\-bit decimal integers.
+T}
+T{
+B
+T}@T{
+8\-bit unsigned decimal bytes.
+T}
+T{
+V
+T}@T{
+64\-bit decimal integers.
+T}
+T{
+R
+T}@T{
+64\-bit reals.
+T}
+T{
+I
+T}@T{
+Disassembled Dis instructions.
+T}
+T{
+P
+T}@T{
+32\-bit hexadecimal address, or 
+.I nil
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The following formats examine properties of specific 32\-bit pointers.
+.PP
+.TS
+tab(@);
+l l.
+T{
+L
+T}@T{
+Examine a list, yielding a pair of hexadecimal addresses separated by a period, giving the address of the head and tail of a list.
+It is an error to use 
+.I L
+on 
+.I nil
+.
+T}
+T{
+A
+T}@T{
+Examine an array, yielding a decimal length, a period, and the address of the 0th element of an array, or 
+.I nil
+.
+T}
+T{
+C
+T}@T{
+Examine a string, yielding the decimal length in characters, a period, and the 
+.I utf
+representation of the string.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS TEXT
+The 
+.I text
+file is currently unimplemented.
+.PP
+.SS PROCESS STATES
+.PP
+.TS
+tab(@);
+l l.
+T{
+alt
+T}@T{
+Inter\-thread communication processing
+T}
+T{
+send
+T}@T{
+Ready to transmit a value to another thread
+T}
+T{
+recv
+T}@T{
+Ready to receive a value from another thread
+T}
+T{
+debug
+T}@T{
+Debugged
+T}
+T{
+ready
+T}@T{
+Available to execute instructions
+T}
+T{
+release
+T}@T{
+Remove from queue to complete a kernel call
+T}
+T{
+exiting
+T}@T{
+Thread instructions completed
+T}
+T{
+broken
+T}@T{
+Thread has crashed
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I ps \- thread status
+in Chapter 5

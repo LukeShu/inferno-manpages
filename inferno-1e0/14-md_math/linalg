@@ -1,0 +1,156 @@
+.TH LINALG 14
+.PP
+.SH NAME
+linalg \- linear algebra primitives
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]math.m\[dq];
+math:= load Math Math\->PATH;
+
+dot         : fn(x, y: array of real)  : real;
+norm1, norm2: fn(x: array of real)     : real;
+iamax       : fn(x: array of real)     : int;
+gemm        : fn(transa, transb: int, # upper case N or T
+                 m, n, k: int, alpha      : real,
+                 a: array of real, lda    : int,
+                 b: array of real, ldb    : int, beta: real,
+                 c: array of real, ldc    : int);
+sort        : fn(x: array of real, p: array of int);
+.EE
+.PP
+.SH DESCRIPTION
+These routines implement the basic functions of linear algebra.
+The standard vector inner product and norms are defined as follows:
+.IP
+.EX
+   dot(x, y) = sum(x [i]* y [i])   
+        norm1(x) = sum(fabs(x [i]))   
+        norm2(x) = sqrt(dot(x, x))
+.EE
+.PP
+For the infinity norm, the function 
+.I iamax(x)
+computes an integer 
+.I i
+such that 
+.I fabs(x[i])
+is maximal.
+These are all standard BLAS (basic linear algebra subroutines) except that in Inferno they apply only to contiguous (unit stride) vectors.
+.PP
+The convention is assumed that matrices are represented as singly\-subscripted arrays with Fortran storage order.
+So for an 
+.I m
+by 
+.I n
+matrix 
+.I A
+, loops are used with 0<= 
+.I i
+< 
+.I m
+and 0<= 
+.I j
+< 
+.I n
+and access is 
+.I A [i + m *j]
+.
+.PP
+Rather than provide the huge number of entry points in BLAS2 and BLAS3, Inferno provides the matrix multiply primitive, gemm, defined by
+.PP
+A = a* A\[aq]*B\[aq] + β*C where the apostrophes indicate an optional transposition.
+As shown by the work of Kagstrom, Ling, and Van Loan, the other BLAS functionality can be built efficiently on top of 
+.I gemm
+.
+.PP
+Matrix 
+.I a
+\[aq] is 
+.I m
+by 
+.I k
+, matrix 
+.I b
+\[aq] is 
+.I k
+by 
+.I n
+, and matrix 
+.I c
+is 
+.I m
+by 
+.I n
+.
+Here 
+.I a
+\[aq] means 
+.I a
+.I (
+a \[aq]) if 
+.I transa
+is the constant 
+.I N (T)
+, and similarly for 
+.I b
+\[aq].
+The sizes 
+.I m
+, 
+.I n
+, and 
+.I k
+denote the active part of the matrix.
+The parameters 
+.I lda
+, 
+.I ldb
+, and 
+.I ldc
+denote the leading dimension or size for purposes of indexing.
+So to loop over 
+.I c
+use loops with 0<= 
+.I i
+< 
+.I m
+and 0<= 
+.I j
+< 
+.I j
+and access 
+.I a
+[
+.I i
++
+.I ldc
+*
+.I j
+].
+.PP
+The sorting function 
+.I sort (x, p)
+updates a 0\-origin permutation 
+.I p
+so that 
+.I x
+[
+.I p
+[
+.I i
+]] <= x [p[i+1]], leaving 
+.I x
+unchanged.
+.PP
+.SH SEE ALSO
+.I Limbo Math Module
+
+.PP
+Bo Kagstrom, Per Ling, and Charles Van Loan
+.I .
+Portable high performance GEMM\-based level 3 BLAS.
+In R.F.
+Sincovec et al., editor, Parallel Processing for Scientific Computing, pages 339\-346.
+SIAM Publications, 1993.
+.PP

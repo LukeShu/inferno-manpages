@@ -1,0 +1,102 @@
+.TH 0INTRO 7
+.PP
+.PP
+.SH NAME
+Introduction to Limbo Modules
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+The modules described in this section provide an interface between Limbo applications and the Inferno system.
+The files that specify module interfaces are conventionally designated with the extension 
+.I .m
+and are typically located in 
+.I /module.
+
+.PP
+The modules are accessed by including the appropriate interface files into Limbo program code.
+See 
+.I The Limbo Programming Language
+in the 
+.I Inferno User\[aq]s Guide
+for information about the syntax for including modules in an application.
+.PP
+Prior to calling a module\[aq]s functions, an application must 
+.I load
+the module.
+The application uses the resulting handle as the module qualifier.
+The examples shown in the following Synopsis illustrate the style.
+It will usually be necessary to qualify names with the appropriate module pointer or to 
+.I import
+the types and functions.
+The program examples shown in this manual assume the names are accessible in the current scope.
+.PP
+Although many modules are self\-contained, dependencies may exist.
+The system module (
+.I Sys
+), for example, provides basic services that some other modules require.
+.PP
+Sometimes functions are packaged as individual modules but share a single 
+.I include
+file.
+For example, see 
+.I /include/security.m.
+
+.PP
+The subsequent chapters contain detailed descriptions of the modules.
+These descriptions show how to 
+.I include
+a module definition during compilation and 
+.I load
+an implementation during execution.
+The program examples also list the functions, abstract data types, and constants.
++Although the 
+.I include
+files declare these components, the manual pages list them explicitly to facilitate their explanation.
+In all cases, the enclosing 
+.I module
+declaration is assumed so that unqualified identifiers can be used in the text without ambiguity.
+.PP
+The Limbo modules are identical on any machine that is running Inferno, in either a native mode or emulation mode.
+This enables Limbo programs to be written and tested on any Inferno system.While the current modules should be sufficient for general application development, special situations, such as particular IR hardware, may require the development of additional modules.
+.PP
+Some modules are described in a single page, such as 
+.I regex
+.
+Larger modules are divided into several related pages, such as 
+.I Limbo Math Module
+, 
+.I elem \- elementary functions of applied mathematics
+, 
+.I fp \- floating point operations
+, and 
+.I 
+linalg \- linear algebra primitives.
+.I 
+
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+include \[dq]tk.m\[dq];
+
+tk:= load Tk Tk\->PATH;
+
+&...
+.EE
+.PP
+
+.B Generically:
+
+.PP
+include \[dq]
+.I module
+.m\[dq]; mod:= load 
+.I Module
+.I Module
+\->PATH;

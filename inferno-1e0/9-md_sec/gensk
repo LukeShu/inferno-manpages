@@ -1,0 +1,59 @@
+.TH GENSK 9
+.PP
+.SH NAME
+genSK, genSKfromPK, sktopk, dhparams \- generate keys
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]keyring.m\[dq];
+kr:= load Keyring Keyring\->PATH;
+genSK:      fn(algname, owner: string, length: int): ref SK; 
+genSKfromPK:fn(pk: ref PK, owner: string)          : ref SK;
+sktopk:     fn(sk: ref SK)                         : ref PK;
+dhparams:   fn(nbits: int)         : (ref IPint, ref IPint);
+.EE
+.PP
+.SH DESCRIPTION
+.SS GENSK (ALGNAME, OWNER, LENGTH)
+Although we call it a private key, the SK adt contains both the private and public parts of a public key.
+The 
+.I genSK
+function generates this key pair.
+The 
+.I algname
+parameter is the name of the algorithm to use; in the current implementation, only \[aq]elgamal\[aq] is possible.
+The 
+.I owner
+parameter is the user name to be associated with the key.
+The 
+.I length
+parameter specifies the length of the key modulus in bits.
+The 
+.I nil
+value is returned if an unknown algorithm has been specified.
+.PP
+.SS GENSKFROMPK (PK, OWNER)
+The 
+.I genSKfromPK
+function generates a private key that has the same system parameters as the public key, 
+.I pk
+.
+The function is used to generate new keys that are of the same complexity as old keys.
+.PP
+.SS SKTOPK (SK)
+The 
+.I sktopk
+function extracts the public part of private key.
+.PP
+.SS DHPARAMS (NBITS)
+The 
+.I dhparams
+function creates Diffie\-Hellman parameters.
+The second 
+.I IPint
+returned is an 
+.I nbits
+long prime number that serves as the modulus.
+The first 
+.I IPint
+is a primitive root in the integer field defined by that modulus.

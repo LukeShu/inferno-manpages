@@ -1,0 +1,15 @@
+.TH ECHO 5
+.PP
+.SH NAME
+echo \- print arguments
+.SH SYNOPSYS
+.IP
+.EX
+echo [arg...]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I echo
+command writes its arguments separated by blanks and terminated by a newline on the standard output.
+If there are no arguments, it produces no output.

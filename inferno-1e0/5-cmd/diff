@@ -1,0 +1,172 @@
+.TH DIFF 5
+.PP
+.SH NAME
+diff \- differential file comparator
+.SH SYNOPSYS
+.IP
+.EX
+diff [\-efbwr] file1... file2
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I diff
+command tells what lines must be changed in two files to bring them into agreement.
+.PP
+.TS
+tab(@);
+l l.
+T{
+If one file is a directory
+T}@T{
+then a file in that directory with a basename the same as that of the other file is used
+T}
+T{
+If both files are directories
+T}@T{
+similarly named files in the two directories are compared by the method of 
+.I diff
+for text files and cmp otherwise
+T}
+T{
+If more than two file names are given
+T}@T{
+then each argument is compared to the last argument as above
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The normal output contains lines of these forms:
+.IP \[bu] 2
+n1 a n3, n4
+.IP \[bu] 2
+n1, n2 d n3
+.IP \[bu] 2
+n1, n2 c n3, n4
+.RS 2
+.PP
+These lines resemble commands of the Unix system editor 
+.I ed
+to convert 
+.I file1
+into 
+.I file2
+.
+The numbers after the letters pertain to 
+.I file2
+.
+In fact, by exchanging 
+.I \[aq]a\[aq]
+for 
+.I \[aq]d\[aq]
+and reading backward, it can be determined how to convert 
+.I file2
+into 
+.I file1
+.
+As in 
+.I ed
+, identical pairs where 
+.I n1
+= 
+.I n2
+or 
+.I n3
+= 
+.I n4
+are abbreviated as a single number.
+.PP
+Following each of these lines are the lines that are affected in the first file flagged by \[aq]<\[aq], then all the lines that are affected in the second file flagged by \[aq]>\[aq].
+.PP
+Except in rare circumstances, 
+.I diff
+finds a smallest sufficient set of file differences.
+.RE
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+l l.
+T{
+-e
+T}@T{
+The 
+.I \-e
+option produces a script of 
+.I a,
+.I c
+and 
+.I d
+.I commands
+for the Unix system editor 
+.I ed
+, which will recreate 
+.I file2
+from 
+.I file1
+.
+T}
+T{
+-f
+T}@T{
+The 
+.I \-f
+option produces a similar script, not useful with ed, in the opposite order.
+It may, however, be useful as input to a stream\-oriented post\-processor.
+T}
+T{
+-b
+T}@T{
+The 
+.I \-b
+option causes trailing blanks (spaces and tabs) to be ignored and other strings of blanks to compare equal.
+T}
+T{
+-w
+T}@T{
+The 
+.I \-w
+option causes all white space to be removed from input lines before applying the difference algorithm.
+T}
+T{
+-r
+T}@T{
+The \-r option causes 
+.I diff
+to process similarly named subdirectories recursively.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH FILES
+
+.I /tmp/diff[12]
+
+.PP
+.SH CAVEAT
+Editing scripts produced under the 
+.I \-e
+or 
+.I \-f
+option are naive about creating lines consisting of a single 
+.I \[aq].\[aq]
+.
+When running 
+.I diff
+on directories, the notion of what is a text file is open to debate.
+.PP
+.SH SEE ALSO
+.I cmp \- compare files

@@ -1,0 +1,242 @@
+.TH BUFIO 15
+.PP
+.SH NAME
+bufio \- buffered input/output module
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq]; # for Sys\->OREAD, etc.
+include \[dq]bufio.m\[dq];
+Iobuf: import Bufio;
+bufio:= load Bufio Bufio\->PATH;
+OREAD:  con Sys\->OREAD;
+OWRITE: con Sys\->OWRITE;
+ORDWR:  con Sys\->ORDWR;
+EOF:    con \-1;
+ERROR:  con \-2;
+Iobuf: adt {
+ seek:  fn(b: self ref Iobuf, n, where: int)           :int;
+ read:  fn(b: self ref Iobuf, a: array of byte, n: int):int;
+ write: fn(b: self ref Iobuf, a: array of byte, n: int):int;
+ getb:  fn(b: self ref Iobuf)                          :int;
+ ungetb:fn(b: self ref Iobuf)                          :int;
+ getc:  fn(b: self ref Iobuf)                          :int;
+ ungetc:fn(b: self ref Iobuf)                          :int;
+ gets:  fn(b: self ref Iobuf, sep: int)             :string;
+ gett:  fn(b: self ref Iobuf, sep: string)          :string;
+ putb:  fn(b: self ref Iobuf, b: byte)                 :int;
+ putc:  fn(b: self ref Iobuf, c: int)                  :int;
+ puts:  fn(b: self ref Iobuf, s: string)               :int;
+ flush: fn(b: self ref Iobuf): int;
+ close: fn(b: self ref Iobuf);
+};
+open:   fn(name: string,  mode: int)           : ref Iobuf;
+create: fn(name: string,  mode, perm: int)     : ref Iobuf;
+fopen:  fn(fd: ref Sys\->FD, mode: int)         : ref Iobuf;
+flush:  fn();
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Bufio
+module provides an interface for buffered I/O.
+A buffer is an adt which is created with 
+.I open
+, 
+.I fopen
+, or 
+.I create
+.
+.PP
+.SS OPEN (FILENAME, MODE)
+The open function takes two parameters, a 
+.I filename
+and a 
+.I mode
+.
+The 
+.I mode
+must be one of 
+.I OREAD
+, 
+.I OWRITE
+, or 
+.I ORDWR
+(defined to match the corresponding values in the Sys module).
+Both open and fopen return a 
+.I ref Iobuf
+to be used in subsequent calls.
+.PP
+.SS CREATE (FILENAME, MODE, PERM)
+The create 
+.I function
+creates a new file 
+.I or
+prepares to rewrite an existing 
+.I file
+, opens it according to 
+.I mode
+(as described for 
+.I open
+).
+It returns an associated file descriptor, and a 
+.I ref Iobuf
+to be used in subsequent calls.
+.PP
+.SS FOPEN (FD, MODE)
+Buffered I/O on an already open file is made possible using 
+.I fopen
+, which takes a file descriptor, 
+.I fd
+, as its first argument and an open 
+.I mode
+as its second argument.
+The 
+.I mode
+of the file descriptor must be compatible with the mode passed to 
+.I fopen
+.
+.PP
+The 
+.I Bufio
+module keeps an internal reference to files opened for writing so that they can be flushed before being garbage collected.
+Flushing all dirty files is done with an explicit call to 
+.I flush()
+, usually just before exiting the program.
+.PP
+.SS SEEK (N, WHERE), READ (A, N), AND WRITE (A, N)
+Each function has parameters analogous to its complement in the 
+.I Sys
+module (see 
+.I seek \- change file offset
+and 
+.I read, write, stream \- read, write, or stream file
+in Chapter 8).
+.PP
+.SS GETB ( )
+Read a single byte from the buffered stream and return its value as an 
+.I int
+.
+.PP
+.SS UNGETB ( )
+Put the single byte back into the buffered stream, so that a subsequent 
+.I getb
+will read it.
+.PP
+.SS GETC ( )
+Read a single Unicode character, encoded in UTF, and return its value as an 
+.I int
+.
+(See 
+.I UTF, Unicode, ASCII \- character set and format
+in Appendix A.)
+.PP
+.SS UNGETC ( )
+Put the single Unicode character, encoded in UTF, back into the buffered stream so that a subsequent 
+.I getc
+will read it.
+.PP
+.SS GETS (SEPCHAR)
+Read a line up to and including a character specified by 
+.I sepchar
+, typically a newline.
+If none is found, read to the end of the file.
+The returned string includes the terminating character.
+.PP
+.SS GETT (SEPSTR)
+Read characters until one of the characters in 
+.I sepstr
+.
+The returned string includes the separator.
+If none of the separator characters is found, read to the end of the file.
+.PP
+.SS PUTB (B), PUTC (C), AND PUTS (S)
+Each function writes its respective argument: a byte (
+.I b
+), a character (
+.I c
+), or a string (
+.I s
+).
+Text is encoded in UTF.
+.PP
+.SS FLUSH ( )
+Write contents of the write buffer to the file.
+Meaningful only for files opened for writing; has no effect on files opened for reading.
+.PP
+.SS CLOSE ( )
+Flush remaining data in the buffer; if necessary, close the associated file, and discard buffers associated with the file.
+After close, no further function calls are allowed on the 
+.I iobuf
+adt.
+.PP
+.SH DIAGNOSTICS
+Calls that return a ref type (
+.I open
+, 
+.I fopen
+, 
+.I gets
+, and 
+.I gett
+) return 
+.I nil
+when encountering end of file or errors.
+When an error occurs, the error string, printable with the 
+.I %r
+format, will usually be set as a consequence of an error in the underlying 
+.I Sys
+module.
+The other functions return 
+.I EOF
+upon encountering end of file, and 
+.I ERROR
+when encountering other errors.
+.PP
+.SH EXAMPLE
+The following code fragment opens the file 
+.I /net/tcp/0/local
+and reads a line (including the terminating newline character) from this file to initialize the string variable 
+.I addr
+.
+The file is closed implicitly by discarding (assigning 
+.I nil
+to) the only reference to its 
+.I Iobuf
+.
+.IP
+.EX
+lc:= bufio\->open(\[dq]/net/tcp/0/local\[dq], bufio\->OREAD);     
+addr:= lc.gets(\[aq]\[rs]n\[aq]);     
+lc = nil; 
+.EE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Introduction to Limbo Modules
+in Chapter 7
+T}
+T{
+.I open, create \- open/create a file for reading or writing
+in Chapter 8
+T}
+T{
+.I read, write, stream \- read, write, or stream file
+in Chapter 8
+T}
+T{
+.I seek \- change file offset
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,105 @@
+.TH 0INTRO 12
+.PP
+.SH NAME
+Limbo Prefab Module
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+
+.I The Limbo prefab module prefab.m
+.B 
+contains components for building graphics objects suitable for Interactive Television (ITV) applications using infrared remote controls.
+.PP
+.SH PREFAB MODULE
+.PP
+.TS
+tab(@);
+l.
+T{
+.I compound \- windows for ITV toolkit
+
+T}
+T{
+.I element \- menu and display elements for ITV toolkit
+
+T}
+T{
+.I environ \- environment for ITV toolkit to provide a graphics framework for a item collections
+
+T}
+T{
+.I style \- fonts and colors for IITV toolkit
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+include \[dq]prefab.m\[dq];
+prefab:= load Prefab Prefab\->PATH;
+.EE
+.PP
+.SH DESCRIPTION
+Using the 
+.I Draw
+module\[aq]s operations for simple text and images (see 
+.I Draw Module
+in Chapter 11), the toolkit can group individual items, treat those groups as units, and then activate the items on command.
+The other user interface toolkit provides facilities for keyboard\- and mouse\-driven applications (see 
+.I tk)
+.
+.PP
+The objects on the screen are of type 
+.I Compound
+, each of which occupies a unique window on the display and contains objects of type 
+.I Element
+.
+An 
+.I Element
+may be a single object or a list of further 
+.I Elements
+that can be used to build hierarchically structured components.
+.PP
+
+.I Prefab
+defines 
+.I Environ
+and 
+.I Style
+types that specify the appearance of objects: their colors, fonts, backgrounds, and so on.
+A 
+.I Style
+gives font and color information, while an 
+.I Environ
+identifies the 
+.I Screen
+upon which the items will be displayed and the 
+.I Style
+in which they will be drawn.
+.PP
+Applications should allocate an 
+.I Element
+or 
+.I Compound
+only through the appropriate member functions as described in the corresponding sections of the manual.
+Moreover, except where indicated, applications should not modify the data members directly.
+Although the type definitions make data members visible, the members should be treated as read\-only data.
+.PP
+.SH SEE ALSO
+
+.I 
+Draw Module
+.I  in Chapter 11 
+.I  and 
+ir \- infrared remote control
+.I  in Chapter 15

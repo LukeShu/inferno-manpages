@@ -1,0 +1,39 @@
+.TH WORKDIR 15
+.PP
+.SH NAME
+workdir \- discover the name of the current working directory
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]workdir.m\[dq];
+workdir:= load Workdir Workdir\->PATH;
+init: fn(): string;
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Workdir
+module returns a string representation of the working directory of the invoking process.
+.PP
+When Inferno boots, the initial process has root (
+.I /)
+for its working directory.
+.PP
+.SH NOTES
+On hosted Inferno system\[aq]s root (
+.I /)
+corresponds to 
+.I <inferno_root>
+of the host system.
+.PP
+The default value of 
+.I <inferno_root>
+is 
+.I /usr/inferno
+on Unix\-hosted systems and 
+.I \[rs]users\[rs]inferno
+on Windows\-hosted systems.
+.PP
+.SH SEE ALSO
+.I chdir \- change working directory
+in Chapter 8

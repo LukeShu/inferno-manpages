@@ -1,0 +1,327 @@
+.TH IR 15
+.PP
+.SH NAME
+ir \- infrared remote control
+.SH SYNOPSYS
+.IP
+.EX
+include   \[dq]ir.m\[dq];
+ir     := load Ir Ir\->PATH;    # for real remotes
+simir  := load Ir Ir\->SIMPATH; # for keyboard simulator
+init:      fn(c, p: chan of int) : int;
+translate: fn(c: int)            : int;
+.EE
+.PP
+.SH DESCRIPTION
+Programs running with the 
+.I Prefab
+module are controlled by an infrared remote control device.
+If such a device is not present, the system may simulate it from the keyboard by loading the module in file 
+.I SIMPATH
+.
+The 
+.I Ir
+module defines codes for representing the remote control keys.
+These codes are typically sent over the 
+.I Context.cir
+channel, which is managed by 
+.I Mux
+.
+(See 
+.I context \- graphics environment
+in Chapter 11 and 
+.I Limbo Prefab Module
+in Chapter 12
+.PP
+.SS INIT
+The 
+.I init
+function takes the appropriate actions to initialize the device, and then spawns a process to return the 
+.I c
+the codes on the 
+.I irc
+channel and 
+.I p
+the process id on the 
+.I pid
+channel.
+This is done for both real and simulated devices.
+The 
+.I init
+function is typically invoked once, such as by 
+.I Mux
+, and the codes are then multiplexed between the applications.
+Most programs need not call 
+.I init
+.
+.PP
+.SS TRANSLATE
+The 
+.I translate
+function converts the device\[aq]s raw codes into the constants defined by the module.
+For example, with the simulated remote control, 
+.I translate(\[aq]3\[aq])
+returns 
+.I Three
+.
+The 
+.I translate
+function is only necessary for programs that need to manage their own simulation of the remote control.
+.PP
+.SH CODES
+.PP
+.TS
+tab(@);
+l l l.
+T{
+Code
+T}@T{
+Description of Code
+T}@T{
+
+.B Keyboard
+.B Equivalent
+
+T}
+T{
+ChanUP, ChanDN
+T}@T{
+The Channel\-Up and Channel\-Down buttons
+T}@T{
+
+.B r
+and 
+.B c
+
+T}
+T{
+Enter
+T}@T{
+The Enter button
+T}@T{
+SPACE
+T}
+T{
+EOF
+T}@T{
+An end of file from the remote device.
+After sending an EOF, no more codes will be sent on 
+.I irc
+
+T}@T{
+None
+T}
+T{
+Error
+T}@T{
+An unknown or invalid input from the remote device
+T}@T{
+None
+T}
+T{
+FF, Rew
+T}@T{
+Fast\-Forward and Rewind buttons
+T}@T{
+
+.B k
+and 
+.B j
+
+T}
+T{
+Mute
+T}@T{
+The Mute button
+T}@T{
+None
+T}
+T{
+Power
+T}@T{
+The Power button
+T}@T{
+
+.B Delete
+key
+T}
+T{
+Rcl
+T}@T{
+The Recall button.
+Typical applications do not see this command; instead, the 
+.I Mux
+application intercepts the command and reactivates its menu.
+T}@T{
+x
+T}
+T{
+Record
+T}@T{
+The Record button
+T}@T{
+None
+T}
+T{
+Select
+T}@T{
+The Select button
+T}@T{
+
+.B Return
+or 
+.B Enter
+key
+T}
+T{
+Up, Dn
+T}@T{
+The Up and Down buttons
+T}@T{
+
+.B i
+and 
+.B m
+
+T}
+T{
+VolUP, VolDN
+T}@T{
+The Volume Up and Down buttons
+T}@T{
+
+.B t
+and 
+.B v
+
+T}
+T{
+Zero, One, Two, etc.
+T}@T{
+The digit buttons, 0 through 9
+T}@T{
+corresponding numeral keys
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.PP
+.SH EXAMPLES
+Application programs using the remote control run under 
+.I mux
+, which creates a graphics interface for the application.
+This includes channels to the 
+.I Mux
+program and to the 
+.I Ir
+device: 
+.I Context.ctomux
+and 
+.I Context.cir
+.
+The following example establishes communication with 
+.I Mux
+and then reads 
+.I Ir
+commands until it sees 
+.I Enter
+.
+.IP
+.EX
+implement Command;
+
+include \[dq]sys.m\[dq]; 
+include \[dq]draw.m\[dq]; 
+include \[dq]ir.m\[dq]; 
+Command: module 
+{
+  init: fn(ref Draw\->Context; list of string);
+};
+init(ctxt: ref Draw\->Context; argv: list of string); 
+{
+  sys:= load Sys Sys\->PATH;  
+  # Tell mux to start sending input.  
+  ctxt.ctomux <\-= Draw\->AMstartinput;  
+   for(;;) {   
+       key:= <\-ctxt.cir;   
+        sys\->print(\[dq]command %d\[rs]n\[dq], key);   
+         if(key == Ir\->Enter)    
+              break;  
+   }  
+  # Tell mux this thread is going away.  
+  ctxt.ctomux <\-= Draw\->AMexit; 
+}
+.EE
+.PP
+Programs such as 
+.I Mux
+that drive the remote control directly must load the appropriate module and initialize it.
+This example uses the absence of a simulator module to infer that a real remote control is available.
+.IP
+.EX
+implement Irtest; 
+include \[dq]sys.m\[dq]; 
+include \[dq]draw.m\[dq]; 
+include \[dq]ir.m\[dq]; 
+Irtest: module 
+{  
+   init: fn(ctxt: ref Draw\->Context, argv: list of string); 
+}; 
+init(nil: ref Draw\->Context, nil: list of string) 
+{   
+    sys:= load Sys Sys\->PATH;   
+    # First try the keyboard Ir simulator.   
+    # If that is not present, use Ir directly.   
+    ir:= load Ir Ir\->SIMPATH;   
+    if(ir == nil)     
+        ir = load Ir Ir\->PATH;   
+    if(ir == nil){     
+        sys\->print(\[dq]Ir module not loaded: %r\[rs]n\[dq]);     
+        return;   
+    }   
+    irc:= chan of int;   
+    pid:= chan of int;   
+
+    if(ir\->init(irc,pid) < 0){     
+      sys\->print(\[dq]Can\[aq]t initialize Ir device: %r\[rs]n\[dq]);     
+        return;   
+    }   
+      <\- pid;
+      for(;;){     
+              irval:= <\-irc;     
+      sys\->print(\[dq]command %d\[rs]n\[dq], irval);   
+    } 
+}
+.EE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Draw Module
+in Chapter 11
+T}
+T{
+.I Introduction to Limbo Modules
+in Chapter 7
+T}
+T{
+.I limbo \- Limbo compiler
+in Chapter 4
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

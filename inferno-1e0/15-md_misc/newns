@@ -1,0 +1,142 @@
+.TH NEWNS 15
+.PP
+.SH NAME
+newns \- build a new name space from a description file
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]newns.m\[dq];
+ns:=   load Newns Newns\->PATH;
+newns: fn(user: string, nsfile: string): string;
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Newns
+module reads file 
+.I nsfile
+and builds a new name space based on the commands it contains.
+If 
+.I nsfile
+is 
+.I nil
+or empty, then 
+.I newns
+attempts to read the file 
+.I namespace
+in the current directory.
+.PP
+The name space description file contains one or more lines each of which specifies one name space operation.
+The operations and their arguments are:
+.PP
+.SS BIND [\-ABRCI] SOURCE TARGET
+Use 
+.I source
+as an alias for file or directory 
+.I target
+.
+Options 
+.I a
+, 
+.I b
+, 
+.I c
+, and 
+.I r
+translate to flag values 
+.I MAFTER
+, 
+.I MBEFORE
+, 
+.I MCREATE
+, and 
+.I MREPL
+, respectively.
+Option 
+.I i
+means to ignore errors.
+See 
+.I bind, mount, unmount \- change file name space
+in Chapter 8.
+.PP
+.SS CD DIRECTORY
+Change working directory to 
+.I directory
+.
+.PP
+.SS FORK
+Split the name space before modification.
+This is equivalent to passing a value of 
+.I FORKNS
+to the 
+.I pctl
+system call.
+See 
+.I pctl \- process control
+in Chapter 8.
+.PP
+.SS NODEV
+Disallow device attaches.
+This is equivalent to passing a value of 
+.I NODEVS
+to the 
+.I pctl
+system call.
+See 
+.I pctl \- process control
+in Chapter 8.
+.PP
+.SS MOUNT [\-ABRCI] [NET!MACHINE] TO [TARGET]
+Mount the file tree of 
+.I machine
+upon directory 
+.I target
+.
+Options 
+.I a
+, 
+.I b
+, 
+.I c
+, 
+.I i
+, and 
+.I r
+are the same as for 
+.I bind
+.
+.PP
+.SH NOTES
+The 
+.I user
+string is ignored.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I nsbuild \- build Inferno name space
+in Chapter 5
+T}
+T{
+.I bind, mount, unmount \- change file name space
+in Chapter 8
+T}
+T{
+.I chdir \- change working directory
+in Chapter 8
+T}
+T{
+.I pctl \- process control
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

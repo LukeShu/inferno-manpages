@@ -1,0 +1,20 @@
+.TH SLEEP 5
+.PP
+.SH NAME
+sleep \- suspend execution for an interval
+.SH SYNOPSYS
+.IP
+.EX
+sleep time
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I sleep
+command suspends its own execution for 
+.I time
+seconds then returns.
+.PP
+.SH SEE ALSO
+.I sleep \- delay execution
+in Chapter 8

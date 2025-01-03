@@ -1,0 +1,52 @@
+.TH DATE 5
+.PP
+.SH NAME
+date \- print the date
+.SH SYNOPSYS
+.IP
+.EX
+date
+.EE
+.PP
+.SH DESCRIPTION
+Prints the date to standard output, in the format:
+.PP
+Fri Feb 16 17:03:52 CDT 1997
+.PP
+Current time is obtained from reading 
+.I /dev/time
+.
+The conversion from Greenwich Mean Time to local time depends on the contents of 
+.I /locale/timezone
+.
+.PP
+.SH FILES
+
+.I /locale/timezone
+
+.PP
+
+.I /dev/time
+
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions
+in Chapter 15
+T}
+T{
+.I time \- time command execution
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

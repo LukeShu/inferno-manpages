@@ -1,0 +1,206 @@
+.TH SRV 6
+.PP
+.SH NAME
+srv \- start server daemons
+.SH SYNOPSYS
+lib/srv
+.IP
+.EX
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I srv
+command starts a suite of daemons.
+When these daemons are running on a computer, it is considered a network \[aq]server\[aq].
+.PP
+.SS DAEMONS
+The 
+.I srv
+command starts the following (hardcoded) set of daemons.
+.PP
+.TS
+tab(@);
+l l l.
+T{
+DAEMON
+T}@T{
+PORT
+T}@T{
+DESCRIPTION
+T}
+T{
+lib/signer
+T}@T{
+infsigner
+T}@T{
+See 
+.I signer, countersigner \- daemons for set\-top box authentication
+in Chapter 9
+T}
+T{
+lib/countersigner
+T}@T{
+infcsigner
+T}@T{
+See 
+.I signer, countersigner \- daemons for set\-top box authentication
+in Chapter 9
+T}
+T{
+lib/logind
+T}@T{
+inflogin
+T}@T{
+See 
+.I logind \- login daemon
+
+T}
+T{
+lib/virgild
+T}@T{
+virgil
+T}@T{
+See 
+.I virgild \- connection service for remote clients
+
+T}
+T{
+file service
+T}@T{
+styx
+T}@T{
+See 
+.I File Service
+below.
+T}
+T{
+remote execution services
+T}@T{
+rstyx
+T}@T{
+See 
+.I rcmd \- remote command execution
+in Chapter 5.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS INITIALIZATION
+Prior to starting the daemons, the 
+.I srv
+command defines its name space according to the specification in file 
+.I server/namespace
+(relative to the current directory).
+See 
+.I newns \- build a new name space from a description file
+in Chapter 15 for the specification format.
+.PP
+The 
+.I srv
+command also starts the connection service for resolving network addresses.
+See 
+.I cs \- start connection server daemon
+command.
+.PP
+.SS FILE SERVICE
+The 
+.I srv
+command spawns a thread that monitors requests on the 
+.I styx
+service port.
+For each incoming request, yet another thread is spawned to authenticate the connection and provide access to the local file system.
+See 
+.I dial, announce, export, listen \- make network connections
+in Chapter 8 for the discussion of the 
+.I export
+function.
+.PP
+.SS REMOTE EXECUTION SERVICES
+Among the daemons created by the 
+.I srv
+command is a thread that monitors requests on service port 
+.I rstyx.
+These requests represent requests by clients for commands to be executed on the server.
+.PP
+See 
+.I rcmd \- remote command execution
+in Chapter 5 for the description of a client interface for sending command requests to a server.
+.PP
+Each incoming request is logged to the server\[aq]s console.
+The message includes the client\[aq]s network address.
+.PP
+The client\[aq]s request must consist of two lines:
+.PP
+.TS
+tab(@);
+l l.
+T{
+Line 1
+T}@T{
+A decimal integer representing the number of bytes in the following line.
+T}
+T{
+Line 2
+T}@T{
+The command and arguments, if any to be executed on the server.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The client\[aq]s commands are executed with the same Inferno user ID that was used when the 
+.I srv
+command was issued.
+.PP
+The client\[aq]s commands are executed on the server with standard input, output, and error redirected to the 
+.I /dev/cons
+device on the client.
+This redirection requires that the client export its file system (see 
+.I dial, announce, export, listen \- make network connections
+in Chapter 8) over the connection it creates to the server.
+.PP
+.SS TERMINATION
+Once the daemons have been started, the 
+.I srv
+command starts the Inferno shell (see 
+.I sh \- command line interface to the Inferno system
+in Chapter 5) to process command line input.
+The 
+.I srv
+command does not terminate.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/n/client
+T}@T{
+Clients requesting remote command execution have their file system mounted on this server directory.
+T}
+T{
+/n/client/dev
+T}@T{
+Servers of remote execution request access the console device of the server via this directory.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,379 @@
+.TH DIAL 8
+.PP
+.SH NAME
+dial, announce, export, listen \- make network connections
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+Connection: adt
+{
+  dfd: ref FD; # data file
+  cfd: ref FD; # control file
+  dir: string; # pathname of line directory
+};
+announce: fn(addr: string):          (int, Connection);
+dial:     fn(addr, local: string):   (int, Connection);
+listen:   fn(c: Connection):         (int, Connection);
+export:   fn(fd: ref FD, flag: int):  int;
+.EE
+.PP
+.SH DESCRIPTION
+These routines establish network connections.
+.PP
+.SS DIAL (ADDR, LOCAL)
+The 
+.I dial
+function establishes a connection to destination 
+.I addr.
+
+.PP
+.SS THE ADDR ARGUMENT
+The address must be of the form:
+.PP
+network!destination!serviceport
+.PP
+For more information about the structure of this address, see 
+.I Request Format
+in Chapter 6
+.PP
+.SS THE CONNECTION SERVER
+If the connection server is running, the 
+.I dial
+function will pass 
+.I addr
+to that daemon for the translation of host names, symbolic service names, and so on, to addresses of the designated network (the first component).
+See 
+.I cs \- connection server daemon
+for description of the supported conversion.
+.PP
+If the connection server daemon is not running, the 
+.I dial
+function silently skips the translation stage and attempts to open a network connection with addr as received.
+.PP
+The 
+.I cs
+daemon is accessed by an interface file also called 
+.I cs
+.
+The 
+.I dial
+function looks for this file in the following directories in the OR\[aq]ed listed:
+.IP "1." 3
+A directory named in an optional prefix to the 
+.I addr
+argument.
+The format in such cases is: 
+.I /dir/network!destination!serviceport
+
+.IP "2." 3
+The 
+.I /net
+directory
+.IP "3." 3
+The 
+.I /net.alt
+directory.
+If the connection server returns several network addresses for the named destination, the 
+.I dial
+function tries each in the order received until a connection is made.
+.PP
+.SS THE LOCAL ARGUMENT
+If the network allows the local address to be set, and 
+.I local
+is non\-empty, the local address will be set to 
+.I local
+.
+For IP, local addresses correspond to the port number.
+.PP
+At the completion of 
+.I dial
+, 
+.I local
+can be read from the 
+.I local
+file of the network interface.
+.PP
+.SS THE RETURN VALUES
+The dial function returns a tuple consisting of an integer and a 
+.I Connection
+adt.
+.PP
+On failure, the 
+.I dial
+function returns \-1 in the integer portion of the tuple.
+.PP
+On success, the members of the returned 
+.I Connection
+adt have been initialized to the following values:
+.PP
+.TS
+tab(@);
+l l.
+T{
+dir
+T}@T{
+The pathname to the directory containing the network interface files for the connection.
+For example, 
+.I /net/tcp/5
+.
+T}
+T{
+dfd
+T}@T{
+A file descriptor to the 
+.I data
+file of the connection.
+This is used to read and write data to the destination.
+T}
+T{
+cfd
+T}@T{
+A file descriptor for the 
+.I ctl
+file of the connection.
+Commands can be sent to this file to control the connection.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+See the appropriate Network device pages (for example, 
+.I ip \- TCP, UDP network protocols over IP
+in Chapter 2) for further details of using this interface.
+.PP
+.SS ANNOUNCE (ADDR)
+The 
+.I announce
+function and the 
+.I listen
+function described in this section are the complements of the 
+.I dial
+function.
+Their actions allow completion of connection requests from clients using the 
+.I dial
+function.
+.PP
+.SS THE ARGUMENT, ADDR
+The 
+.I announce
+function establishes a network name (service port) to which incoming calls can be made.
+The format of the addr, the single argument is:
+.PP
+
+.I network!localname!serviceport
+
+.PP
+The 
+.I localname
+component is translated (if possible) by the connection server.
+The result is stored in the 
+.I local
+file of the network interface.
+That file can be used for display purposes.
+The 
+.I localname
+value is not used by the underlying network.
+The setting of local file is skipped if 
+.I localname
+is\[aq]
+.I *
+\[aq].
+.PP
+.SS THE CONNECTION SERVER
+The 
+.I announce
+function uses the connection server to translate any symbolic components of the argument to values acceptable to the network.
+See the 
+.I cs
+daemon for a description of the supported translations.
+.PP
+The 
+.I cs
+daemon is accessed by an interface file also called 
+.I cs
+.
+The 
+.I announce
+function looks for that file in two directories in the following order:
+.IP "1." 3
+A directory named in an optional prefix to the 
+.I addr
+argument.
+The format in such cases is: /
+.I dir
+/
+.I network
+!
+.I *
+!
+.I serviceport
+
+.IP "2." 3
+The 
+.I /net
+directory
+.PP
+.SS THE RETURN VALUE
+The return value of the 
+.I announce
+function follows the same conventions as used by the 
+.I dial
+function.
+If the call succeeds, the returned 
+.I Connection
+adt can be used as an argument to the 
+.I listen
+function.
+.PP
+.SS LISTEN(C)
+The 
+.I listen
+function allows the completion of a connection to a process calling the 
+.I dial
+function.
+.PP
+.SS ARGUMENT
+The 
+.I listen
+function takes as its only argument the 
+.I Connection
+adt of a successful call to 
+.I announce
+.
+.PP
+.SS RETURN VALUES
+The return values from the 
+.I listen
+function have the same form as those returned from the 
+.I dial
+function.
+.PP
+When a call is received, 
+.I listen
+includes an open 
+.I Connection
+adt that leads to a network interface file.
+The 
+.I data
+file of that interface is cross connected (read\-to\-write and write\-to\-read) to the 
+.I data
+file associated with the 
+.I Connection
+adt returned by the 
+.I dial
+function to the client process.
+.PP
+.SS EXPORT (FD, FLAG)
+The 
+.I export
+function responds to client requests for file operations on the server\[aq]s file name space.
+This is the server end of a client\[aq]s 
+.I mount
+call.
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I Requests for pathname resolution occur relative to the current root directory of the process calling export.
+That process can control the set of files available for mounts requests by clients by defining the root directory of its name space using the operations described on the bind page.
+
+.PP
+   *   *   *   *   *
+.PP
+.SS ARGUMENTS
+The 
+.I export
+functions first argument is the 
+.I dfd
+member of a 
+.I Connection
+returned from 
+.I listen
+on service port 
+.I stags
+.
+.PP
+The 
+.I export
+function can take two mutually exclusive flags
+.PP
+.TS
+tab(@);
+l l.
+T{
+EXPWAIT
+T}@T{
+The 
+.I export
+function blocks until all client requests are complete.
+T}
+T{
+EXPASYNC
+T}@T{
+Client requests are handled by a background thread, while 
+.I export
+returns immediately
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+:
+.PP
+.SS RETURN VALUES
+The 
+.I export
+function returns 0 on success and \-1 on failure.
+.PP
+.SH EXAMPLES
+Make a call and return an open file descriptor to use for communications:
+.IP
+.EX
+callkremvax( ): (int, Connection)
+{
+    return sys\->dial(\[dq]tcp!kremvax!mpeg\[dq], nil);
+}
+.EE
+.PP
+Call the local authentication server:
+.PP
+dialauth(service: string): (int, Connection) { return sys\->dial(\[dq]net!$SIGNER!inflogin\[dq], nil); }
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I bind, mount, unmount \- change file name space
+
+T}
+T{
+.I cs \- connection server daemon
+in Chapter 6
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

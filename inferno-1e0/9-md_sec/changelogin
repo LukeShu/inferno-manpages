@@ -1,0 +1,99 @@
+.TH CHANGELOGIN 9
+.PP
+.SH NAME
+changelogin \- command to create/update the password file
+.SH SYNOPSYS
+changelogin 
+.I id
+
+.SH DESCRIPTION
+The changelogin command provides an interactive mechanism for the administration of a password file /keydb/password, a requirement of \[aq]
+.I signer
+\[aq] servers.
+If an entry for 
+.I id
+exists, it is modified; otherwise, a new entry is created.
+.PP
+The user is prompted for the following items:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+password
+T}@T{
+The user is prompted for a string at least 7 characters in length.
+The SHA digest of the entered string is stored in the password file.
+See 
+.I sha, md5, sign, verify \- cryptographic digests and digital signatures
+.
+.PP
+By default, the password for an existing entry is unchanged.
+T}
+T{
+expiration date
+T}@T{
+The user is prompted for an expiration time in the format:
+.PP
+DDMMYYYY The user input is checked for valid day, month, and year; moreover, the new date must be later than the current time.
+.PP
+By default, the current value, if any, is unchanged for an existing entry and one year from the current time for a new entry.
+T}
+T{
+free form info
+T}@T{
+Arbitrary administrative information.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The lengths of each value is subject to the size limitations defined by the Password Module (see 
+.I get, put \- read and write password entries in the password file
+).
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/keydb/password
+T}@T{
+Storage for password entries.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I get, put \- read and write password entries in the password file
+
+T}
+T{
+.I logind \- login daemon
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

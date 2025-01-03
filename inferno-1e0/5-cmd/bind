@@ -1,0 +1,585 @@
+.TH BIND 5
+.PP
+.SH NAME
+bind, mount, unmount \- change name space
+.SH SYNOPSYS
+.IP
+.EX
+bind               [option... ] source target
+mount              [option... ] addr target
+unmount            [source ] target
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I bind
+and 
+.I mount
+commands modify the file name space of the current process and other processes in the same name space group (see 
+.I pctl \- process control
+in Chapter 8).
+For both calls, 
+.I target
+is the name of an existing file or directory in the current name space.
+.PP
+The effects of 
+.I bind
+and 
+.I mount
+can be undone with the 
+.I unmount
+command.
+If two arguments are given to 
+.I unmount
+, the effect is to undo a 
+.I bind
+or 
+.I mount
+with the same arguments.
+If only one argument is given, everything bound to or mounted upon 
+.I target
+is unmounted.
+.PP
+.SS BIND COMMAND
+For 
+.I bind
+, 
+.I source
+is the name of an existing file or directory in the current name space.
+After a successful bind, the file name 
+.I target
+is an alias for the object originally named by 
+.I source
+; if the modification doesn\[aq]t hide it, 
+.I source
+will also still refer to its original file.
+The evaluation of 
+.I source
+(see 
+.I File Name Expansion
+in 
+.I sh \- command line interface to the Inferno system
+) happens at the time of the 
+.I bind
+, not when the binding is later used.
+.PP
+Both 
+.I target
+and 
+.I source
+must be of the same type: either both directories or both files.
+.PP
+The 
+.I source
+argument to 
+.I bind
+can also be a two character sequence (
+.I #c
+) representing a 
+.I kernel device driver
+(see 
+.I Limbo Miscellaneous Modules
+in Chapter 15).
+For example, the following command binds the console driver to 
+.I /dev
+:
+.PP
+bind \[aq]#c\[aq] /dev
+.SS MOUNT COMMAND
+The 
+.I mount
+command must be used before binding to a remote computer,.
+In the 
+.I mount
+command, 
+.I source
+is a network address for the server machine in the form:
+.PP
+However, before the 
+.I mount
+command is given you must setup your computer with the IP device driver to communicate over the network.
+For example: 
+.I bind \-a \[aq]#I\[aq] /net
+
+.PP
+If you wish to have an authenticated connection to the remote computer, you must issue the getauthinfo command (see 
+.I login, getauthinfo \- get an Authinfo adt from a certificate authority
+).
+For example: 
+.I getauthinfo net!machine
+
+.SS MOUNT [OPTION] ADDR TARGET
+In the mount command, addr is a network address for the server machine in the form: 
+.I net!destination!service
+.
+.PP
+.SS NET
+The 
+.I net
+component defines the network to be used (for example, 
+.I tcp
+, 
+.I udp
+).
+The special value 
+.I net
+can be supplied to request the most expedient network.
+Currently, 
+.I net
+is synonymous with 
+.I tcp
+.
+.PP
+.SS MACHINE
+The machine component can be any of the following
+.PP
+.TS
+tab(@);
+l l.
+T{
+numeric internet address
+T}@T{
+Used verbatim.
+T}
+T{
+hostname
+T}@T{
+Converted to network address, by issuing a 
+.I lib/cs
+command prior to the mount command.
+T}
+T{
+symbolic server name of the form $server
+T}@T{
+Converted to hostname by reference to the connection server database file 
+.I /services/cs/db
+.
+The hostname returned is then converted to an network address.
+No machine name is converted.
+Other conversions (for example, \[aq]
+.I net
+\[aq] and named services) are still done.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS SERVICE
+A service name or port number.
+The default is Styx
+.PP
+.TS
+tab(@);
+l l.
+T{
+numeric port value
+T}@T{
+Used verbatim.
+T}
+T{
+Service name
+T}@T{
+Converted to a port number.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+-r
+T}@T{
+Replace the 
+.I target
+file by the source 
+.I file
+.
+An evaluation of pathname 
+.I target
+will be translated to the source file.
+If they are directories (for 
+.I mount
+, this condition is true by definition), 
+.I target
+becomes a 
+.I union
+directory consisting of one directory (the 
+.I source
+directory).
+.PD 0
+.P
+.PD
+This is the default option for both 
+.I bind
+and 
+.I mount
+
+.PD 0
+.P
+.PD
+(Both source and target must be either files or directories)
+T}
+T{
+-b
+T}@T{
+Add the 
+.I source
+directory to the beginning of the union directory represented by the 
+.I target
+directory
+.PD 0
+.P
+.PD
+(Both source and target must be directories).
+T}
+T{
+-a
+T}@T{
+Add the 
+.I source
+directory to the end of the union directory represented by the 
+.I target
+file.
+.PD 0
+.P
+.PD
+(Both source and target must be directories.)
+T}
+T{
+-c
+T}@T{
+This can be used in addition to any of the above to permit creation in a union directory.
+When a source file is created in a union directory, it is placed in the first element of the union that permits creation.
+T}
+T{
+-C 
+.I alg
+
+T}@T{
+For mount only, specify the algorithm, 
+.I alg
+, used in authentication.
+See 
+.I ssl \- secure sockets layer device
+in Chapter 2 for the supported algorithms.
+The default value is 
+.I none
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH CAVEAT
+The single quotes are required around the two character sequence representing a kernel device driver since 
+.I #
+is a special character (start\-of\-comment) to the Inferno shell.
+The single quotes are needed only when using the shell, not when programming in the Limbo language.
+.IP
+.EX
+   sys\->bind(\[dq]#c\[dq], \[dq]/dev\[dq], flags); 
+.EE
+.PP
+.SH EXAMPLES
+The next few examples explore name space operations with the 
+.I bind
+command.
+.PP
+.SS THE BIND COMMAND: REPLACE
+The syntax of the 
+.I bind
+command is with the 
+.I \-r
+option is:
+.PP
+bind \-r 
+.I source
+.I target
+This has the same results as the 
+.I bind
+command without any options.
+.PP
+The 
+.I source
+and 
+.I target
+arguments are assumed to be existing directories.
+A simple case of binding one directory to another is illustrated in Figure 5\-1.
+The sample configuration has two sub\-trees 
+.I A
+and 
+.I C
+rooted (for convenience) in the common directory 
+.I E.
+
+.PP
+.SS BINDING ONE DIRECTORY TO ANOTHER
+.IP
+.EX
+                       (E)
+              _________/ \[rs]_________
+             /                     \[rs]
+           (A)                     (C)
+     ______/|                ______/|
+    /       |               /       |
++\-\-\-\-\-\-\-+   |           +\-\-\-\-\-\-\-+   |
+| fileA |   |           | fileC |   |
++\-\-\-\-\-\-\-+   |           +\-\-\-\-\-\-\-+   |
+            |                       |
+           (B)                     (D)
+     ______/                 ______/
+    /                       /
++\-\-\-\-\-\-\-+               +\-\-\-\-\-\-\-+
+| fileB |               | fileD |
++\-\-\-\-\-\-\-+               +\-\-\-\-\-\-\-+
+.EE
+.PP
+Assuming the current directory is 
+.I E
+, the command to bind directory 
+.I B
+to 
+.I D
+is:
+.PP
+bind A/B C/D 
+.I or
+
+.PP
+bind \-r A/B C/D Afterwards, an examination of the file tree (for example using the 
+.I ls
+command) shows that directory 
+.I D
+is a synonym for 
+.I B, as illustrated in Figure 5\-2
+.
+The name of the target directory is unchanged, but its contents are the same as those in the source directory.
+Accessing 
+.I fileB
+by the path 
+.I A/B/fileB
+remains valid.
+.PP
+.SS ACCESSING FILEB BY THE PATH C/D/
+.IP
+.EX
+                       (E)
+              _________/ \[rs]_________
+             /                     \[rs]
+           (A)                     (C)
+     ______/|                ______/|
+    /       |               /       |
++\-\-\-\-\-\-\-+   |           +\-\-\-\-\-\-\-+   |
+| fileA |   |           | fileC |   |
++\-\-\-\-\-\-\-+   |           +\-\-\-\-\-\-\-+   |
+            |                       |
+           (B)                     (D)
+     ______/                 ______/
+    /                       /
++\-\-\-\-\-\-\-+               +\-\-\-\-\-\-\-+
+| fileB |             >>| fileB |<<
++\-\-\-\-\-\-\-+               +\-\-\-\-\-\-\-+
+.EE
+.PP
+The contents of directory 
+.I D
+have been replaced with those of directory 
+.I B.
+
+.PP
+.SS THE BIND COMMAND: UNIONS
+When 
+.I bind
+command is used with either the 
+.I \-a
+or 
+.I \-b
+options the effect is not to replace the target but to create a union of the contents of the 
+.I source
+and 
+.I target
+at the 
+.I target
+directory.
+(The difference between the options is not of immediate importance and will be discussed below.)
+Thus,
+.PP
+bind \-b A/B C/D results in a union of the contents of two directories, as illustrated in Figure 5\-3.
+.PP
+.SS UNION OF THE CONTENTS OF DIRECTORIES A/B AND C/D
+.IP
+.EX
+                       (E)
+              _________/ \[rs]_________
+             /                     \[rs]
+           (A)                     (C)
+     ______/|                ______/|
+    /       |               /       |
++\-\-\-\-\-\-\-+   |           +\-\-\-\-\-\-\-+   |
+| fileA |   |           | fileC |   |
++\-\-\-\-\-\-\-+   |           +\-\-\-\-\-\-\-+   |
+            |                       |
+           (B)                     (D)
+     ______/                 ______/ \[rs]______
+    /                       /               \[rs]
++\-\-\-\-\-\-\-+               +\-\-\-\-\-\-\-+        +\-\-\-\-\-\-\-+
+| fileB |               | fileB |        | fileD |
++\-\-\-\-\-\-\-+               +\-\-\-\-\-\-\-+        ++++++++\-
+.EE
+.PP
+The 
+.I bind
+operation can be repeated to create the union of several directories at 
+.I D
+.
+.PP
+The inverse operation to 
+.I bind
+is 
+.I unmount
+.
+If called with two arguments, the unmount command will remove the 
+.I source
+directory named in the first argument from the 
+.I target
+(union) directory named in the second argument.
+If only one argument is given, all bindings to the 
+.I target
+(union) directory are removed.
+.PP
+The choice of the 
+.I \-a
+or 
+.I \-b
+option is important only if the source and target directories have some files with identical names.
+This feature is explored in the scenarios below.
+.PP
+In the first example, a series of commands creates a set of directories and files corresponding to the previous illustrations.
+Additionally, a file with a common name (
+.I file_com
+) but different contents is created in directories 
+.I B
+and 
+.I D
+.
+.IP
+.EX
+xxx$ mkdir A A/B C C/D
+xxx$ >A/fileA;
+xxx$ >C/fileC;
+xxx$ >A/B/fileB
+xxx$ >C/D/fileD
+xxx$ echo \[aq]hello, world!\[aq] > A/B/file_com
+xxx$ echo \[aq]how are you?\[aq]  > C/D/file_com 
+.EE
+.PP
+As before, a union directory is created at 
+.I D
+using bind with the 
+.I \-b
+option.
+A directory listing of that directory shows 
+.I two
+entries for 
+.I file_com
+; however, the pathname 
+.I C/D/file_com
+leads to just one file.
+.PP
+Since the source directory was bound \[aq]before\[aq] (
+.I \-b
+) that of the target, its file supersede those of the target.
+The 
+.I cat
+command shows (by content) that the pathname 
+.I C/D/file_com
+is resolved to the file corresponding to pathname 
+.I A/B/file_com
+.
+.IP
+.EX
+xxx$ bind \-b A/B C/D
+xxx$ ls \-l C/D
+-rwxrwxrwx U 0 Everyone Everyone 0 Jan 21 16:10  C/D/fileB
+-rwxrwxrwx U 0 Everyone Everyone 0 Jan 21 16:10  C/D/fileD
+-rwxrwxrwx U 0 Everyone Everyone 14 Jan 21 16:10 C/D/file_com
+-rwxrwxrwx U 0 Everyone Everyone 13 Jan 21 16:10 C/D/file_com
+xxx$ cat C/D/file_com
+hello, world! 
+.EE
+.PP
+When the binding is undone and redone with the 
+.I \-a
+(\[aq]after\[aq]) option, the 
+.I cat
+command shows that file originally in the directory has precedent when pathnames are resolved.
+.IP
+.EX
+xxx$ unmount C/D
+xxx$ bind \-a A/B C/D
+xxx$ ls \-l C/D
+-rwxrwxrwx U 0 Everyone Everyone 0 Jan 21 16:10 C/D/fileB
+-rwxrwxrwx U 0 Everyone Everyone 0 Jan 21 16:10 C/D/fileD
+-rwxrwxrwx U 0 Everyone Everyone 13 Jan 21 16:10 C/D/file_com
+-rwxrwxrwx U 0 Everyone Everyone 14 Jan 21 16:10 C/D/file_com
+xxx$ cat C/D/file_com
+how are you?
+xxx$  
+.EE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I sh \- command line interface to the Inferno system
+
+T}
+T{
+.I auth, readauthinfo, writeauthinfo \- authenticate a connection
+in Chapter 9
+T}
+T{
+.I Limbo System Module
+in Chapter 8
+T}
+T{
+.I bind, mount, unmount \- change file name space
+in Chapter 8
+T}
+T{
+.I dial, announce, export, listen \- make network connections
+
+T}
+T{
+.I Limbo Miscellaneous Modules
+in Chapter 15
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

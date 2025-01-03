@@ -1,0 +1,66 @@
+.TH RCMD 5
+.PP
+.SH NAME
+rcmd \- remote command execution
+.SH SYNOPSYS
+rcmd [
+.I host
+[
+.I command
+[
+.I args
+...]]]
+.IP
+.EX
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I rcmd
+command arranges for execution of a command specified on the input line by the 
+.I host
+machine.
+.PP
+On the host machine, a thread started by 
+.I lib/srv
+monitors the 
+.I rstyx
+port for remote command execution requests sent by 
+.I rcmd
+.
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I The default host is hati (hardcoded).
+If no command is provided, the client gets a remote Inferno shell.
+
+.PP
+   *   *   *   *   *
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+lw(70.0n).
+T{
+.I srv \- start server daemons
+in Chapter 6
+.PP
+In particular see 
+.I Remote Execution Services
+in Chapter 6
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

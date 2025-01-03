@@ -1,0 +1,82 @@
+.TH CERTTOSTR 9
+.PP
+.SH NAME
+certtostr, pktostr, sktostr, strtocert, strtopk, strtosk \-encryption key conversion functions
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]keyring.m\[dq]
+keyring:= load Keyring Keyring\->PATH;
+strtocert: fn(s: string)         : ref Certificate;
+certtostr: fn(c: ref Certificate): string;
+strtopk:   fn(s: string)         : ref PK;
+pktostr:   fn(pk: ref PK)        : string;
+strtosk:   fn(s: string)         : ref SK;
+sktostr:   fn(sk: ref SK)        : string;
+.EE
+.PP
+.SH DESCRIPTION
+Certificates, public keys, and private keys are passed over networks and between applications using a Unicode representation.
+This collection of functions provide a means to convert adts supplied by the system to and from their portable textual representation.
+These routines are typically used as part of an I/O package for implementing security.
+.PP
+.SS STRTOCERT (S)
+The 
+.I strtocert
+function takes a string argument containing a user name, hash algorithm, a certifying authority and an expiration time.
+Fields are separated by a newline.
+The return value is a 
+.I ref Certificate
+.
+If the string is of improper format, the result is 
+.I nil
+.
+.PP
+.SS CERTTOSTR (C)
+The 
+.I certtostr
+function performs the inverse operation of the 
+.I strtocert
+function.
+It takes as an argument a 
+.I ref Certificate
+and produces a text string suitable for communication over a network.
+.PP
+.SS STRTOPK (S) AND STRTOSK (PK)
+The 
+.I strtopk
+and 
+.I strtosk
+functions take as their arguments a string representing the public and private key adts respectively.
+The string argument must contain an algorithm name, a user name and the key.
+Fields are separated by a newline.
+The result for 
+.I strtopk
+is a 
+.I ref PK
+and for 
+.I strtosk
+a 
+.I ref SK
+.
+If the string is of improper format the result is 
+.I nil
+.
+.PP
+.SS PKTOSTR (PK) AND SKTOSTR (SK)
+The 
+.I pktostr
+and 
+.I sktostr
+functions perform the inverse operations of the strtopk and strtosk functions, respectively.
+.PP
+They take a 
+.I ref PK
+or 
+.I ref SK
+and produce a text string.
+.PP
+.SH DIAGNOSTICS
+The functions return the 
+.I nil
+value if an error is encountered.

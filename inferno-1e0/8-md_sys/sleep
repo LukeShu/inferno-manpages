@@ -1,0 +1,32 @@
+.TH SLEEP 8
+.PP
+.SH NAME
+sleep \- delay execution
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+sleep: fn(period: int): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS SLEEP (PERIOD)
+The 
+.I sleep
+function suspends the current thread for 
+.I period
+milliseconds.
+The actual suspension time may be a little more or less than the requested time.
+If 
+.I period
+is 0, the process gives up the CPU if another process is waiting to run, returning immediately if not.
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo System Module
+.I  
+.I  and 
+millisec \- millisecond timer
+.I 

@@ -1,0 +1,93 @@
+.TH ATTACH 3
+.PP
+.SH NAME
+attach, nop \- messages to initiate activity
+.SH SYNOPSYS
+.IP
+.EX
+Tnop    tag [2]
+Rnop    tag [2]
+Tattach tag [2] fid [2] uid [28] aname [28]
+Rattach tag [2] fid [2] qid [8]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I attach
+message serves as a fresh introduction from a user on the client machine to a server.
+The message identifies the user 
+.I (uid)
+and may select the file tree to access (
+.I aname
+).
+.PP
+As a result of the 
+.I attach
+transaction, the client will have a connection to the root directory of the desired file tree, represented by 
+.I fid
+.
+An error is returned if 
+.I fid
+is already in use.
+The server\[aq]s idea of the root of the file tree is represented by the returned 
+.I qid
+.
+.PP
+The 
+.I nop
+request does nothing overt but may be used to synchronize the channel initially.
+.PP
+The 
+.I tag
+should be 
+.I notag
+(value 16rFFFF) for a 
+.I nop
+message.
+.PP
+.SH ENTRY POINTS
+An 
+.I attach
+transaction will be generated for kernel devices (see 
+.I Inferno Devices
+in Chapter 2) when a system call evaluates a file name beginning with #.
+A 
+.B mount
+call (see 
+.I bind, mount, unmount \- change file name space
+in Chapter 8) generates an 
+.I attach
+message to the remote file server.
+When the kernel boots, an 
+.I attach
+is made to the root device, 
+.I root
+, and then an 
+.I attach
+is made to the requested file server machine.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I bind, mount, unmount \- change file name space
+in Chapter 8
+T}
+T{
+.I Limbo Miscellaneous Modules
+in Chapter 15
+T}
+T{
+.I root \- the root file system
+in Chapter 2
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

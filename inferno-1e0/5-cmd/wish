@@ -1,0 +1,69 @@
+.TH WISH 5
+.PP
+.SH NAME
+wish \- interface to the Tk graphics toolkit
+.SH SYNOPSYS
+.IP
+.EX
+wish [file...]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I wish
+command provides a command line interface to the Tk graphics toolkit.
+A Tk module is first loaded and initialized.
+Then input is packaged into Tk commands and sent to that module.
+The input should be in the format of Tk commands.
+(See 
+.I Tk \-graphics toolkit
+in Chapter 13)
+.PP
+Input is first taken from the files, if any, named as command line arguments; afterward, commands are read from standard input.
+.PP
+The following special input sequences are recognized:
+.PP
+.TS
+tab(@);
+l l.
+T{
+[rs]n
+T}@T{
+newline
+T}
+T{
+[rs]t
+T}@T{
+tab
+T}
+T{
+[rs]b
+T}@T{
+blank
+T}
+T{
+[rs]\[rs]
+T}@T{
+backslash
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH FILES
+
+.I /dev/pointer
+
+.PP
+
+.I /dev/keyboard
+
+.PP
+.SH SEE ALSO
+.I Tk \-graphics toolkit
+in Chapter 13

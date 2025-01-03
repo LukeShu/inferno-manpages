@@ -1,0 +1,59 @@
+.TH 0INTRO 4
+.PP
+.PP
+.SH NAME
+Inferno Host O/S Utilities
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+These environmental utilities are run from the host operating system and not from Inferno.
+They are as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I asm \- Dis assembler
+
+T}@T{
+T}
+T{
+.I emu \- Inferno emulator
+
+T}@T{
+T}
+T{
+.I limbo \- Limbo compiler
+
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I Multiple options must be entered separately and must be separated by a space.
+For example:
+.PD 0
+.P
+.PD
+.PD 0
+.P
+.PD
+emu \-g600x800 \-7 \-rusr/release1/inferno 
+
+.PP
+   *   *   *   *   *

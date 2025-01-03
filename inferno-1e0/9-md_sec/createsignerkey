@@ -1,0 +1,39 @@
+.TH CREATESIGNERKEY 9
+.PP
+.SH NAME
+createsignerkey \- command to create signer key on authentication server
+.SH SYNOPSYS
+.IP
+.EX
+lib/createsignerkey name\-of\-owner [size\-in\-bits] [file]
+.EE
+.PP
+.SH DESCRIPTION
+The createsignerkey command creates a private key for the string supplied as the first command argument.
+The size of the key is given by the second argument (default: 512 bits) and the result is stored in the file named by the third argument (default: /keydb/signerkey).
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I genSK, genSKfromPK, sktopk, dhparams \- generate keys
+
+T}@T{
+Generation of secret key.
+T}
+T{
+.I signer, countersigner \- daemons for set\-top box authentication
+
+T}@T{
+Description of how the signer daemon uses the signer key.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

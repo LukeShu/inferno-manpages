@@ -1,0 +1,87 @@
+.TH IPINT 9
+.PP
+.SH NAME
+IPint adt \- \[aq]infinite\[aq] precision integer utility functions
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]keyring.m\[dq]
+keyring:= load Keyring Keyring\->PATH;
+#infinite precision integers
+IPint: adt
+{
+  x:    int;
+  #conversions
+  iptob64:   fn(i: self ref IPint): string;
+  b64toip:   fn(str: string)  : ref IPint;
+  iptobytes: fn(i: self ref IPint): array of byte;
+  #large random integer generator
+  random:    fn(minbits, maxbits: int): ref IPint;
+  #operations
+  bits:      fn(i:  self ref IPint): int;
+  expmod:    fn(base: self ref IPint, exp, mod: 
+                            ref IPint):ref IPint;
+  eq:        fn(i1:  self ref IPint, i2: ref IPint): int;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I IPint
+adt provides the following integer manipulation functions required for cryptographic support in Limbo:
+.PP
+.SS IPTOB64(I)
+The 
+.I iptob64
+function converts a large integer to a base 64 string for convenient transmission over a network connection.
+.PP
+.SS B64TOIP(STR)
+The 
+.I b64toip
+function performs the inverse operation of 
+.I iptob64
+.
+.PP
+.SS IPTOBYTES(I)
+The 
+.I iptobytes
+function converts a large integer to an array of bytes for faster communication to the kernel 
+.I ssl
+device.
+.PP
+.SS RANDOM (MINBITS, MAXBITS)
+The 
+.I random
+function generates large random numbers with a range of 
+.I minbits
+to 
+.I maxbits
+.
+The maximum number allowed in the current implementation is 2^28192^\-1.
+The seed for the generator is obtained by dueling clocks.
+
+.I IPint
+types are manipulated during security protocols.
+.PP
+.SS BITS (I)
+The 
+.I bits
+function returns the number of bits of 
+.I precision
+in 
+.I IPint
+.
+.PP
+.SS EXPMOD (BASE, EXP, MOD)
+The 
+.I expmod
+function returns 
+.I baseexp mod mod.
+
+.PP
+.SS EQ (I1, I2)
+The 
+.I eq
+function is a simple comparison of two 
+.I IPints,
+which returns 1 if the two are equal, 0 otherwise.

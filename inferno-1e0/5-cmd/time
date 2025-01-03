@@ -1,0 +1,74 @@
+.TH TIME 5
+.PP
+.SH NAME
+time \- time command execution
+.SH SYNOPSYS
+.IP
+.EX
+time cmd args...
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I time
+command is a front end to the execution of the 
+.I cmd
+and arguments that appear on the command line.
+On completion of the subject program (
+.I cmd
+), 
+.I time
+prints to standard error a line with the load, real time, and total times (in seconds) for the program.
+.PP
+The 
+.I time
+command follows the same rules as the shell for converting 
+.I cmd
+to the pathname of an executable module.
+.PP
+The load time displayed is just the value for 
+.I time
+to load 
+.I cmd
+.
+Any loads performed by 
+.I cmd
+are included in the reported real time.
+.PP
+The 
+.I time
+command is designed to act on a single command, not a command pipeline.
+If statistics on a pipeline are needed, the pipeline should be encapsulated into a separate script for timing.
+For example,
+.IP
+.EX
+    echo \[aq]ls | grep sh\[aq] > pipeline;  time sh pipeline
+.EE
+.PP
+In the example above , the load value returned by 
+.I time
+is for the loading of 
+.I sh
+, not the subsidiary commands of the pipeline.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I sh \- command line interface to the Inferno system
+
+T}
+T{
+.I millisec \- millisecond timer
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

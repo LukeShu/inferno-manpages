@@ -1,0 +1,241 @@
+.TH LOGIN 9
+.PP
+.SH NAME
+login, getauthinfo \- get an Authinfo adt from a certificate authority
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]keyring.m\[dq];
+include \[dq]security.m\[dq];
+lg:= load Login Login\->PATH;
+login:       fn(id, password, dest: string):
+                   (string, ref Keyring\->Authinfo);
+getauthinfo: fn(ctxt: ref Draw\->Context, keyname, path:
+                    string): ref Keyring\->Authinfo;
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I login
+module provides routines to communicate with a Certifying Authority (CA) in order to create a 
+.I Keyring\->Authinfo
+adt.
+It does this assuming a password has already been established between the user and the CA.
+.PP
+The password is used by the encrypted key exchange protocol described in this section to establish a secure channel between the user and CA.
+The description uses the following notation:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+ivec
+T}@T{
+an 8 \- byte random number chosen for this conversation
+T}
+T{
+sha
+T}@T{
+the 20 \- byte secure hash (SHA\-1) of the password
+T}
+T{
+key
+T}@T{
+an 8 \- byte secret formed as follows:
+.PP
+.PP
+key[0] = ivec[0]\[ha]sha[0]\[ha]sha[8]\[ha]sha[16]
+.PP
+key[1] = ivec[1]\[ha]sha[1]\[ha]sha[9]\[ha]sha[17]
+.PP
+&...
+.PP
+key[5] = ivec[5]\[ha]sha[5]\[ha]sha[13];
+.PP
+key[6] = ivec[6]\[ha]sha[6]\[ha]sha[14];
+.PP
+key[7] = ivec[7]\[ha]sha[7]\[ha]sha[15];
+T}
+T{
+alpha
+T}@T{
+a Diffie\-Hellman base used system wide
+T}
+T{
+p
+T}@T{
+a Diffie\-Hellman modulus used system wide
+T}
+T{
+key (
+.I m
+)
+T}@T{
+
+.I m
+encrypted using the RC4 algorithm with 
+.I key
+
+T}
+T{
+Rx
+T}@T{
+a random number of the same order as 
+.I p
+.
+T}
+T{
+secret
+T}@T{
+the Diffie\-Hellman secret 
+.I alpha**(r0*r1) mod p
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.PP
+In the following protocol, the notation 
+.I user \-\-> CA xxx
+means that a user sends the message 
+.I xxx
+to the certifying authority (
+.I CA
+).
+At any point in the exchange, either party can send an error instead of a message to terminate the protocol.
+.IP
+.EX
+user \-\-> CA  name   
+CA \-\-> user  ACK
+     
+user \-\-> CA  ivec   
+CA \-\-> user  key(alpha**r0 mod p), alpha, p
+
+user \-\-> CA  alpha**r1 mod p
+CA \-\-> user  CA\[aq]s public key, SHA(CA\[aq]s public key + secret)
+
+user \-\-> CA  user\[aq]s public key, SHA(user\[aq]s public key + secret)
+CA \-\-> user  user\[aq]s public key certificate
+.EE
+.PP
+The complexity of this protocol is intended to shield the password.
+To start a clear text attack against the password, one needs to first attack the Diffie\-Hellman exponential to determine 
+.I alpha**r0 mod p
+.
+.PP
+The values 
+.I alpha
+and 
+.I p
+are sent unprotected, though the user code does a few sanity checks on the values it receives.
+.PP
+The role of 
+.I ivec
+is to foil any replay attacks by someone spoofing the CA.
+.PP
+.SS LOGIN (ID, PASSWORD, DEST)
+The 
+.I login
+function is used to get a signed certificate from the certifying authority, CA, using the protocol described in 
+.I login, getauthinfo \- get an Authinfo adt from a certificate authority
+in Chapter 9.
+The 
+.I dest
+parameter is the network address of the CA.
+The user, 
+.I id
+, must have previously received the 
+.I password
+from the CA for this to work.
+.PP
+If 
+.I login
+fails, the string returned will be an error message.
+If it succeeds, the string will be the 
+.I nil
+value and an 
+.I Authinfo
+abstract data type is returned.
+This adt can be used with the 
+.I auth
+function (see 
+.I auth, readauthinfo, writeauthinfo \- authenticate a connection
+) to authenticate future connections.
+.PP
+.SS GETAUTHINFO (CTXT, KEYNAME, PATH)
+The 
+.I getauthinfo
+function is a Tk user interface to 
+.I login
+.
+It will first try to read the file, 
+.I path
+, for the 
+.I Authinfo
+adt (see the description of the 
+.I readauthfinfo
+function on 
+.I auth, readauthinfo, writeauthinfo \- authenticate a connection
+).
+If path is 
+.I nil
+, it is set to /usr/$user/keyring/keyname.
+If the read succeeds, then that adt is returned.
+If it fails, a Tk window will be opened to allow the user to enter an id, password, and the network address of the certificate authority to use.
+The default CA is the 
+.I $SIGNER
+listed in the file 
+.I /services/cs/db
+.
+.PP
+If requested by the checkbox in the interface, 
+.I getauthinfo
+will save the adt in the file, 
+.I path
+.
+This allows the 
+.I Authinfo
+to be kept across re\-boots.
+If the box is not checked, 
+.I getauthinfo
+will use the system 
+.I file2chan
+function (see 
+.I file2chan \- create file connected to Limbo channel
+in Chapter 8) to create a temporary file, 
+.I path
+, that will disappear if unmounted, or when the system is re\-booted.
+.PP
+The 
+.I login
+protocol uses TCP port 6673 with the symbolic name 
+.I inflogin
+.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I auth, readauthinfo, writeauthinfo \- authenticate a connection
+
+T}
+T{
+.I file2chan \- create file connected to Limbo channel
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

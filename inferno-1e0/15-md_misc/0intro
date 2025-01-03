@@ -1,0 +1,89 @@
+.TH 0INTRO 15
+.PP
+.SH NAME
+Limbo Miscellaneous Modules
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+The remaining Limbo modules are as follows:
+.PP
+.TS
+tab(@);
+l.
+T{
+.I bufio \- buffered input/output module
+
+T}
+T{
+.I daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions
+
+T}
+T{
+.I devpointer \- I/O interface for the pointer device
+
+T}
+T{
+.I filepat: expand, match \- file pattern matching
+
+T}
+T{
+.I imagefile \- processing external image file formats
+
+T}
+T{
+.I ir \- infrared remote control
+
+T}
+T{
+.I mpeg \- interface to the mpeg device driver
+
+T}
+T{
+.I newns \- build a new name space from a description file
+
+T}
+T{
+.I pipe: fds, files \- get read/write file pair for a pipe
+
+T}
+T{
+.I readdir \- read directory and sort files
+
+T}
+T{
+.I regex \- regular expression recognizer
+
+T}
+T{
+.I sh \- command interface
+
+T}
+T{
+.I srv \- miscellaneous services from the host operating system
+
+T}
+T{
+.I string: append, drop, in, prefix, splitl, splitr, splitstrl, splitstrr, take, toint, tolower, toupper \- string operations
+
+T}
+T{
+.I volume \- volume control for an infrared interface
+
+T}
+T{
+.I wmlib \- window manager toolkit
+
+T}
+T{
+.I workdir \- discover the name of the current working directory
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

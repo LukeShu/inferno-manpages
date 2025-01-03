@@ -1,0 +1,21 @@
+.TH LIMBO 5
+.PP
+.SH NAME
+limbo \- Limbo compiler
+.SH SYNOPSYS
+.IP
+.EX
+limbo [option... ] [file... ]
+.EE
+.PP
+.SH DESCRIPTION
+The limbo command compiles the named Limbo 
+.I files
+into machine\-independent object files for the Dis virtual machine.
+Depending on the options, the compiler may create output files or write information to its standard output.The description of these files produced and the options used in this command are detailed in 
+.I limbo \- Limbo compiler
+in Chapter 4.
+.PP
+.SH SEE ALSO
+.I limbo \- Limbo compiler
+in Chapter 4

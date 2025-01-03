@@ -1,0 +1,90 @@
+.TH ENVIRON 12
+.PP
+.SH NAME
+environ \- environment for ITV toolkit to provide a graphics framework for a item collections
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+include \[dq]prefab.m\[dq];
+prefab:= load Prefab Prefab\->PATH;
+Environ: adt
+{
+  screen: ref Draw\->Screen;
+  style: ref Style;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Environ
+abstract data type collects the 
+.I Style
+and 
+.I Screen
+types necessary to specify how and where to draw 
+.I Prefab
+items.
+.PP
+.TS
+tab(@);
+l l.
+T{
+screen
+T}@T{
+Specifies the 
+.I Screen
+upon which items will be displayed.
+T}
+T{
+style
+T}@T{
+Specifies the 
+.I Style
+for items in an environment.
+To draw various items in different fonts or colors, the application should associate different 
+.I Environ
+objects with the various items.
+(But see also the 
+.I layout
+functions in 
+.I prefab\-element
+and 
+.I prefab\-compound
+).
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Limbo Prefab Module
+in Chapter 12
+.B ,
+
+T}
+T{
+.I screen \- type to define the abstract data structures for the windows on a display
+in Chapter 11
+.B 
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP

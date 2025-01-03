@@ -1,0 +1,295 @@
+.TH COMPOUND 12
+.PP
+.SH NAME
+compound \- windows for ITV toolkit
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+include \[dq]prefab.m\[dq];
+prefab:= load Prefab Prefab\->PATH;
+Compound: adt
+{
+  image:   ref Draw\->Image;
+  environ: ref Environ;
+  r:       Draw\->Rect;
+  title:   ref Element;
+  contents:ref Element;
+ 
+  iconbox:  fn(env: ref Environ,
+               p: Draw\->Point, title: string, icon,
+               mask: ref Draw\->Image) :ref Compound;
+  textbox:  fn(env: ref Environ,
+               r: Draw\->Rect, title, text: string):
+                      ref Compound;
+  layoutbox: fn(env: ref Environ,
+               r: Draw\->Rect, title: string, lay: 
+                    list of Layout) :ref Compound;
+  box:    fn(env: ref Environ, p: Draw\->Point, title, elist:
+                    ref Element):ref Compound;
+  draw:   fn(comp: self ref Compound);
+  redraw: fn(comp: self ref Compound, r: Draw\->Rect);
+  scroll: fn(comp: self ref Compound, elem: ref Element, 
+                       d: Draw\->Point);
+  show: fn(comp: self ref Compound, elem: ref Element): int;
+  select:  fn(comp: self ref Compound,
+             elem: ref Element, i: int, c: chan of int):
+             (int, int, ref Element);
+  tagselect: fn(comp: self ref Compound,
+             elem: ref Element, i: int, c: chan of int):
+            (int, int, ref Element);
+  highlight: fn(comp: self ref Compound,
+       elem: ref Element, on: int);
+};
+.EE
+.PP
+.SH DESCRIPTION
+
+.I Compound
+is the abstract data type that defines boxes drawn on the screen.
+Each appears in a new window, 
+.I Compound.image
+, and holds a (possibly 
+.I nil
+) 
+.I title
+and 
+.I contents.
+Element
+.
+It occupies the space on the screen defined by 
+.I Compound.r
+.
+Allocating a 
+.I Compound
+creates a window but does not draw it; after the 
+.I Compound
+is built, 
+.I Compound.draw
+must be called to make it visible.
+Compounds have a border around them, drawn in 
+.I Style.edgecolor
+and contain, from top\-to\-bottom, the title (if any), a horizontal line (if there is a title), and the contents.
+.PP
+.SS COMPOUND.ICONBOX (ENV, P, TITLE, ICON, MASK)
+Creates a 
+.I Compound
+whose contents are made by calling 
+.I Element.icon
+(see 
+.I elem \- elementary functions of applied mathematics
+in Chapter 14) using the 
+.I icon
+and 
+.I mask
+.
+The 
+.I Compound
+\[aq]s upper left corner is at 
+.I p
+.
+Its size is determined by the size of the 
+.I icon
+and 
+.I mask
+.
+.PP
+.SS COMPOUND.TEXTBOX (ENV, R, TITLE, TEXT)
+Creates a 
+.I Compound
+whose contents are made by calling 
+.I Element.text
+using the supplied 
+.I text
+.
+As with 
+.I Element.text
+, the resulting contents 
+.I Element
+will be actually a list of text 
+.I Elements
+if the text occupies multiple lines on the screen.
+The rectangle behaves as in 
+.I Element.text
+.
+.PP
+.SS COMPOUND.LAYOUTBOX (ENV, R, TITLE, LAYOUTLIST)
+Like 
+.I Compound.textbox
+, but based on 
+.I Element.layout
+rather than 
+.I Element.text
+.
+.PP
+.SS COMPOUND.BOX (ENV, P, TITLE, ELEMENT)
+Creates a 
+.I Compound
+whose contents are made from an existing 
+.I Element
+.
+To build complex structures, use the 
+.I Element
+\-building functions, size the Element appropriately, and use 
+.I Compound.box
+.
+The result is positioned with its upper left corner at 
+.I p
+, and with size determined by that of the 
+.I Element
+.
+However a 
+.I Compound
+is built, its size computation makes allowance for the border and title.
+Moreover, if the requested size and placement makes part appear offscreen, the result may be moved to display it better.
+.PP
+.SS COMPOUND.DRAW ( )
+This function uses the description of the title and contents to paint the on\-screen image.
+It takes no arguments.
+All the information is included in the description.
+.PP
+.SS COMPOUND.REDRAW (R)
+Like 
+.I Compound.draw
+, but restricts the drawing to the specified 
+.I Rect
+.I r
+.
+.PP
+.SS COMPOUND.SELECT (ELEMENT, INDEX, C): (INT, INT, ELEMENT)
+The parameters to the 
+.I select
+function are:
+.PP
+.TS
+tab(@);
+l l.
+T{
+element
+T}@T{
+The 
+.I element
+is contained in the 
+.I Compound
+, and may be at any level of its structure.
+It is most usefully a list, but may be a singleton, in which case it behaves like a list of one element.
+T}
+T{
+index
+T}@T{
+The number of the element on the list
+T}
+T{
+c
+T}@T{
+The channel, 
+.I c
+, is a 
+.I chan of int
+connected to an IR remote control interface, typically acquired through the program\[aq]s 
+.I Context
+(see 
+.I context \- graphics environment
+in Chapter 11).
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The arrow keys on the remote control scroll through the members of the list, using the 
+.I Style.highlightcolor
+associated with each member element to indicate selection.
+A 
+.I Select
+key on the remote control triggers 
+.I select
+to return a tuple (
+.I key
+, 
+.I index
+, 
+.I elem
+), where:
+.PP
+.TS
+tab(@);
+l l.
+T{
+key
+T}@T{
+The 
+.I key
+member is the key code of the action (here 
+.I Select
+).
+T}
+T{
+index
+T}@T{
+The 
+.I index
+member is the number of the element in the list (ignoring separators).
+T}
+T{
+elem
+T}@T{
+The 
+.I elem
+member is the list member highlighted when the key was hit.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Any other key returns the same tuple with 
+.I index
+\-1 and the value of the key.
+The 
+.I elem
+returned is always the most recently highlighted, even if the result was not a selection.
+When 
+.I select
+returns, it always restores the default appearance of the list.
+.PP
+.SS COMPOUND.TAGSELECT (ELEMENT, INDEX, C): (INT, INT, ELEMENT)
+Like 
+.I Compound.select
+, but rather than selecting among all the elements of a list, it selects among only those elements with defined tags in the structure contained within the specified 
+.I element
+.
+.PP
+.SS COMPOUND.HIGHLIGHT (ELEMENT, ON)
+Set the highlighting to be \[aq]on\[aq] or \[aq]off\[aq] for the 
+.I element
+within the compound.
+.PP
+.SS COMPOUND.SCROLL (ELEMENT, D)
+Scroll the 
+.I element
+within the compound.
+The updated image is redrawn after the scrolling.
+.PP
+.SS COMPOUND.SHOW (ELEMENTTAG, D)
+Make sure the 
+.I element
+is visible within the rectangle of the top\-level 
+.I Element
+of the 
+.I Compound
+by calling 
+.I Element.show
+(
+.I Compound.contents
+, 
+.I element
+).

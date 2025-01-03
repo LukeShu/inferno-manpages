@@ -1,0 +1,61 @@
+.TH VOLUME 15
+.PP
+.SH NAME
+volume \- volume control for an infrared interface
+.SH SYNOPSYS
+.IP
+.EX
+Volumectl: module
+{
+PATH:      con \[dq]/dis/lib/volume.dis\[dq];
+volumectl: fn(ctxt: ref Draw\->Context, ch: chan of int, 
+device: string);
+};
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I volumectl
+module should be spawned as a separate process from any process that desires volume control via an infrared interface.
+.PP
+The parameters are:
+.PP
+.SS CTXT
+A 
+.I Context
+that provides 
+.I volumectl
+with access to the display.
+It is used to display a slider widget.
+The slider automatically disappears after several seconds of inactivity.
+.PP
+.SS CH
+A 
+.I chan of int
+through which 
+.I volumectl
+receives input from the infrared controller.
+The values recognized are:
+.PP
+.SS VOLUP
+increase volume
+.PP
+.SS VOLDN
+decrease volume
+.PP
+.SS ENTER
+exit
+.PP
+.SS OTHER VALUES
+are ignored
+.PP
+.SS DEVICE
+This argument is a string that is used as a prefix to commands to the device, for example, 
+.I audio out
+.
+.PP
+.SH FILES
+/dev/volume
+.PP
+.SH SEE ALSO
+.I ir \- infrared remote control

@@ -1,0 +1,49 @@
+.TH NSBUILD 5
+.PP
+.SH NAME
+nsbuild \- build Inferno name space
+.SH SYNOPSYS
+.IP
+.EX
+nsbuild file
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I nsbuild
+command builds a file name space for the calling process.
+It reads 
+.I file
+and interprets the name space commands found in that file.
+.PP
+The commands executed by 
+.I nsbuild
+are described in 
+.I newns \- build a new name space from a description file
+in Chapter 15.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I cd \- change working directory
+
+T}
+T{
+.I bind, mount, unmount \- change name space
+
+T}
+T{
+.I newns \- build a new name space from a description file
+in Chapter 15
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

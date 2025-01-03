@@ -1,0 +1,55 @@
+.TH UTFBYTES 8
+.PP
+.SH NAME
+utfbytes \- compute the Unicode length of a UTF byte sequence
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+utfbytes: fn(buf: array of byte, n: int): int;
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I utfbytes
+function examines the 
+.I n
+\-byte UTF sequence starting at 
+.I buf
+[
+.I 0
+] and returns the number of bytes, if any, that represent a single Unicode character.
+The end of the array may contain an incomplete UTF sequence without affecting the return value.
+.PP
+.SH CAVEAT
+A call to 
+.I utfbytes
+can generate a bounds check error, if the length argument is larger than the array itself.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Limbo System Module
+
+T}
+T{
+.I byte2char, char2byte \- convert between bytes and characters
+
+T}
+T{
+.I UTF, Unicode, ASCII \- character set and format
+in Appendix A
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP

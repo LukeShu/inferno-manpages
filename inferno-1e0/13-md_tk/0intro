@@ -1,0 +1,943 @@
+.TH 0INTRO 13
+.PP
+.PP
+.SH NAME
+Limbo/Tk \- Graphic Interface Module
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+The 
+.I Tk.m
+module provides primitives for building user interfaces.
+It is based on Ousterhout\[aq]s Tcl/Tk.
+(See 
+.I Tcl and the Tk toolkit.
+J. Ousterhout.
+Addison Wesley, 1994 for a detailed discussion of Tk)
+.PP
+.SH INTRODUCTION TO TK
+Tk is concise, powerful, easy to use, well known, and can be run everywhere using Inferno.
+.PP
+All the features of Tk are not included in Inferno.
+This section provides information about the differences between the Limbo/Tk implementation and Tk 4.0.
+.PP
+Programmers need only deal with the 
+.I toplevel
+, 
+.I namechan
+, and 
+.I cmd
+functions.
+The 
+.I mouse
+and 
+.I keyboard
+functions are used by the window manager to deliver mouse and keyboard events into applications.
+.PP
+.SS THE TOPLEVEL FUNCTION
+The 
+.I toplevel
+command takes a screen argument and a string containing further options, and it returns a handle that represents a top\-level Tk widget.
+The handle is used as the first argument to the 
+.I namechan
+and 
+.I cmd
+functions described in this section.
+The options argument contains Tk option/value pairs, specified in the same manner as options to all Tk widgets.
+As well as the generic options, 
+.I toplevel
+accepts the 
+.I \-x int
+, 
+.I \-y int
+and 
+.I \-debug bool
+options.
+The 
+.I \-x
+.I int
+and 
+.I \-y
+.I int
+options specify the upper left corner of the toplevel widget, where (0,0) is the top left corner of the screen.
+The 
+.I \-debug
+.I bool
+option causes a trace of all Tk commands to be printed when the boolean value is true.
+A typical call to 
+.I toplevel
+looks like:
+.PP
+top := tk\->toplevel(ctxt.screen, tkargs);
+.SS THE CMD FUNCTION
+After a toplevel widget has been built, the 
+.I cmd
+function is used to issue Tk commands.
+The first argument is the toplevel reference and the second argument is a string which looks a lot like a string that could be given to a Tcl command interpreter.
+However, the language accepted is not Tcl.
+.PP
+A typical call of the cmd function is:
+.PP
+range := tk\->cmd(ed, \[dq].b.t tag nextrange sel 1.0\[dq]);
+.SS COMMAND STRING SYNTAX
+The command string may contain one or more single commands, separated by semicolons.
+A semicolon is a single\-command separator if it is at 0\-nesting level with respect to braces ( { } ) and brackets ( [ ] ), and it is not escaped by a backslash (\[rs]).
+There is also a superquote convention: at any point in the command string a single quote mark means that the entire rest of the string should be treated as one 
+.I word
+.
+.PP
+A single command is divided into a number of 
+.I words
+.
+Words are separated by one or more blanks and tabs.
+.PP
+A word beginning with an opening brace ( { ) continues until the balancing closing brace ( } ) is reached.
+The outer brace characters are stripped.
+A backslash can be used to escape a brace in this context.
+.PP
+A word beginning with an opening bracket ( [ ) continues until the balancing closing bracket ( ] ) is reached.
+The enclosed string is then evaluated as if it were a command string, and the resulting value is used as the contents of the word.
+.PP
+Single commands are executed in order until they are all done or an error is encountered.
+By convention, an error is signaled by a return value starting with an exclamation mark.
+The return value from 
+.I cmd
+is the return value of the first error\-producing command or else the return value of the final single command.
+.PP
+To execute a single command, the first word is examined.
+It can be one of the following:
+.IP \[bu] 2
+One of the following widget creating commands:
+.PP
+frame label button checkbutton radiobutton menubutton menu listbox scrollbar text canvas entry scale
+.TP
+The second word of each of these commands is the name of the widget to be created.
+The remaining words are option/value pairs.
+.IP \[bu] 2
+A widget name (beginning with a period \[ga].\[aq]) that corresponds to an existing widget.
+The second word gives the name of a particular widget subcommand and the remaining words are arguments for the subcommand.
+.IP \[bu] 2
+A 
+.I pack
+, 
+.I bind
+, 
+.I focus
+, 
+.I grab
+, 
+.I puts
+, 
+.I destroy
+, 
+.I image
+, or 
+.I update
+command.
+These are non\-widget creating commands.
+Most are the same as documented for Tk 4.0.
+The 
+.I bind
+command has some differences, and the 
+.I image
+command is somewhat more limited.
+.IP \[bu] 2
+The 
+.I send
+command.
+This command is used to send a string from Tk along a Limbo channel to a Limbo process.
+The second word is the name of a Limbo channel (registered with 
+.I namechan
+), and the rest of the words are to be sent along that channel.
+.IP \[bu] 2
+The 
+.I variable
+command.
+Limbo/Tk does not have general variables the way Tcl does; radio buttons are an exception.
+The 
+.I variable
+command takes the name of a variable defined in a radio button as the second word, and the value of the variable is the result of the command.
+Also, there is one predefined variable whose value can be retrieved this way: the 
+.I lasterror
+variable is set every time a Tk command returns an error.
+The value is the offending command (possibly truncated) followed by the error return value.
+The 
+.I lasterror
+variable is cleared whenever it is retrieved using the variable command.
+This allows for a number of Tk commands to be executed without checking error returns each time.
+A call to the 
+.I variable
+command with 
+.I lasterror
+at strategic points can make sure that an unexpected error has not occurred.
+.IP \[bu] 2
+The 
+.I cursor
+command.
+This command takes a number of option/value pairs to control the appearance and placement of the cursor.
+Available options are: 
+.I \-x
+.I int
+and 
+.I \-y
+.I int
+, to change the cursor position to align its hotpoint at the given point (in screen coordinates); 
+.I \-bitmap filename
+or 
+.I \-image
+.I imagename
+to change the appearance of the cursor; and 
+.I \-default 1
+to change back to the default appearance of the cursor.
+.PP
+.SS THE NAMECHAN FUNCTION
+The 
+.I namechan
+function of the Tk module is used to set up communication between the Tk widgets and Limbo programs.
+The 
+.I send
+command in the Tk world results in a string being sent along a Limbo channel.
+The 
+.I namechan
+function is used to associate a Limbo chan of string with a name that can be used inside Tk.
+A typical call looks like:
+.PP
+c := chan of string; tk\->namechan(top, c, \[dq]c\[dq]); The main use of named channels and the send command that uses them is to allow Limbo programs to be notified when Tk events happen.
+For example,
+.PP
+tk\->cmd(top, \[dq].m.file.menu add command \-label Open...\[dq] + \[dq] \-command {send c open}\[dq]); might be used to add an entry to a menu.
+Whenever the \[aq]Open...\[aq] entry is selected, the string \[aq]open\[aq] will be sent along the channel associated with name \[aq]c\[aq].
+The Limbo program should be waiting for such events, with code like:
+.PP
+s := <\-c => case s { \[dq]open\[dq] => do_open(); ...
+} Because the language accepted by the 
+.I cmd
+function has no user\-defined functions, no control flow and very few variables, almost all applications need to have some of their logic in Limbo programs.
+.PP
+.SS INTERACTING WITH THE WINDOW MANAGER
+To make an application that runs well under the Limbo window manager, the programmer must do four things:
+.IP "1." 3
+Load and initialize a 
+.I Wmlib
+module
+.IP "2." 3
+Call that module\[aq]s 
+.I titlebar
+function
+.IP "3." 3
+Pack a widget called 
+.I .Wm_t
+in the application
+.IP "4." 3
+Listen on the channel returned by 
+.I titlebar
+for window manager commands (such as 
+.I exit
+), and either act on them or reflect them back to the 
+.I Wmlib
+module using its 
+.I titlectl
+function.
+.PP
+.SS WIDGET OPTIONS
+In Limbo/Tk, all widget creation commands and all of the 
+.I cget
+widget commands accept a common set of generic options in addition to widget\-specific options.
+Except as noted otherwise, the meanings are the same as the options for Tk 4.0.
+The allowable forms of things like 
+.I color
+, 
+.I dist
+, and 
+.I font
+are a little different in Limbo/Tk.
+The generic options are as follows:
+.IP
+.EX
+-activebackground color
+-activeforeground color
+-actwidth dist
+-actheight dist
+.EE
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I The \-actwidth and \-actheight variables are overridden by the packer, but are useful as arguments to cget to retrieve the actual width and height (inside the border) of a widget after packing.
+
+.PP
+   *   *   *   *   *
+.IP
+.EX
+-background color or \-bg color
+-borderwidth dist or \-bd dist 
+-font font 
+-foreground color or \-fg color 
+-height dist (Requested height.)
+-padx dist
+-pady dist
+-relief relief
+-state normal or \-state active or \-state disabled
+.EE
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I The \-state variable is only relevant for some widgets (for example, entry widgets).
+
+.PP
+   *   *   *   *   *
+.IP
+.EX
+-selectbackground color
+-selectborderwidth dist
+-selectcolor color 
+.EE
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I The \-selectcolor variable is the color of the box in selection menu items.
+
+.PP
+   *   *   *   *   *
+.PP
+-selectforeground 
+.I color
+\-width 
+.I dist
+(Requested width) The 
+.I dist
+parameters are lengths, expressed as: optional minus sign, then one or more decimal digits (with possible embedded decimal point), then an optional units specifier.
+The unit specifiers are those of Tk 4.0 (
+.I c
+for centimeters, 
+.I m
+for millimeters, 
+.I i
+for inches and 
+.I p
+for points) plus two additional ones: 
+.I h
+for the height of widget\[aq]s font, and 
+.I w
+for the width of the zero in the widget\[aq]s font.
+.PP
+In Tcl/Tk 4.0, the widgets do not uniformly take 
+.I \-width
+and 
+.I \-height
+options; rather, each widget may take either or both options, and if they do, the meaning of bare number (without a unit specifier) varies from widget to widget.
+For example, in Tk 4.0 
+.I \-width 25
+means 25 characters to an entry widget, but 25 pixels to a canvas widget.
+In Limbo/Tk, all widgets may have height and width specified, and bare numbers always mean screen pixels.
+.PP
+The 
+.I color
+parameters can be color names or RGB values.
+Only a small set of names are known currently:
+.PP
+.TS
+tab(@);
+l l l l.
+T{
+black
+T}@T{
+blue
+T}@T{
+darkblue
+T}@T{
+red
+T}
+T{
+yellow
+T}@T{
+green
+T}@T{
+white
+T}@T{
+orange
+T}
+T{
+aqua
+T}@T{
+fuchia
+T}@T{
+gray
+T}@T{
+lime
+T}
+T{
+maroon
+T}@T{
+navy
+T}@T{
+olive
+T}@T{
+purple
+T}
+T{
+teal
+T}@T{
+T}@T{
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+For RGB values, one of the two syntaxes 
+.I #RGB
+or 
+.I #RRGGBB
+must be used.
+.PP
+The 
+.I font
+parameter should be the complete pathname to an Inferno font file, for example, 
+.I /fonts/pelm/unicode.9.font
+.
+Another parameter type like this (not used in any of the generic options) is 
+.I bitmap
+.
+Unlike Tcl/Tk 4.0, bitmap specifications in Limbo/Tk do not give just a 1\-bit deep bitmap to be colored with foreground and background.
+Instead, they give a full\-color image (
+.I pixmap
+, in X11 terminology) to be used as is.
+If 
+.I bitmap
+begins with an \[at], the remaining characters should be a filename of an Inferno image file.
+If 
+.I bitmap
+begins with a <, the remaining characters should be a decimal integer giving a file descriptor number of an open file from which the bitmap can be loaded.
+Otherwise, bitmap should be the name of a bitmap file in the 
+.I /icons/tk
+directory.
+.PP
+.SS OPTIONS NOT SUPPORTED IN LIMBO TK
+The following options, listed in as Tk 4.0 Options, are not implemented by any Limbo/Tk widget:
+.IP
+.EX
+-cursor 
+-disabledforeground 
+-exportselection
+-geometry 
+-highlightbackground 
+-highlightcolor 
+-highlightthickness 
+-insertbackground 
+-insertborderwidth 
+-insertofftime 
+-insertontime
+-insertwidth 
+-repeatdelay
+-repeatinterval 
+-setgrid 
+-takefocus 
+-textvariable
+-troughcolor 
+.EE
+.PP
+.SS TK COMMANDS
+This section lists all of the commands documented in the Tk 4.0 man pages, giving the differences between the behavior specified in those man pages and the behavior implemented in Limbo/Tk.
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I Many of the Tk 4.0 widgets take \[aq]Standard Options\[aq] such as
+.PD 0
+.P
+.PD
+-insertontime that are not implemented in Limbo/Tk.
+See 
+Options Not Supported in Limbo Tk
+.I .
+
+.PP
+   *   *   *   *   *
+.PP
+.SS AFTER
+Not implemented.
+.PP
+.SS BELL
+Not implemented.
+.PP
+.SS BIND
+The bind command is perhaps the command that differs the most from Tk 4.0.
+Mostly, it is a subset of functionality that is implemented.
+One difference is that the tag that can be bound to can be one of only two things: the name of an existing widget, or the name 
+.I all
+, which causes bindings for all of the widgets under the 
+.I toplevel
+implicit in the command).
+The idea of a widget class is completely absent in Limbo/Tk.
+Event sequence specifications are also somewhat restricted.
+A sequence is either a single character (rune), meaning a 
+.I KeyPress
+of that character, or a sequence of 
+.I seqitems
+in angle brackets.
+
+.I Seqitems
+are separated by blanks or minus signs.
+.PP
+The following seqitems are accepted:
+.PP
+
+.B Key or KeyPress.
+This represents the press of the character in the following 
+.I seqitem
+.
+If there is no following seqitem, this represents the press of any key.
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I The characters cannot be specified using X11 names (for example, Return).
+
+.PP
+   *   *   *   *   *
+.PP
+
+.B Control
+.
+This represents the press of the character in the following 
+.I seqitem
+with the 
+.B Control
+key pressed.
+.PP
+
+.B ButtonPress
+or 
+.B Button
+.
+This represents the pressed state of the mouse button given by the following 
+.I seqitem
+, which should be 1, 2, or 3.
+If there is no following 
+.I seqitem
+, this represents the press of any button.
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I Unlike Tk 4.0, if the mouse is moved with a button pressed, the Button event is delivered in combination with a Motion event as long as the button remains pressed.
+
+.PP
+   *   *   *   *   *
+.PP
+
+.B ButtonRelease
+.
+Like 
+.I ButtonPress
+, but representing the release of a button.
+.PP
+
+.B Motion
+.
+This represents possible motion of the mouse.
+.PP
+
+.B Double
+.
+This means that any 
+.I seqitems
+in the sequence representing button presses must be double\-clicked for the sequence to match.
+.PP
+
+.B Map
+.
+This represents the event of the widget being drawn on the screen, either for the first time or after being de\-iconified.
+.PP
+
+.B Unmap
+.
+This represents the event of the widget being de\-iconified.
+.PP
+
+.B Enter
+.
+This represents the event of the mouse entering the widget from outside.
+.PP
+
+.B Leave
+.
+This represents the event of the mouse going outside the boundaries of the widget.
+.PP
+
+.B FocusIn
+.
+This represents the event of the widget getting the keyboard focus.
+.PP
+
+.B FocusOut
+.
+This represents the event of the widget losing the keyboard focus.
+.PP
+The event sequence can contain any combination of the above seqitems.
+They are treated as independent events, and if any of the events occur, the sequence matches.
+You cannot combine 
+.I Key Presses
+of more than one key.
+As for delivery: events will not be combined, except that 
+.I Motion
+events may be combined with button presses (possibly doubled).
+.PP
+The binding script argument has 
+.I %
+substitution, as specified in Tk 4.0.
+However, only the following are implemented: 
+.I %%
+, 
+.I %b
+, 
+.I %h
+, 
+.I %s
+, 
+.I %w
+, 
+.I %x
+, 
+.I %y
+, 
+.I %A
+, 
+.I %K
+, 
+.I %W
+, 
+.I %X
+, and 
+.I %Y
+.
+The 
+.I %s
+substitution gives the logical OR of the mouse buttons for mouse events, and the decimal value of the pressed character for key events.
+The 
+.I %K
+substitution gives the pressed character in the form of four hexadecimal digits (not a textual string, as in Tk 4.0).
+The 
+.I %A
+substitution will escape a {, }, or a \[rs], so that it won\[aq]t confuse the command string parser when used in a bind script.
+.PP
+.SS BINDTAGS
+Not implemented.
+.PP
+.SS BITMAP
+As mentioned above, Limbo/Tk bitmaps are in fact full color images.
+If a maskfile is given, it may also have a depth greater than 1 bit; the meaning is that if a pixel is non\-zero then the image corresponding pixel of the maskdata image should be drawn.
+.PP
+.SS BUTTON
+As in Tk 4.0 (but note difference in units for 
+.I \-height
+and 
+.I \-width
+).
+.PP
+.SS CANVAS
+The postscript subcommand is not implemented.
+.PP
+.SS CHECKBUTTON
+Un\-implemented options: 
+.I \-indicatoron
+, 
+.I \-offvalue
+, 
+.I \-onvalue
+, and \-
+.I \-selectimage
+.
+The flash and toggle subcommands are not implemented.
+.PP
+.SS CLIPBOARD
+Not implemented.
+.PP
+.SS DESTROY
+As in Tk 4.0.
+.PP
+.SS ENTRY
+The scan subcommand is not implemented.
+Many of the key bindings are not implemented because there is currently no way to type those keys to Inferno (for example, 
+.B Home
+).
+Note difference in units for 
+.I \-height
+and 
+.I \-width
+.
+.PP
+.SS EXIT
+Not implemented.
+.PP
+.SS FILEEVENT
+Not implemented.
+.PP
+.SS FOCUS
+The focus model in Inferno is different.
+Only one widget has the keyboard focus at any one time.
+Limbo/Tk does not maintain a private keyboard focus for each toplevel tree and automatically move the focus there whenever the tree is entered.
+(But canvas and text widgets do maintain a private keyboard focus.)
+The 
+.I focus
+.I window
+command moves the keyboard focus to the given window.
+By default, the first press of the primary button in an 
+.I entry
+, 
+.I listbox
+or 
+.I text
+widget causes the focus to be moved to that widget.
+Just entering a menu widget gives it the focus.
+.PP
+The 
+.I \-displayof
+, 
+.I \-force
+, and 
+.I \-lastfor
+options are not implemented.
+.PP
+.SS FRAME
+Un\-implemented options: 
+.I class
+, 
+.I colormap
+, and 
+.I visual
+.
+.PP
+.SS GRAB
+Limbo/Tk implements only global grabs, so the 
+.I \-global
+option is not recognized.
+The 
+.I grab current
+command is not implemented.
+The 
+.I grab
+command is not recognized as a synonym for 
+.I grab
+set.
+.PP
+.SS GRID
+Not implemented.
+.PP
+.SS IMAGE
+Only bitmap image types are implemented, but, as documented under 
+.I bitmap
+, Inferno bitmaps are not just 1\-bit deep.
+Thus, Inferno bitmaps are an implementation of both bitmap and photo types.
+However, Limbo/Tk does not recognized the wide variety of graphics formats that Tk 4.0 does.
+External programs are provided to convert from other formats, such as JPEG, into the Inferno bitmap format.
+The file descriptor syntax for specifying bitmaps is useful when an external program writes the bitmap to a file descriptor.
+.PP
+.SS LABEL
+Un\-implemented options: 
+.I \-justify
+and 
+.I \-wraplength
+.
+Note difference in units for 
+.I \-height
+and 
+.I \-width
+.
+.PP
+.SS LISTBOX
+The 
+.I bbox
+and 
+.I scan
+subcommands are not implemented.
+Note difference in units for 
+.I \-height
+and 
+.I \-width
+.
+.PP
+.SS LOWER
+The 
+.I belowThis
+optional parameter is not recognized.
+.PP
+.SS MENU
+Un\-implemented options: 
+.I \-postcommand
+, 
+.I \-tearoff
+, 
+.I \-tearoff
+command, and 
+.I \-transient
+.
+In the add subcommand, the 
+.I \-accelerator
+, 
+.I \-indicatoron
+, and 
+.I \-selectimage
+options are not implemented.
+In the 
+.I index
+subcommand, the 
+.I last
+and 
+.I pattern
+index forms are not implemented.
+The 
+.I configure
+and 
+.I entrycget
+subcommands are not implemented.
+.PP
+.SS MENUBUTTON
+Un\-implemented options: 
+.I \-indicatoron
+, 
+.I \-justify
+, and 
+.I \-wraplength
+.
+.PP
+.SS MESSAGE
+Not implemented (subsumed by 
+.I label
+).
+.PP
+.SS OPTION
+Not implemented.
+There is no option database in Limbo/Tk.
+.PP
+.SS PACK
+The 
+.I info
+subcommand is not implemented.
+.PP
+.SS PHOTO
+Not implemented.
+.PP
+.SS PLACE
+Not implemented.
+.PP
+.SS RADIOBUTTON
+Unimplemented options: 
+.I \-indicatoron
+, 
+.I \-justify
+, 
+.I \-selectimage
+, and \-wraplength.
+The 
+.I flash
+subcommand is not implemented.
+.PP
+.SS RAISE
+The 
+.I aboveThis
+optional parameter is not recognized.
+.PP
+.SS SCALE
+Unimplemented options: 
+.I \-digits
+and 
+.I \-variable
+.
+.PP
+.SS SCROLLBAR
+The old syntax of 
+.I set
+and 
+.I get
+is not supported.
+.PP
+.SS SELECTION
+Not implemented.
+.PP
+.SS SEND
+Rather than sending things to a different application, the 
+.I send
+.I channame
+.I string
+command sends a string along a given named Limbo channel, as described above.
+.PP
+.SS TEXT
+The 
+.I dump
+subcommand is not implemented.
+The 
+.I \-regexp
+mode of the 
+.I search
+subcommand is not implemented.
+.PP
+.SS TKERROR
+Not implemented.
+.PP
+.SS TKWAIT
+Not implemented.
+.PP
+.SS TOPLEVEL
+There is no 
+.I toplevel
+command implemented by the 
+.I cmd
+function; instead, the Tk module entry point 
+.I toplevel
+is used to make toplevel widgets.
+.PP
+.SS UPDATE
+The optional 
+.I idletasks
+argument is not recognized.
+.PP
+.SS WINFO
+Not implemented.
+Much of the information that 
+.I winfo
+could return can be gotten via 
+.I cget
+for each widget.
+.PP
+.SS WM
+Not implemented.

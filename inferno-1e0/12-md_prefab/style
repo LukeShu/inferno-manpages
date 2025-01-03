@@ -1,0 +1,139 @@
+.TH STYLE 12
+.PP
+.SH NAME
+style \- fonts and colors for ITV toolkit
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+include \[dq]prefab.m\[dq];
+prefab:= load Prefab Prefab\->PATH;
+Style: adt
+{
+  titlefont:      ref Draw\->Font;
+  textfont:       ref Draw\->Font;
+  elemcolor:      ref Draw\->Image;
+  edgecolor:      ref Draw\->Image;
+  titlecolor:     ref Draw\->Image;
+  textcolor:      ref Draw\->Image;
+  highlightcolor: ref Draw\->Image;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Style
+type collects the font and color information for an application or a set of items within an application.
+Except when using the 
+.I layout
+routines (see 
+.I compound \- windows for ITV toolkit
+and 
+.I element \- menu and display elements for ITV toolkit
+), the members of a 
+.I Style
+are the only way to control the appearance of 
+.I Prefab
+items.
+Note that although the color members in practice often refer to a literal color (a single replicated pixel of color), they can be any image.
+.PP
+
+.I Styles
+are allocated by regular Limbo definitions.
+There is no allocation function.
+All the members of a 
+.I Style
+must be defined.
+Although it will not cause errors to modify the members of a 
+.I Style
+after it has been created and passed to a 
+.I Prefab
+routine, the results may be unpredictable.
+.PP
+.TS
+tab(@);
+l l.
+T{
+edgecolor
+T}@T{
+This 
+.I Image
+specifies how to draw the edges, or borders, of compounds.
+T}
+T{
+elemcolor
+T}@T{
+This 
+.I Image
+specifies how to draw the base, or background, of elements and compounds.
+T}
+T{
+highlightcolor
+T}@T{
+This 
+.I Image
+specifies the color to use to highlight a selected element.
+T}
+T{
+textcolor
+T}@T{
+This 
+.I Image
+specifies the color in which to draw an item\[aq]s regular text.
+T}
+T{
+textfont
+T}@T{
+This 
+.I Font
+specifies the font in which to draw an item\[aq]s regular text.
+T}
+T{
+titlecolor
+T}@T{
+This 
+.I Image
+specifies the color in which to draw an item\[aq]s title text.
+T}
+T{
+titlefont
+T}@T{
+This 
+.I Font
+specifies the font in which to draw an item\[aq]s title text.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+
+.I 
+Limbo Prefab Module
+.I  in Chapter 12 
+.I 
+
+T}
+T{
+.I environ \- environment for ITV toolkit to provide a graphics framework for a item collections
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP

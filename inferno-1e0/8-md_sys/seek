@@ -1,0 +1,113 @@
+.TH SEEK 8
+.PP
+.SH NAME
+seek \- change file offset
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+seek: fn(fd: ref FD, off, start: int): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS SEEK (FD, OFF, START)
+The 
+.I seek
+function sets the offset for the file associated with 
+.I fd
+to 
+.I off
+as qualified by the 
+.I start
+argument.
+Negative values for 
+.I off
+are allowed.
+.PP
+The 
+.I start
+argument can have the following values:
+.PP
+.TS
+tab(@);
+l l.
+T{
+SEEKSTART
+T}@T{
+The offset is set to 
+.I off
+bytes from the start of the file.
+T}
+T{
+SEEKRELA
+T}@T{
+The offset is set to its current value plus 
+.I off
+bytes.
+T}
+T{
+SEEKEND
+T}@T{
+The offset is set to the size of the file plus 
+.I off
+bytes.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The new file offset value is returned.
+.PP
+The 
+.I seek
+function does not validate the offset being set.
+Subsequent 
+.I read
+or 
+.I write
+calls to an invalid offset will fail.
+.PP
+Seeking in a directory is not allowed.
+.PP
+The current offset for a file is shared among processes of the same file descriptor group.
+See 
+.I pctl \- process control
+.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I Limbo System Module
+,
+T}
+T{
+.I open, create \- open/create a file for reading or writing
+,
+T}
+T{
+.I pctl \- process control
+, 
+.I read, write, stream \- read, write, or stream file
+,
+T}
+T{
+.I bufio \- buffered input/output module
+in Chapter 15
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

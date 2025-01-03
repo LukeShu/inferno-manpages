@@ -1,0 +1,70 @@
+.TH CONNECT 9
+.PP
+.SH NAME
+connect, secret \- interface to the Secure Sockets Layer device
+.SH SYNOPSYS
+.IP
+.EX
+bind \[aq]#D\[aq] /n/ssl
+
+include \[dq]sys.m\[dq];
+include \[dq]security.m\[dq];
+SSL : module {
+     PATH:  con \[dq]/dis/lib/ssl.dis\[dq];
+  connect:  fn(fd: ref Sys\->FD): (string, ref Sys\->Connection);
+   secret:  fn(c: ref Sys\->Connection,
+         secretin, secretout: array of byte): string;
+.EE
+.PP
+.SH DESCRIPTION\[AQ]
+The SSL module provides an interface to the secure sockets layer device.
+It assumes that device has already been bound to/n/ssl, its conventional location in the name space.
+.PP
+The interfaces are:
+.PP
+.SS CONNECT(FD)
+Push file descriptor 
+.I fd
+into /n/ssl/
+.I n
+/data and return resulting (secure) connection.
+The value for 
+.I n
+is obtained internally from /n/ssl/clone.
+The string returned describes errors encountered, if any.
+If that string is non\-nil, the connection is invalid.
+.PP
+.SS SECRET(C, SECRETIN, SECRETOUT)
+Write non\-null strings 
+.I secretin
+and 
+.I secretout
+to /n/ssl/
+.I n
+/secretin and /n/ssl/
+.I n
+/secretout, respectively.
+The value of 
+.I n
+is obtained from the Connection adt, 
+.I c
+.
+The string returned describes errors encountered, if any; otherwise it is nil.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I ssl \- secure sockets layer device
+in Chapter 2
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

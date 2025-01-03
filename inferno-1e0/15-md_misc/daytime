@@ -1,0 +1,163 @@
+.TH DAYTIME 15
+.PP
+.SH NAME
+daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]daytime.m\[dq];
+daytime:= load Daytime Daytime\->PATH;
+Tm: adt
+{
+  sec:     int;
+  min:     int;
+  hour:    int;
+  mday:    int;
+  mon:     int;
+  year:    int;
+  wday:    int;
+  yday:    int;
+  zone:    string;
+  tzoff:   int;
+};
+text:     fn(tm: ref Tm)    : string;
+filet:    fn(now, file: int): string;
+gmt:      fn(tim: int)      : ref Tm;
+local:    fn(tim: int)      : ref Tm;
+now:      fn()              : int;
+time:     fn()              : string;
+tm2epoch: fn(tm: ref Tm)    : int;
+.EE
+.PP
+.SH DESCRIPTION
+These routines perform time conversions relative to the epoch 
+.I 00:00:00 GMT, Jan.
+1, 1970
+.
+.PP
+.TS
+tab(@);
+l l.
+T{
+text (
+.I tm
+)
+T}@T{
+The 
+.I text
+function converts a time adt referenced by 
+.I tm
+from local or GMT time to a string in the format: Tue Aug 16 17:03:52 CDT 1977
+T}
+T{
+filet (
+.I now
+, 
+.I file
+)
+T}@T{
+The 
+.I filet
+function converts the file time 
+.I file
+from seconds since the epoch to local time as a string in the format: Aug 16 17:03 if the file is less than 6 months old or Aug 16 1977 if the file is older than 6 months.
+T}
+T{
+gmt (
+.I tim
+)
+T}@T{
+The 
+.I gmt
+function converts seconds since the epoch contained in 
+.I tim
+to a time adt in Greenwich Mean Time (GMT).
+T}
+T{
+local (
+.I tim
+)
+T}@T{
+The 
+.I local
+function converts seconds since the epoch contained in 
+.I tim
+to a time adt in local time.
+T}
+T{
+now ( )
+T}@T{
+The 
+.I now
+function returns the time in seconds since the epoch.
+This functions works by reading file 
+.I /dev/time
+to get the time in microseconds since the epoch.
+T}
+T{
+time ( )
+T}@T{
+The 
+.I time
+function returns the local time as a string in the format: 
+.I Tue Aug 16 17:03:52 CDT 1977
+
+T}
+T{
+tm2epoch (
+.I tm
+)
+T}@T{
+The 
+.I tm2epoch
+function converts a time adt referenced by 
+.I tm
+from local or GMT time to seconds since the epoch.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH CAVEAT
+The sign bit of a Limbo integer holding a time will turn on 68 years from the epoch.
+.PP
+[dq]GMT\[dq] is used rather than \[dq]UTC\[dq] as in other operating systems.
+There is no serious treatment of leap seconds, instead the epoch is implicitly shifted.
+Existing practice also dictate the following conventions:
+.PP
+.TS
+tab(@);
+l l.
+T{
+year=96
+T}@T{
+means 1996
+T}
+T{
+mday=1
+T}@T{
+means first day of the month
+T}
+T{
+wday=0
+T}@T{
+means Sunday
+T}
+T{
+mon=0
+T}@T{
+means January
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

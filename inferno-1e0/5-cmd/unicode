@@ -1,0 +1,128 @@
+.TH UNICODE 5
+.PP
+.SH NAME
+unicode \- interpret Unicode characters
+.SH SYNOPSYS
+.IP
+.EX
+unicode [\-nt] hexmin \- hexmax
+unicode [\-t]  hex [...]
+unicode [\-n]  characters
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I unicode
+command converts between UTF and character values from the Unicode Standard (see 
+.I UTF, Unicode, ASCII \- character set and format
+in Appendix A).
+.PP
+If given a range of hexadecimal numbers, 
+.I unicode
+prints a table of the specified Unicode characters including their values and UTF representations.
+Otherwise, it translates from UTF to numeric value or numeric value to UTF, depending on the appearance of the supplied text.
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+l l.
+T{
+-n
+T}@T{
+The 
+.I \-n
+option forces numeric output to avoid ambiguity with numeric characters.
+T}
+T{
+-t
+T}@T{
+If converting to UTF, the characters are printed one per line unless the 
+.I \-t
+flag is set, in which case the output is a single string containing only the specified characters.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The output of 
+.I unicode
+may not be helpful if the characters printed are not available in the current font.
+.PP
+The file 
+.I /lib/unicode
+contains a table of characters and descriptions sorted in hexadecimal order.
+.PP
+.SH EXAMPLES
+.PP
+.TS
+tab(@);
+l l.
+T{
+unicode p
+T}@T{
+Print the hex value of 
+.I p
+.
+T}
+T{
+unicode 2200\-22f1
+T}@T{
+Print a table of miscellaneous mathematical symbols.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I /lib/unicode
+
+T}@T{
+Table of characters and descriptions.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I UTF, Unicode, ASCII \- character set and format
+in Appendix A
+T}
+T{
+.I font, subfont \- external format for character fonts and subfonts
+in Appendix A
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

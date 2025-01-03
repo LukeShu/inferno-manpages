@@ -1,0 +1,146 @@
+.TH AUTH 9
+.PP
+.SH NAME
+auth, readauthinfo, writeauthinfo \- authenticate a connection
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+include \[dq]keyring.m\[dq];
+kr:= load Keyring Keyring\->PATH;
+auth: fn(fd: ref Sys\->FD, info: ref Authinfo, setid: int)
+                              : (string, array of byte);
+readauthinfo: fn(filename: string)     : ref Authinfo;
+writeauthinfo:fn(filename: string, info: ref Authinfo): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS AUTH (FD, INFO, SETID)
+The 
+.I auth
+function performs mutual authentication over a network connection, usually between a client and a server.
+The 
+.I auth
+function is symmetric, that is, each party runs it on their end of the connection.
+The 
+.I Authinfo
+adt, 
+.I info
+, contains the public key of a certifying authority (
+.I PKca
+), the private key of the user (
+.I SKu
+), the public key (
+.I PKu
+) of the user signed by the certifying authority (
+.I CERTu
+), and Diffie\-Hellman parameters (
+.I alpha
+, 
+.I p
+).
+.PP
+The 
+.I auth
+function returns a string and a byte array.
+If the byte array is 
+.I nil
+then the authentication has failed and the string is an error message.
+If the byte array is non\-
+.I nil
+, then it represents a secret shared by the two communicating parties.
+In this case the string is the name of the party at the other end of the connection.
+.PP
+If the authentication is successful and the argument 
+.I setid
+is non\-zero then 
+.I auth
+attempts to write the id of the party at the other end of the connection into 
+.I /dev/user
+(see 
+.I cons \- console device
+in Chapter 2).
+No error is generated if this does not succeed.
+If the authentication is not successful and 
+.I setid
+is non\-zero, 
+.I auth
+writes \[aq]
+.I none
+\[aq] into 
+.I /dev/user
+.
+.PP
+The authentication protocol is based on the Station\-to\-Station protocol.
+In the following the parties are labeled 0 and 1.
+Sig0(
+.I x
+) is 
+.I x
+signed with 0\[aq]s private key.
+.IP
+.EX
+0 \-> 1  alpha**r0 mod p, CERTu0, PKu0   
+1 \-> 0  alpha**r1 mod p, CERTu1, PKu1   
+0 \-> 1  sig0(alpha**r0 mod p, alpha**r1 mod p)   
+1 \-> 0  sig1(alpha**r0 mod p, alpha**r1 mod p) 
+.EE
+.PP
+At this point both 0 and 1 share the secret 
+.I alpha**(r0*r1)
+which is returned in the byte array.
+.PP
+.SS READAUTHINFO (FILENAME)
+The 
+.I readauthinfo
+function reads an 
+.I Authinfo
+adt from a file.
+It returns 
+.I nil
+if there is a read or conversion error, a reference to the adt otherwise.
+.PP
+.SS WRITEAUTHINFO (FILENAME, INFO)
+The 
+.I writeauthinfo
+function writes an 
+.I Authinfo
+adt to a file.
+It returns \-1 if the write operation fails, 0 otherwise.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+/usr/<user>/keyring
+T}@T{
+The conventional directory for storing 
+.I Authinfo
+files
+T}
+T{
+/usr/<user>/keyring/default
+T}@T{
+The file normally used by server programs
+T}
+T{
+/usr/<user>/keyring/$server
+T}@T{
+The files normally used by clients where 
+.I $server
+is the network name of the server being called, for example,
+.IP
+.EX
+tcp!server_name
+.EE
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,109 @@
+.TH HTTPD 6
+.PP
+.SH NAME
+httpd, echo, stats \- HTTP server
+.SH SYNOPSYS
+.IP
+.EX
+httpd [ \-c cachesize ] [ \-D ]
+echo  meth vers uri search 
+stats meth vers uri search
+.EE
+.PP
+.SH DESCRIPTION
+.SS HTTPD
+The 
+.I httpd
+program is an HTTP daemon, serving version 1.0 of the HTTP protocol.
+It is usually executed in response to an incoming call on TCP port 80, the HTTP port.
+.PP
+The 
+.I httpd program supports
+only the GET and HEAD methods of the HTTP protocol.
+The Content\-type (default application/octet\-stream) and Content\-encoding (default binary) of a file are determined by looking for suffixes of the file name in 
+.I /http/logs/http.suff
+.
+.PP
+If the requested URI begins with 
+.I /magic/
+, the 
+.I httpd
+program loads the module associated with the remaining part of the URI.
+.PP
+.SS OPTIONS
+.PP
+.TS
+tab(@);
+l l.
+T{
+-c cachesize
+T}@T{
+The 
+.I \-c
+flag is used to set the size of the daemon\[aq]s cache.
+The default is a five megabyte cache.
+T}
+T{
+-D
+T}@T{
+If the 
+.I \-D
+flag is set, debugging information is written to the file 
+.I /httpd/httpd.debug
+.
+By default, there is no debugging.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS ECHO
+The 
+.I echo
+program is a trivial server that just returns the method, URI, any search, and the headers sent by the client.
+.PP
+.SS STATS
+The 
+.I stats
+program is an example that queries the cache and returns information to the user about pages stored in the cache.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/services/httpd/logs/httpd.debug
+T}@T{
+Logfile for debugging information.
+T}
+T{
+/services/httpd/logs/httpd.log
+T}@T{
+
+.I httpd
+logfile.
+T}
+T{
+/services/httpd/logs/httpd.rewrite
+T}@T{
+File to redirect specific URI requests.
+T}
+T{
+/services/httpd/logs/httpd.suff
+T}@T{
+File of recognizable suffixes and their content type.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

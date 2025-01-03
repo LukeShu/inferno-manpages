@@ -1,0 +1,288 @@
+.TH LS 5
+.PP
+.SH NAME
+ls \- list contents of directory
+.SH SYNOPSYS
+.IP
+.EX
+.EE
+.PP
+
+.B 
+
+.SH DESCRIPTION
+For each directory argument, 
+.I ls
+lists to the standard output the contents of the directory.
+For each file argument, 
+.I ls
+repeats its name and any other information requested.
+When no argument is given, the current directory is listed.
+.PP
+If a named file does not exist, an error message is sent to the standard error.
+.PP
+.SH OPTIONS
+There are a number format/content options:
+.PP
+.TS
+tab(@);
+l l.
+T{
+-d
+T}@T{
+List directory names.
+T}
+T{
+-l
+T}@T{
+List in long format, giving mode (see 
+.I The Long Format
+)
+T}
+T{
+-p
+T}@T{
+Print only the final path element of each file name.
+T}
+T{
+-q
+T}@T{
+Include the 
+.I qid
+(see 
+.I stat, fstat, fwstat, wstat \- get and put file status
+in Chapter 8) of each file.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+By default, the output is sorted alphabetically by name.
+Sorting options are as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+-r
+T}@T{
+Reverse the order of sort.
+T}
+T{
+-s
+T}@T{
+Sort by size.
+T}
+T{
+-t
+T}@T{
+Sort by time modified (latest first)
+T}
+T{
+-u
+T}@T{
+Sort by time of last access
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS THE LONG FORMAT
+The information given with the 
+.I \-l
+format consists of eight fields:
+.PP
+.TS
+tab(@);
+lw(23.1n) lw(23.1n) lw(23.1n).
+T{
+mode
+T}@T{
+The 
+.I mode
+field contains ten characters.
+The first character is
+T}@T{
+T}
+T{
+T}@T{
+d
+T}@T{
+if the entry is a directory;
+T}
+T{
+T}@T{
+-
+T}@T{
+if the entry is a plain file.
+T}
+T{
+T}@T{
+The remaining nine characters are interpreted as three sets of three bits each.
+.PP
+The first set refers to owner (
+.I uid
+) permissions.
+.PP
+The next set to permissions to those in the same user\-group (
+.I gid
+).
+.PP
+The last set refers to permissions for all others.
+T}@T{
+T}
+T{
+T}@T{
+Within each set the three characters indicate permission respectively to read, to write, or to execute the file as a program.
+T}@T{
+T}
+T{
+T}@T{
+For a directory, \[ga]execute\[aq] permission means permission to search the directory for a specified file.
+T}@T{
+T}
+T{
+T}@T{
+The permissions are indicated as follows:
+T}@T{
+T}
+T{
+T}@T{
+r
+T}@T{
+if the file is readable;
+T}
+T{
+T}@T{
+w
+T}@T{
+if the file is writable;
+T}
+T{
+T}@T{
+x
+T}@T{
+if the file is executable;
+T}
+T{
+T}@T{
+-
+T}@T{
+if none of the above permissions is granted.
+T}
+T{
+devtype
+T}@T{
+The 
+.I device type
+for the file, a single character representing the root of a file tree implemented by a particular kernel device driver.
+T}@T{
+T}
+T{
+device number
+T}@T{
+A number provided by the file system server.
+T}@T{
+T}
+T{
+uid
+T}@T{
+The user identity string.
+T}@T{
+T}
+T{
+gid
+T}@T{
+The group identity string.
+T}@T{
+T}
+T{
+size
+T}@T{
+The size of the file in bytes.
+T}@T{
+T}
+T{
+modification time
+T}@T{
+The modification time of the file formatted per 
+.I Daytime\->filet:
+
+.PD 0
+.P
+.PD
+files less than 6 months old \-
+.PD 0
+.P
+.PD
+appear with month, day\-of\-month, and time\-of\-day
+.PD 0
+.P
+.PD
+files over 6 months old \-
+.PD 0
+.P
+.PD
+show appear with month, day\-of\-month, and year
+T}@T{
+T}
+T{
+name
+T}@T{
+The file name.
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH NOTES
+The sorting options correspond to the 
+.I sortkey
+options of the 
+.I readdir
+module.
+See 
+.I readdir \- read directory and sort files
+in Chapter 15.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I stat, fstat, fwstat, wstat \- get and put file status
+in Chapter 8
+T}
+T{
+.I Inferno Devices
+in Chapter 2
+T}
+T{
+.I stat, wstat \- inquire or change file attributes
+in Chapter 3
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

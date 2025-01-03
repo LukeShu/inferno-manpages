@@ -1,0 +1,126 @@
+.TH GETAUTHINFO 9
+.PP
+.SH NAME
+getauthinfo \- command to create/obtain a certificate for authentication
+.SH SYNOPSYS
+.IP
+.EX
+getauthinfo id
+.EE
+.PP
+.SH SERVER COMMAND
+On a \[aq]signer\[aq] server, the 
+.I getauthinfo
+command provides an interactive means to create a certificate for a user.
+The id is specified as the file name, 
+.I default
+.
+Before issuing the getauthinfo command, a directory must exist on the server with the name 
+.I /usr/inferno/keyring
+.
+.PP
+.SH CLIENT COMMAND
+On a client, the 
+.I getauthinfo
+command provides a means to obtain a user\[aq]s certificate from a \[aq]signer\[aq] server.
+The 
+.I id
+is of the form 
+.I net!machine
+, where machine is the address of the \[aq]signer\[aq] server (see 
+.I bind, mount, unmount \- change name space
+for more information about addresses of this form).
+.PP
+In order to perform authentication, two machines must have a certificate from the same \[aq]signer\[aq] server.
+To save a certificate in a file on a client, a directory 
+.I /usr/username/keyring
+must be created on the client, where 
+.I username
+is the name of the user for whom the certificate is to be obtained.
+.PP
+.SS USER RESPONSES
+The user is prompted for the following items:
+.PP
+.TS
+tab(@);
+l l.
+T{
+signer
+T}@T{
+the name of the \[aq]signer\[aq] server, for example, 
+.I pcwork1.company.com
+.
+The default is the name in the file 
+.I /services/cs/db
+.
+T}
+T{
+remote user name
+T}@T{
+the name of the user for whom a certificate is either to be created on the server or retrieved on the client.
+The default is the name in /dev/user.
+T}
+T{
+password
+T}@T{
+the password for the user.
+The password entered on the client must match the password on the server in order to retrieve a certificate.
+This password can be stored in encrypted form on the server with the 
+.I changelogin
+command (see changelogin earlier in this chapter).
+The password must be at least 7 characters.
+T}
+T{
+save in file
+T}@T{
+the default is no.
+If the user responds \[dq]yes\[dq] on a client, the certificate is stored on the client in the file 
+.I /usr/username/keyring/net!machine
+.
+On the server, the user should respond \[dq]yes,\[dq] and the newly created certificate is stored in the file 
+.I /usr/Inferno/keyring/default
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/usr/username/keyring/net!machine
+T}@T{
+where a certificate is stored on a client machine
+T}
+T{
+/usr/inferno/keyring/default
+T}@T{
+where a certificate is stored on a \[aq]signer\[aq] server.
+T}
+T{
+/services/cs/db
+T}@T{
+contains the default name of the \[aq]signer\[aq] server.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I changelogin \- command to create/update the password file
+
+.PP
+.I login, getauthinfo \- get an Authinfo adt from a certificate authority

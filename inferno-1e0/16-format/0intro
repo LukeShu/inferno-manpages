@@ -1,0 +1,42 @@
+.TH 0INTRO A
+.PP
+.PP
+.SH NAME
+Inferno Format Specifications
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+The following utilities are used for formatting in Inferno:
+.PP
+.TS
+tab(@);
+l.
+T{
+.I db \- connection service database
+
+T}
+T{
+.I font, subfont \- external format for character fonts and subfonts
+
+T}
+T{
+.I image \- external format for images
+
+T}
+T{
+.I rgbv \- color map
+
+T}
+T{
+.I UTF, Unicode, ASCII \- character set and format
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

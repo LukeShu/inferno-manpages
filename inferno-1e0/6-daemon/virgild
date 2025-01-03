@@ -1,0 +1,79 @@
+.TH VIRGILD 6
+.PP
+.SH NAME
+virgild \- connection service for remote clients
+.SH SYNOPSYS
+lib/cs lib/virgild
+.IP
+.EX
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I virgild
+daemon monitors requests for name service arriving on UDP port 
+.I virgil
+.
+Those requests are translated into a network address via the local connection server (see 
+.I cs \- connection server daemon
+) and sent back to the requesting client.
+.PP
+Requests should be of the form:
+.PP
+
+.I userid?machinename
+
+.PP
+The 
+.I userid
+field is currently unused but must be supplied to satisfy the required syntax.
+The machine name can be a symbolic service name as described in 
+.I db \- connection service database
+in Appendix A.
+Such names are resolved against the 
+.I /services/cs/db
+file on the machine running 
+.I virgild
+.
+.PP
+The request is included in the response format:
+.PP
+
+.I userid?machine_name=network_address
+
+.PP
+The 
+.I virgild
+daemon assumes that the local connection service has already been started.
+.PP
+.SH CAVEAT
+If the machine name cannot be resolved into a network address, the virgild daemon writes a warning message to its standard error and reads its input for the next request.
+No notification is sent to the client.
+Clients are advised to arrange for a timeout on their translation requests.
+.PP
+The 
+.I virgild
+daemon is (currently) single threaded.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I cs \- connection server daemon
+
+T}
+T{
+.I rcmd \- remote command execution
+in Chapter 5
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP

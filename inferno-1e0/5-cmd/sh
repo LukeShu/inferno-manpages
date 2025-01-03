@@ -1,0 +1,304 @@
+.TH SH 5
+.PP
+.SH NAME
+sh \- command line interface to the Inferno system
+.SH SYNOPSYS
+.IP
+.EX
+sh [file]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I sh
+program provides a user level interface (a shell) to the Inferno system.
+It reads input lines, identifies a command and arguments for that command, and arranges for execution of the corresponding Inferno module.
+.PP
+If a file is named as a command line argument, that file is the source of input; otherwise, standard input is read.
+.PP
+There are features that allow input/output redirection, creating pipelines, and performing tasks in background.
+.PP
+.SS STARTING THE SHELL
+In desktop\-oriented configurations, the shell is started as part of system initialization.
+The shell can also be started from:
+.PP
+.TS
+tab(@);
+l l.
+T{
+an existing shell
+T}@T{
+to process a script file
+T}
+T{
+another program
+T}@T{
+the window manager has a button for creating new shells
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS COMMAND LINE SYNTAX
+Each line consists of one or more command pipelines each separated by either an ampersand (&) which indicates that the pipeline should be run in background or a semi\-colon (;).
+The semi\-colon need not be provided for the last command pipeline on a line.
+.PP
+Command pipelines are not allowed to span lines.
+.PP
+Each command pipeline consists of one or more commands separated by a vertical bar (|) character.
+The standard output of one command is made the standard input of the next command to the right.
+.PP
+Re\-direction of input/output to pipes takes precedence over re\-direction from/to files.
+.PP
+In the limit case, a command pipeline consists of a single command with no pipes.
+.PP
+A command consists of one or more fields.
+The first (leftmost) field is the command field.
+It is used to determined the executable file to be loaded and run; see 
+.I Finding the Module
+.
+The remaining fields are parsed and become command line arguments that are passed to the module\[aq]s init function as a list of strings.
+.PP
+Any input following a # on a line is discarded.
+.PP
+.SS FINDING THE MODULE
+The command field is converted to the pathname of the Dis file of some module.
+That field can be either an absolute pathname, starting from /, or a relative pathname from the current directory.
+.PP
+As a convenience, the user need not specify the 
+.I .dis
+suffix to the filename.
+If missing, it will be added by the shell.
+.PP
+If the load fails there is, in general, a second attempt to load the module by resolving the pathname relative to the 
+.I /dis
+directory (the general system repository of Dis files).
+.PP
+There are two exceptions to this second attempt.
+The second load attempt is not performed if the command field provides an absolute pathname or a relative pathname starting with dot\-slash (
+.I ./
+).
+Such explicit naming is taken to mean that the user will accept no substitutions.
+.PP
+The shell requires that the Dis file implement a module with an interface equivalent to the 
+.I Command
+module as specified in 
+.I /module/sh.m
+.
+Otherwise, the named file will not load.
+.PP
+.SS FILE NAME EXPANSION
+Command line arguments (including the command field itself) are expanded by the shell according to the regular expression rules described in 
+.I filepat: expand, match \- file pattern matching
+in Chapter 15.
+.PP
+This expansion is not applied to the filenames used for input/output redirection.
+.PP
+.SS QUOTING
+The shell special characters can be stripped of their meaning and treated as literals by enclosing them in single quotes.
+Inside a quoted string, the special meaning of the single quote can be removed by immediately following it with another single quote.
+Command lines with un\-terminated quoted strings are rejected and cause an error message.
+.PP
+.SS EXAMPLES
+.IP
+.EX
+xxx$ echo \[aq]\[aq]\[aq]\[aq]
+[aq]
+
+xxx$ echo \[aq]don\[aq]\[aq]t\[aq]
+don\[aq]t
+
+xxx$ echo \[aq]hello\[aq] \[aq]world
+sh: unmatched quote
+
+xxx$ echo \[aq]a\[aq]b
+ab
+
+xxx$ echo a\[aq]b\[aq]
+ab
+xxx$
+.EE
+.PP
+.SS SHELL SPECIAL CHARACTERS
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+[aq] \[aq]
+T}@T{
+Blank: 
+.I whitespace
+, except in a quoted string.
+T}
+T{
+[rs]t
+T}@T{
+Tab: 
+.I whitespace
+, except in a quoted string.
+T}
+T{
+[rs]n
+T}@T{
+Newline: command line terminator.
+T}
+T{
+#
+T}@T{
+Start of comment
+T}
+T{
+[aq] (single quote)
+T}@T{
+Start of/end of quoted string.
+T}
+T{
+| (vertical bar)
+T}@T{
+Interface between commands in a command pipeline.
+T}
+T{
+&
+T}@T{
+Terminator for command pipelines to be run in background.
+T}
+T{
+;
+T}@T{
+Terminator for command pipelines to be run synchronously by the shell.
+T}
+T{
+>
+T}@T{
+Output re\-direction
+.PD 0
+.P
+.PD
+create file if it does not exist
+.PP
+truncate file if it exists
+T}
+T{
+>>
+T}@T{
+Output re\-direction
+.PD 0
+.P
+.PD
+create file if it does not exist
+.PP
+append to file if it exists
+T}
+T{
+<
+T}@T{
+Input re\-direction.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS PROMPT
+The shell uses a prompt consisting of the system name as provided by 
+.I /dev/sysname
+suffixed by 
+.I $.
+
+.PP
+.SS INPUT/OUTPUT RE\-DIRECTIONS
+By default, standard input is the console keyboard and standard output the console display.
+Each command can specify that standard input be taken from a file and standard output be written to a file.
+.PP
+Attempts to redirect standard input to a non\-existing file will fail.
+Redirecting standard output to a non\-existing file will cause that file to be created.
+If the destination file already exists, it will be overwritten.
+Any previous contents are lost.
+.PP
+In cases of competing re\-direction mechanisms (re\-direct to a file and to a pipe), the pipe has precedence.
+.PP
+.SS BACKGROUND TASKS
+In general, the shell waits for the termination of a command pipeline before continuing execution, for example, prompting the user for the next command.
+However, if the command pipeline is terminated by an ampersand (&) character, the wait stage is skipped and the shell continues execution immediately, in this case the command pipeline executes as a background task.
+.PP
+.SS NAME SPACE CONCERNS
+When started, the shell creates an independent file name space that is a copy of the file name space of the shell\[aq]s creator.
+.PP
+Command pipelines started by the shell are executed by threads that share the shell\[aq]s name space.
+If those commands modify the file name space (and they have not mimicked the shell in creating their own independent name space), those modifications will be perceived by the shell when it continues execution.
+See 
+.I bind, mount, unmount \- change name space
+and 
+.I pctl \- process control
+in Chapter 8.
+.PP
+.SH FILES
+
+.I /prog/n/wait
+
+.PP
+.SH NOTES
+This is a rudimentary shell designed for debugging applications.
+It is 
+.I not
+intended to serve as a general\-purpose programmable shell.
+.PP
+In lieu of a path mechanism, a process can create a union directory at 
+.I /dis
+.
+.PP
+.SH CAVEAT
+Inferno does not support an append mode.
+Therefore, the shell\[aq]s approximation is not guaranteed if there are concurrent appending processes.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I bind, mount, unmount \- change name space
+
+T}
+T{
+.I filepat: expand, match \- file pattern matching
+in Chapter 15
+T}
+T{
+.I pipe: fds, files \- get read/write file pair for a pipe
+in Chapter 15
+T}
+T{
+.I sh \- command interface
+
+T}
+T{
+.I pctl \- process control
+See Notes on name space management
+T}
+T{
+.I cons \- console device
+in Chapter 2
+T}
+T{
+.I prog \- interface to running programs
+in Chapter 2
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,89 @@
+.TH GETSTRING 9
+.PP
+.SH NAME
+getstring, putstring, getbytearray, putbytearray, puterror\- delimited I/O
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]keyring.m\[dq]
+keyring:= load Keyring Keyring\->PATH;
+getstring:   fn(fd: ref Sys\->FD)  : (string, string);
+putstring:   fn(fd: ref Sys\->FD, s: string): int;
+getbytearray:fn(fd: ref Sys\->FD)  : (array of byte, string);
+putbytearray: fn(fd: ref Sys\->FD,a: array of byte, n: int):
+                                                   int;
+puterror:     fn(fd: ref Sys\->FD,    s: string): int;
+.EE
+.PP
+.SH DESCRIPTION
+This collection of routines provides delimited I/O for strings, byte arrays and error strings over arbitrary networks.
+.PP
+.SS GETSTRING (FD)
+The 
+.I getstring
+function reads a text string from the file descriptor supplied as its argument.
+The return value is a tuple of the form 
+.I (result, error)
+.
+If successful, the error string is 
+.I nil
+.
+.PP
+.SS PUTSTRING (FD, S)
+The 
+.I putstring
+function writes the string supplied as its second argument to the file descriptor supplied as its first argument.
+It returns the number of bytes written to the network or \-1 if an error occurred.
+Messages sent by 
+.I putstring
+are truncated to 4096 bytes in length.
+.PP
+.SS GETBYTEARRAY (FD)
+The 
+.I getbytearray
+function reads an array of bytes from the file descriptor supplied as its argument and returns a tuple of the form 
+.I (result, error)
+.
+If successful the error string is 
+.I nil
+.
+.PP
+.SS PUTBYTEARRAY (FD, ARR, N)
+The 
+.I putbytearray
+function writes an array of bytes supplied as its second argument to the file descriptor supplied as its first argument.
+It returns the number of bytes written to the network or \-1 if an error occurred.
+Messages sent by 
+.I putbytearray
+are truncated to 4096 bytes in length.
+.PP
+.SS PUTERROR (FD, S)
+The 
+.I puterror
+function writes an error string supplied as its second argument to the file descriptor supplied as its first argument.
+This function can be used in place of 
+.I putstring
+or 
+.I putbytearray
+to cause the corresponding 
+.I getstring
+or 
+.I getbytearray
+to fail, yielding the error string.
+The error string may not be longer than 
+.I ERRLEN
+bytes.
+.PP
+.SH DIAGNOSTICS
+The 
+.I putstring
+, 
+.I putbytearray
+, and 
+.I puterror
+functions return \-1 if there is an I/O error.
+The 
+.I getstring
+and 
+.I getbytearray
+functions return a string indicating the cause of the error in the second element of the tuple that forms their return value.

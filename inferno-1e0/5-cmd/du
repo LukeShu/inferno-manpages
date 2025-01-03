@@ -1,0 +1,101 @@
+.TH DU 5
+.PP
+.SH NAME
+du \- disk usage
+.SH SYNOPSYS
+.IP
+.EX
+du [\-sant] [file...]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I du
+command outputs to standard output the total size of files specified as arguments.
+Output sums are rounded up to the nearest 1K unit (1024 bytes).
+.PP
+Directories are recursively tallied.
+If no filenames are provided, the command operates on the current directory.
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+
+.I \-s
+(default)
+T}@T{
+Output the usage information tallied for each directory.
+T}
+T{
+-a
+T}@T{
+Output usage information for each file, not just the directories.
+T}
+T{
+-n
+T}@T{
+Output just the filenames, no other information.
+Warning messages are generated for \[aq]unsafe\[aq] filenames (for example, names containing shell special characters or characters that might confuse certain tools).
+The unsafe characters are:
+.IP
+.EX
+[dq] \[aq] \[rs]Q $ # ; & | \[ha] < > ( ) \[rs]
+.EE
+T}
+T{
+-t
+T}@T{
+When used with the 
+.I \-n
+option, outputs the filename, modification time (seconds since the epoch), size (in bytes), and checksum.
+This option has no effect in the absence of the 
+.I \-n
+option.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH NOTES
+Options 
+.I \-s
+, 
+.I \-a
+, and 
+.I \-n
+are mutually exclusive.
+.PP
+.SH CAVEAT
+The checksum value shown by the 
+.I \-t
+option is always 0.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I sh \- command line interface to the Inferno system
+
+T}
+T{
+.I stat, fstat, fwstat, wstat \- get and put file status
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

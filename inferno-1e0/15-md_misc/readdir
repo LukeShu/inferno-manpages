@@ -1,0 +1,87 @@
+.TH READDIR 15
+.PP
+.SH NAME
+readdir \- read directory and sort files
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]readdir.m\[dq];
+readdir:= load Readdir Readdir\->PATH;  
+    NAME, ATIME, MTIME, SIZE, NONE: con iota;
+    DESCENDING         : con (1<<5);
+init: fn(path: string, sortkey: int):
+                         (array of ref Dir, int);
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I Readdir
+module reads the contents of the directory 
+.I path
+and sorts the resulting array according to 
+.I sortkey
+.
+.PP
+Each element in the returned array is a reference to one 
+.I Dir
+element in the array formed by the 
+.I dirread
+system call.
+
+.I Readdir
+also returns the number of entries read, or 
+.I \-1
+on failure.
+.PP
+The sorting criteria for the returned array are based on 
+.I sortkey
+as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+NAME
+T}@T{
+Sort files alphabetically by name.
+T}
+T{
+ATIME
+T}@T{
+Sort files by access time, most recently accessed first.
+T}
+T{
+MTIME
+T}@T{
+Sort files by modification time, most recently modified first.
+T}
+T{
+SIZE
+T}@T{
+Sort files by size, largest file first.
+T}
+T{
+NONE
+T}@T{
+Files are left in directory order, unsorted.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+If the value 
+.I DESCENDING
+is 
+.I OR
+\[aq]ed into any of the above values (except 
+.I NONE
+) the order of sorting is reversed.
+.PP
+.SH SEE ALSO
+.I read, write, stream \- read, write, or stream file
+in Chapter 8

@@ -1,0 +1,157 @@
+.TH GET 9
+.PP
+.SH NAME
+get, put \- read and write password entries in the password file
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]keyring.m\[dq];
+include \[dq]security.m\[dq];
+pw := load Password Password\->PATH;
+
+Password: module
+{
+  PW: adt {
+            id:     string;         # user id
+            pw:     array of byte;  # password
+        expire: int;       # expiration time (epoch seconds)
+         other:  string;            # about the account
+           };
+  get: fn(id: string): ref PW;
+  put: fn(pass: ref PW): int;
+  PWlen: con 4;
+.EE
+.PP
+.SH DESCRIPTION
+This module provides a convenient interface to the password file (/keydb/password).
+Each entry in the file contains information corresponding to the members of the PW adt.
+Those members and their respective sizes (in bytes) are:
+.PP
+.TS
+tab(@);
+l l l.
+T{
+id
+T}@T{
+32
+T}@T{
+User identification string
+T}
+T{
+pw
+T}@T{
+Keyring\->SHAdlen (20)
+T}@T{
+Password.
+T}
+T{
+expire
+T}@T{
+length of int (4)
+T}@T{
+Expiration data in seconds of epoch (Jan 1 00:00 1970 GMT).
+See 
+.I daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions
+in Chapter 15.
+T}
+T{
+other
+T}@T{
+72
+T}@T{
+Arbitrary administrative comment.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Each new entry increases the size of the password file by 128 bytes.
+.PP
+The functions provide access to the file:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+get(id)
+T}@T{
+If user 
+.I id
+has an entry in the password file, the get function supplies a PW adt with the corresponding information.
+Otherwise, a nil reference is returned.
+T}
+T{
+put(pass)
+T}@T{
+The put function copies the information of the 
+.I pass
+adt into the password file.
+If an entry for 
+.I pass
+.id already exists, it is overwritten; otherwise, a new entry is appended to the file.
+If none exists, the password file is created.
+.PP
+Any members of PW that exceed the corresponding field limit are silently truncated before being written to the password file.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The constant PWlen is currently unused.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/keydb/password
+T}@T{
+Storage for password entries.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH CAVEAT
+Access to the password file is not serialized.
+.PP
+This module transfers data without transformation (except for the truncating of excessively long fields) between the PWD adt and the password file.
+If some transformation is needed (for example, encryption of the pw value), the caller must make separate arrangements.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I logind \- login daemon
+in Chapter 9
+T}
+T{
+.I changelogin \- command to create/update the password file
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

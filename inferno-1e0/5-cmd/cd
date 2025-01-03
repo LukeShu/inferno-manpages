@@ -1,0 +1,64 @@
+.TH CD 5
+.PP
+.SH NAME
+cd \- change working directory
+.SH SYNOPSYS
+.IP
+.EX
+cd [directory]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I cd
+command changes the working directory for the Inferno shell and all processes in its process group (see 
+.I Note
+on 
+.I pctl \- process control
+in Chapter 8) to the 
+.I directory
+specified on the command line.
+If no argument is given, the command attempts to change to 
+.I /usr/user
+where 
+.I user
+is obtained from 
+.I /dev/user.
+
+.PP
+.SH FILES
+
+.I /dev/user
+
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I pwd \- print working directory
+
+T}
+T{
+.I chdir \- change working directory
+in Chapter 8
+T}
+T{
+.I pctl \- process control
+in Chapter 8
+T}
+T{
+.I cons \- console device
+in Chapter 2 for a description of 
+.I /dev/user
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

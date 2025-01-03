@@ -1,0 +1,213 @@
+.TH BIND 8
+.PP
+.SH NAME
+bind, mount, unmount \- change file name space
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+bind: fn (source, target: string, flag: int): int;
+mount:fn (fd: ref FD; target: string, flag: int,
+                       aname: string): int;
+unmount: fn(source, target: string): int;
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I bind
+, 
+.I mount,
+and 
+.I unmount
+commands modify the file name space of the current process and its name space group.
+For both calls, 
+.I target
+is the name of an existing file or directory in the current name space where the modification is to be made.
+The name 
+.I target
+is evaluated as described in 
+.I File Name Expansion
+in Chapter 5, except that no translation of the final path element is done.
+.PP
+.SS BIND (SOURCE, TARGET, FLAG)
+For 
+.I bind
+, 
+.I source
+is the name of an existing file or directory in the current name space.
+After a successful 
+.I bind
+call, the file name 
+.I target
+is an alias for the object originally named by 
+.I source
+.
+If the modification doesn\[aq]t hide the original, 
+.I source
+will still refer to the original file.
+The evaluation of 
+.I source
+happens at the time of the 
+.I bind
+, not when the binding is used.
+.PP
+.SS MOUNT (FD, TARGET, FLAG, ANAME)
+The 
+.I fd
+argument to 
+.I mount
+is a file descriptor of an open pipe or network connection to a file server ready to receive Styx messages.
+The target 
+.I file
+must be a directory.
+After a successful 
+.I mount
+the file tree served by 
+.I fd
+will be visible with its root directory having name 
+.I target
+.
+.PP
+With 
+.I mount
+, the file descriptor 
+.I fd
+must be open for reading and writing and connected to a file server.
+(See 
+.I dial, announce, export, listen \- make network connections
+.)
+.PP
+After the 
+.I mount
+, the file tree starting at 
+.I target
+is served by a kernel 
+.I mnt
+device.
+That device will turn operations in the tree into messages on 
+.I fd
+.
+.PP
+The string 
+.I aname
+is currently unused.
+.PP
+.SH OPTIONS FOR BIND AND MOUNT
+For both 
+.I bind
+and 
+.I mount
+, the 
+.I flag
+controls details of the modification made to the name space.
+In the following descriptions, 
+.I source
+refers to the file as defined by 
+.I name
+or the root directory served by 
+.I fd
+.
+Both 
+.I target
+and 
+.I source
+files must be directories, or both must non\-directories.
+The 
+.I flag
+parameter can be one of the following:
+.PP
+.SS MREPL
+Replace the target file by the source.
+An evaluation of 
+.I target
+will be translated to the source file.
+If they are directories 
+.I target
+becomes a 
+.I union
+directory consisting of one directory, the source file.
+.PP
+.SS MBEFORE
+Both 
+.I target
+and 
+.I source
+must be directories.
+Add the files of the 
+.I source
+directory to the union directory at 
+.I target
+so its contents appear first in the union.
+After a 
+.I bind
+or 
+.I mount
+with this option, the source directory will be searched first when evaluating file names in the union directory.
+.PP
+.SS MAFTER
+Like 
+.I MBEFORE
+but the source directory goes at the end of the union.
+.PP
+.SS MCREATE
+The 
+.I MCREATE
+flag can be OR\[aq]ed with any of the flags previously described above.
+When a 
+.I create
+call attempts to create in a union directory, and the file does not exist, the elements of the union are searched in order until one is found with 
+.I MCREATE
+set.
+The file is created in that directory; if that attempt fails, the 
+.I create
+fails.
+(see 
+.I open, create \- open/create a file for reading or writing
+)
+.PP
+.SS UNMOUNT (NAME, TARGET)
+The effects of 
+.I bind
+and 
+.I mount
+can be undone by 
+.I unmount
+.
+If 
+.I name
+is 
+.I nil
+, everything bound to or mounted on 
+.I target
+is unbound or unmounted.
+If 
+.I name
+is not 
+.I nil
+, it is evaluated as described above for 
+.I bind
+, and the effect of binding or mounting that particular result on 
+.I target
+is undone.
+.PP
+.SH DIAGNOSTICS
+The return value is a positive integer (a unique sequence number) for success, \-1 for failure.
+.PP
+.SH CAVEAT
+The 
+.I mount
+command will not return until it has successfully attached to the file server, so the thread doing a 
+.I mount
+cannot be the one serving.
+.PP
+.SH EXAMPLES
+See 
+.I Examples
+in Chapter 5
+.PP
+.SH SEE ALSO
+.I Limbo System Module
+, 
+.I bind, mount, unmount \- change name space
+in Chapter 5

@@ -1,0 +1,394 @@
+.TH AUDIO 2
+.PP
+.SH NAME
+audio \- interface to audio devices
+.SH SYNOPSYS
+.IP
+.EX
+bind \-a \[aq]#A\[aq] /dev
+
+/dev/audio
+/dev/audioctl
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I audio
+device provides kernel support for an interface to a variety of sound devices.
+Some of the things you can do with the audio device are:
+.IP \[bu] 2
+talk into the microphone on your computer and hear your voice be processed through inferno and played back through your speakers
+.IP \[bu] 2
+talk through your microphone and save your voice in a file (record your voice) for later playback
+.IP \[bu] 2
+play any Win95 .wav, or .snd file
+.IP \[bu] 2
+play the sound you previously record through inferno
+.IP \[bu] 2
+you can talk into your microphone and sound will be heard through the speakers machine across the network (and vice versa)
+.RS 2
+.PP
+The 
+.I audio
+device reads and writes the audio device file 
+.I audio
+and the audio control file 
+.I audioctl
+
+.RE
+.PP
+.SH AUDIO DEVICE FILE \- AUDIO
+The 
+.I 
+audio device file 
+.I audio
+is used to send or receive raw audio data.
+Data read or written to the 
+.I audio
+file are processed as raw information in the format described by the current state of the control file 
+.I audioctl
+.
+The 
+.I audio
+file does not support any file format conventions.
+It is the responsibility of the application to read or write 
+.I audio
+data to or from files in a suitable format.
+.PP
+.SS WRITE TO AUDIO
+The data written to 
+.I audio
+are output to the assigned output device.
+The default 
+.I audio
+output device is a speaker(s).
+Other output devices include headphones, line\-out, and similar devices.
+.PP
+If the application writes to the audio file faster than the buffer sends it to the output, the application blocks until there is enough internal memory to hold the incoming data.
+.PP
+.SS READ FROM AUDIO
+The data read from 
+.I audio
+is input from the assigned input device.
+The default audio input device is a microphone.
+.PP
+The microphone input begins at the first read request and ends at close, or until the internal buffers are full.
+A subsequent read will then start the input again.
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I The input may end if the read is not fast enough.
+This may lead to dropped data samples.
+
+.PP
+   *   *   *   *   *
+.PP
+.SH AUDIO CONTROL FILE \- AUDIOCTL
+The audio control file (
+.I audioctl
+) is used to send or receive formatted 
+.I audio
+control messages.
+Control messages read or written to the 
+.I audioctl
+file modify the processing of raw data read or written to the 
+.I audio
+file.
+.PP
+The 
+.I audioctl
+file settings are persistent across process invocations.
+An application running on Inferno should query the capabilities of the local 
+.I audio
+device before utilizing any audio services.
+An application should prepare the 
+.I audio
+file for output by sending the appropriate message to the 
+.I audioctl
+file prior to reading or writing data.
+.PP
+Valid messages written to the 
+.I audioctl
+file using the 
+.I write
+system call return a non\-zero value equal to the length of the ASCII message string.
+Invalid messages written to the 
+.I audioctl
+file using the write system call return a value equal to \-1.
+.PP
+Applications reading from the 
+.I audioctl
+file should supply a buffer of size 
+.I AUDIO_INFO_MAX (512).
+The returned string from reading audioctl contains the supported type strings along with all the acceptable values for that type.
+The first value following the type is the current value.
+The returned string can then be tokenized using system calls and processed appropriately.
+.PP
+.SS MESSAGES TO CTL
+Application messages sent to the 
+.I audioctl
+file behave differently for input and output.
+.PP
+Messages sent to the 
+.I audioctl
+file to control output, block the process until any existing raw data in the 
+.I audio
+file has been played.
+The state of the 
+.I audio
+file output processing is then modified so that new raw data written to 
+.I audio
+will play appropriately.
+.PP
+Messages sent to the 
+.I audioctl
+file to control input result in flushing any unread raw input data in the 
+.I audio
+file.
+The state of the 
+.I audio
+file input processing is then modified so that new raw data read from 
+.I audio
+will match the new input control settings.
+.PP
+The messages sent to or received from the 
+.I audioctl
+file are ASCII\-based text messages following the syntax:
+.PP
+[dir] type value [type value1 value2 value3]
+.SS DIR
+The option 
+.I dir
+can be either 
+.I in
+or 
+.I out
+if an application wishes differing configuration for input and output.
+.PP
+.SS TYPE VALUE
+A variable number of tuples consisting of type value(s) are accepted and/or returned.
+If multiple values for a given type are used, the first value (
+.I value1
+) represents the assigned control value for that type.
+Values are specific to the type identifier.
+All types and values are supplied as ASCII text separated by white space, tab stops, new\-lines, or commas.
+.PP
+The types and their acceptable values are listed as follows:
+.PP
+.SS ENC \- ENCODING FORMAT
+.PP
+.TS
+tab(@);
+l l.
+T{
+ulaw
+T}@T{
+µ\-law encoding
+T}
+T{
+alaw
+T}@T{
+A\-law encoding
+T}
+T{
+pcm
+T}@T{
+Pulse Code Modulation encoding
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS RATE \- SAMPLING RATE
+.PP
+.TS
+tab(@);
+l l.
+T{
+8000
+T}@T{
+8000 samples per second
+T}
+T{
+11025
+T}@T{
+11025 samples per second
+T}
+T{
+22050
+T}@T{
+22050 samples per second
+T}
+T{
+44100
+T}@T{
+44100 samples per second
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS CHANS \- CHANNELS
+.PP
+.TS
+tab(@);
+l l.
+T{
+1
+T}@T{
+1 channel
+T}
+T{
+2
+T}@T{
+2 channels
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS BITS PER ENCODING SAMPLE
+.PP
+.TS
+tab(@);
+l l.
+T{
+8
+T}@T{
+8 bits per sample
+T}
+T{
+16
+T}@T{
+16 bits per sample
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS BUF \- PLAY/RECORD SAMPLE BUFFER SIZE
+.PP
+.TS
+tab(@);
+l l.
+T{
+0 \- 100
+T}@T{
+Any whole number between 0 and 100 representing the percentage between the minimum and maximum buffering capability.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS COUNT \- NUMBER OF SAMPLES WAITING FOR I/O
+.PP
+.TS
+tab(@);
+l l.
+T{
+0
+T}@T{
+flush in/out.
+T}
+T{
+#
+T}@T{
+number of samples waiting for I/O
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS DEV \- INPUT DEVICE
+.PP
+.TS
+tab(@);
+l l.
+T{
+mic
+T}@T{
+input microphone
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS DEV \- OUTPUT DEVICE
+.PP
+.TS
+tab(@);
+l l.
+T{
+spkr
+T}@T{
+output speaker
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH NOTE
+There are two 
+.I audio
+device files supported on any Inferno platform regardless of the number of physical 
+.I audio
+devices or the number of applications which access the 
+.I audio
+facilities.
+In this release, only one application can read and/or write to the 
+.I audio
+device since mixing is not currently supported.
+.PP
+A write to the audio file means your data has been queued to play but does not mean it has completed playing (sound may linger and continue although your write succeeds).
+.PP
+When your application closes down, the close will block until all queued data has been played on the speakers
+.PP
+To read or write audio data over a network, first cross mount to another machine and then read or write to the other machine.
+.PP
+On Win95 and Win NT, mute your microphone first so you don\[aq]t hear your echo

@@ -1,0 +1,72 @@
+.TH SH 15
+.PP
+.SH NAME
+sh \- command interface
+.SH SYNOPSYS
+.IP
+.EX
+include \[dq]sh.m\[dq];
+Command: module
+{
+  PATH: con \[dq]/dis/sh.dis\[dq];
+  init: fn(ctxt: ref Draw\->Context, argv: list of string);
+};
+.EE
+.PP
+.SH DESCRIPTION
+A generic module interface appropriate for modules launched by the Inferno shell.
+.PP
+.TS
+tab(@);
+l l.
+T{
+ctxt
+T}@T{
+The 
+.I ctxt
+parameter is of type 
+.I ref Draw\->Context
+and can be used by graphical applications.
+T}
+T{
+argv
+T}@T{
+The 
+.I argv
+parameter is of type 
+.I list of string
+.
+The Inferno shell constructs this list from the fields parsed from the user\[aq]s response line to the command prompt.
+The module (command) being invoked (the leftmost field) is made the first accessible item of the list.
+The other fields are accessible in the order entered.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Using this interface, a module (not just the Inferno control console) can launch a command\-style module (specified at run time by 
+.I filename
+, the second operand to Limbo\[aq]s 
+.I load
+operator).
+.PP
+.SH EXAMPLE
+.IP
+.EX
+  include \[dq]sh.m\[dq];
+  cmd:= load Command filename;
+  define ctxt
+  construct argv with module name at the head of the list
+  cmd\->init(ctxt, argv);
+.EE
+.PP
+.SH CAVEAT
+The usual convention of using 
+.I ModuleType
+.I \->PATH
+at load time is inappropriate in this case.

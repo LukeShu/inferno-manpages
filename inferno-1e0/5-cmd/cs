@@ -1,0 +1,101 @@
+.TH CS 5
+.PP
+.SH NAME
+cs \- start connection server daemon
+.SH SYNOPSYS
+lib/cs 
+.SH DESCRIPTION
+The 
+.I cs
+command does the following:
+.IP "1." 3
+Creates a file named 
+.I cs
+in the 
+.I /net
+directory
+.IP "2." 3
+Spawns a daemon process also named 
+.I cs
+
+.IP "3." 3
+Terminates while daemon 
+.I cs
+continues execution, monitoring read and write requests to the 
+.I /net/cs
+file.
+Once the daemon process is running, application programs can write host names to 
+.I /net/cs
+and read that same file to obtain the corresponding internet address.
+The requests can also symbolically name a service (for example, 
+.I $MAILSERVER
+) that the daemon resolves by reference to the 
+.I /services/cs/db
+file.
+.RS 4
+.PP
+The daemon process persists until explicitly terminated.
+If the daemon is terminated, the interface file 
+.I /net/cs
+cannot be opened.
+The interface file, 
+.I /net/cs
+, persists until unmounted from 
+.I /net
+.
+.RE
+.PP
+.SH OPTIONS
+The 
+.I cs
+command has no options or arguments.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/net/cs
+T}@T{
+Application interface to connection server daemon
+T}
+T{
+/services/cs/db
+T}@T{
+Connection server service database
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+
+.I db \- connection service database in Appendix A
+.I 
+
+T}
+T{
+
+.I cs \- connection server daemon in Chapter 6
+.I 
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

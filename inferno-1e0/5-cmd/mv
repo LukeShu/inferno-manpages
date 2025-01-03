@@ -1,0 +1,65 @@
+.TH MV 5
+.PP
+.SH NAME
+mv \- rename/move files
+.SH SYNOPSYS
+.IP
+.EX
+mv fromfile tofile 
+mv fromfile... todir 
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I mv
+command can be used in several ways.
+.PP
+If there are two arguments of the same type (directories or files) then 
+.I mv
+will rename the 
+.I fromfile
+to 
+.I tofile
+.
+.PP
+For files, a previously file named 
+.I tofile
+will be (silently) removed.
+This requires write permission for the current directory.
+Write permission is not needed for 
+.I tofile
+.
+.PP
+For directories, a previously existing directory named 
+.I todir
+will be (silently) removed if empty, and the 
+.I mv
+operation will fail.
+.PP
+If the last argument is a directory, the earlier arguments (all files) will be moved into that directory.
+Any previously existing files of the same name will be overwritten.
+.PP
+.SH CAVEATS
+Directories cannot be renamed or moved into other directories.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I stat, fstat, fwstat, wstat \- get and put file status
+in Chapter 8
+T}
+T{
+.I remove \- remove a file
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

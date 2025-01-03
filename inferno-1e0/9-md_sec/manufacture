@@ -1,0 +1,22 @@
+.TH MANUFACTURE 9
+.PP
+.SH NAME
+manufacture \- command to emulate set\-top\-box\-id in ROM
+.SH SYNOPSYS
+.IP
+.EX
+manufacture set\-top\-box\-id
+.EE
+.PP
+.SH DESCRIPTION
+The manufacture command initializes the file /nvfs/ID with the string 
+.I set\-top\-box\-id
+, the command\[aq]s first argument.
+This value emulates under directory /nvfs (non\-volatile file system) the serial number that the manufacturer of an actual set\-top\-box would burn into ROM.
+This value is referenced by the register command.
+.PP
+.SH SEE ALSO
+.I register \- command to register set\-top\-box identity with signer
+
+.PP
+Use of /nvfs/ID to provide an authenticated certificate in /nvfs/default.

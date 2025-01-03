@@ -1,0 +1,47 @@
+.TH PWD 5
+.PP
+.SH NAME
+pwd \- print working directory
+.SH SYNOPSYS
+.IP
+.EX
+pwd
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I pwd
+command prints the path name of the current directory (also called the \[aq]working\[aq] directory).
+.PP
+.SH CAVEAT
+The 
+.I pwd
+command does not guarantee to return the same path that was used to enter the directory.
+The returned path may be another route through the name space to the same working directory.
+This behavior arises when a combination of mounts or binds produces a graph in the file name space.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+.I cd \- change working directory
+
+T}
+T{
+.I bind, mount, unmount \- change name space
+
+T}
+T{
+.I bind, mount, unmount \- change file name space
+in Chapter 8
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,308 @@
+.TH 0INTRO 2
+.PP
+.PP
+.SH NAME
+Inferno Devices
+.SH SYNOPSYS
+.PP
+   *   *   *   *   *
+.PP
+The Inferno devices described in this chapter include:
+.PP
+.TS
+tab(@);
+l.
+T{
+.I audio \- interface to audio devices
+
+T}
+T{
+.I cmd \- interface to host operating system commands
+
+T}
+T{
+.I cons \- console device
+
+T}
+T{
+.I draw \- graphics device
+
+T}
+T{
+.I ip \- TCP, UDP network protocols over IP
+
+T}
+T{
+.I prog \- interface to running programs
+
+T}
+T{
+.I root \- the root file system
+
+T}
+T{
+.I ssl \- secure sockets layer device
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Hardware devices are controlled in Inferno by a file system.
+This is an extension of a Unix concept in which devices such as disks are part of the file system.
+In Inferno, each device driver is a kernel\-resident file system.
+.PP
+Simple device drivers serve a single\-level directory that can contain only a few files.
+For example, each UART can be represented by a 
+.I data
+file and 
+.I control
+file.
+A more complex device driver such as an Ethernet driver can be represented by a two\-level file tree (Figure 2\-1) to provide the following:
+.IP \[bu] 2
+device control and configuration
+.IP \[bu] 2
+user\-level protocols
+.IP \[bu] 2
+diagnostic interfaces
+.PP
+.SS EXAMPLE ETHERNET FILE TREE
+.IP
+.EX
+           ether
+       ___/ / \[rs] \[rs]_____
+   ___/   _/   \[rs]_     \[rs]_____
+  /      /       \[rs]          \[rs]
+clone   1         2   ...    n
+       / \[rs]       / \[rs]        / \[rs]
+     ctl data  ctl data   ctl data
+.EE
+.PP
+The top directory contains a 
+.I clone
+file and a directory for each connection numbered 1 to 
+.I n
+.
+Each connection directory corresponds to an Ethernet packet type.
+Opening the clone file finds an unused connection directory and opens the 
+.I ctl
+file.
+Reading the control file returns the ASCII connection number, which can be used to construct the name of the proper connection directory.
+.PP
+A kernel device driver is a 
+.I server
+in the sense of the Inferno file protocol, Styx, with the messages implemented by local rather than remote procedure calls.
+(See 
+.I Inferno Communications Protocol, Styx
+in Chapter 3.)
+.PP
+.SH ADVANTAGES OF DEVICES AS FILE SYSTEM
+The representation of a device as a set of files using strings for communication has several advantages:
+.IP \[bu] 2
+avoids byte order problems
+.IP \[bu] 2
+ensures a uniform representation for devices on the same computer or even devices that are accessed remotely
+.IP \[bu] 2
+represents dissimilar devices by the same set of files permitting a common set of tools to serve several networks or interfaces
+.PP
+.SH PATHNAME RESOLUTION
+Each Inferno device implements a file tree that can be attached to a name space for access by applications.
+The interface to all devices is via the Inferno file system interface.
+Each device is represented by a set of files that is implemented by a device driver.
+.PP
+An Inferno device implements a file tree for client processes.
+A file name beginning with a pound sign, such as 
+.I #c
+, names the root of a file tree implemented by a particular 
+.I kernel
+device driver identified by the character after the pound sign.
+Such names are usually bound to conventional locations in the name space.
+For example, after
+.IP
+.EX
+   sys\->bind(\[dq]#c\[dq], \[dq]/dev\[dq], sys\->MREPL)
+.EE
+.PP
+an 
+.I ls
+of 
+.I /dev
+will show that the files provided by the console device were added to the list of devices in 
+.I /dev
+.
+.PP
+When a system call is passed a file name beginning with 
+.I #,
+it looks at the next character, and if that is a valid device character, it performs an 
+.B attach
+operation on the corresponding device to get a connection representing the root of that device\[aq]s file tree.
+If there are any characters after the device character but before the next slash character ( 
+.I / )
+or end of string, those characters are passed as parameter 
+.I aname
+to the attach.
+(See 
+.I attach, nop \- messages to initiate activity
+in Chapter 3.)
+.PP
+Each kernel device has a conventional place at which a device is bound to the name space.
+The device synopses in the following pages include an Inferno shell 
+.B bind
+command to put the device in the conventional place.
+Most of these binds are done automatically by the system when it initializes.
+.PP
+File names beginning with #, specify the root of a file tree that is implemented by a kernel device driver.
+The character following the pound sign identifies the particular device driver.
+Table 2\-1 lists some of the standard Inferno device characters.
+.PP
+.SS KERNEL DEVICE DRIVERS
+.PP
+.TS
+tab(@);
+l l.
+T{
+/
+T}@T{
+Root file system, used to construct bootstrap name space
+T}
+T{
+s
+T}@T{
+Limbo file channel server
+T}
+T{
+F
+T}@T{
+Key file system, used for storing private keys, etc.
+T}
+T{
+M
+T}@T{
+Mount driver, used to import remote file systems
+T}
+T{
+C
+T}@T{
+Command execution
+T}
+T{
+r
+T}@T{
+Real\-time clock device, controls real\-time clock and NVRAM access
+T}
+T{
+I
+T}@T{
+Internet protocol device, used to implement IP communications
+T}
+T{
+V
+T}@T{
+Television, provides control for ITV applications
+T}
+T{
+U
+T}@T{
+Host Operating System file system
+T}
+T{
+D
+T}@T{
+Secure sockets layer, provides encryption support
+T}
+T{
+d
+T}@T{
+Draw device, implements raster graphics on a remote display
+T}
+T{
+c
+T}@T{
+Console device, controls console I/O, keyboard and mouse processing
+T}
+T{
+p
+T}@T{
+Prog device, provides query and control of status of Inferno processes
+T}
+T{
+t
+T}@T{
+Serial communications device, used to implement serial communications
+T}
+T{
+l
+T}@T{
+Ethernet device, used to implement Ethernet communications
+T}
+T{
+E
+T}@T{
+MPEG device, controls streaming for MPEG devices
+T}
+T{
+A
+T}@T{
+Digital audio input /output, provides access to stereo audio ports
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I Note: This table provides a summary of the most common characters.
+Other standard device characters are being added.
+
+.PP
+   *   *   *   *   *
+.PP
+The kernel maintains a table that maps these device characters to device\-specific operations for each type of device supported by the kernel.
+A kernel device driver is a server in the sense of the Styx protocol, with the messages implemented as local rather than remote procedure calls.
+.PP
+.SS CONVENTION FOR NUMERIC DATA
+Unless otherwise noted, numeric data returned from status and other types of files, are returned in the following standard 12\-character decimal format: right\-adjusted numerals with leading blanks to fill the field to 11 characters, followed by a blank.
+There is no trailing newline.
+.PP
+.SS SEE ALSO
+.PP
+.TS
+tab(@);
+l.
+T{
+
+.I 
+Introduction to Limbo Modules
+.I  in Chapter 7
+.I 
+
+T}
+T{
+.I Inferno Communications Protocol, Styx
+in Chapter 3
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
