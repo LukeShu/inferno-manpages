@@ -1,3 +1,9 @@
+<!--
+  README.md - Overview of the inferno-manpages.git archive
+
+  Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+  SPDX-License-Identifier: MIT
+ -->
 # Snapshots of Inferno OS manual pages
 
 | tree  | date       | Lucent          | Vita Nuova                      | directory           | source                                                                                   |

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# build-aux/1e0/htmldemote - Demote HTML headings
+#
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+sed -e 's/\bh4\b/h5/g' |
+sed -e 's/\bh3\b/h4/g' |
+sed -e 's/\bh2\b/h3/g' |
+sed -e 's/\bh1\b/h2/g'

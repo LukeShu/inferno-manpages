@@ -1,0 +1,21 @@
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+| num | (suffix) | filename | name                                    | my name      | notes                                  |
+|-----+----------+----------+-----------------------------------------+--------------+----------------------------------------|
+|   1 | -        | -        | -                                       | -            |                                        |
+|   2 | dev      | devices  | Inferno Devices                         | 2-dev        | missing from next/prev order           |
+|   3 | styx     | proto    | Inferno File Protocol, Styx             | 3-proto      |                                        |
+|   4 | hostOS   | cmd_env  | Inferno Host O/S Utilities              | 4-hostos     |                                        |
+|   5 | cmd      | cmd      | Inferno Command Line Utilities          | 5-cmd        |                                        |
+|   6 | daemon   | daemons  | Inferno Daemons                         | 6-daemon     |                                        |
+|   7 | -        | -        | Introduction to Limbo Modules           | 7-md         | slot for module overview?              |
+|   8 | sys      | md_sys   | Limbo System Module                     | 8-md_sys     |                                        |
+|   9 | sec      | md_sec   | Inferno Security Modules and Utilities  | 9-md_sec     |                                        |
+|  10 | -        | -        | -                                       | -            | where md_math is in i_modu.htm         |
+|  11 | draw     | md_draw  | Limbo Draw Module                       | 11-md_draw   |                                        |
+|  12 | prefab   | md_pref  | Limbo Prefab Module                     | 12-md_prefab |                                        |
+|  13 | tk       | md_tk    | Limbo Toolkit- Graphic Interface Module | 13-md_tk     |                                        |
+|  14 | math     | md_math  | Limbo Math Module                       | 14-md_math   | between "sec" and "draw" in i_modu.htm |
+|  15 | misc     | md_misc  | Limbo Miscellaneous Modules             | 15-md_misc   |                                        |
+|   A | format   | formats  | Inferno Format Specifications           | 16-format    |                                        |

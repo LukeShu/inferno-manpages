@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# build-aux/1e0/htmlstrip - Remove the header/footers from inferno-1e0 HTML
+#
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+awk '
+BEGIN                                                             { doprint=0 }
+/<hr><br>/                                          && doprint==0 { doprint=1; next }
+/<hr><br>|^<a href="index.htm"><img src="Top\.gif"/ && doprint==1 { doprint=2; next }
+doprint==1                                                        { print }
+'

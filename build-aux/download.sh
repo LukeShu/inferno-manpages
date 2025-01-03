@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# build-aux/download.sh - Download the source data fro the inferno-manpages.git archive
+#
 # Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
 # SPDX-License-Identifier: MIT
 

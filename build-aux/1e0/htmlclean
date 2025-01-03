@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# build-aux/1e0/htmlclean - Fix/sanitize HTML
+#
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+set -euE -o pipefail
+
+# Usage ./htmlclean $img_replacemnt_dir ${image_urls[@]} <in.phtml >out.phtml
+main() {
+	img_dir=$1
+	imgs=("${@:2}")
+
+	{
+		# Fix encoding issues.
+		LC_ALL=C sed \
+			 -e "s/\x0D//" \
+			 -e "s/\x91/'/" \
+			 -e "s/\x92/'/" \
+			 -e "s/\x97/-/"
+	} | {
+		# Mess with the headings.
+		#
+		# We assume that the input looks like
+		#
+		#     <h1>${name} - ${description}</h1>
+		#     <p>${synopsys}
+		#     <h2>{sect name}</h2>
+		#     ...
+		#
+		# and that all subsequent headings are <h2> or lower;
+		# that ther is exactly 1 <h1>.
+		#
+		# We first turn that `<h1>${name} -
+		# ${description}</h1>` to look like
+		#
+		#     <h2>Name</h2>
+		#     <p>${name} - ${description}
+		#     <h2>Synopsys</h2>
+		#
+		# Then we promote all headings (<h2> through <h5>) one
+		# level; since there are no more <h1> elements at this
+		# point.
+		sed -E \
+		    -e '/<h1>/s/<br>/ /g' \
+		    -e 's,<h1>(.*)</h1>,<h2>Name</h2>\n<p>\1\n<h2>Synopsys</h2>,' |
+			sed -e 's/\bh2\b/h1/g' |
+			sed -e 's/\bh3\b/h2/g' |
+			sed -e 's/\bh4\b/h3/g' |
+			sed -e 's/\bh5\b/h4/g'
+	} | {
+		# Replace images.
+		args=()
+		for img in "${imgs[@]}"; do
+			old="<img src=\"${img}\">"
+			new="$(cat "${img_dir}/${img}.phtml")"
+			args+=(-e "s/$(sed_lhs_escape "$old")/$(sed_rhs_escape "$new")/g")
+		done
+		sed "${args[@]}"
+	} | {
+		# Fix broken HTML that trips up pandoc.
+		awk '
+			BEGIN         { needs_close=0 }
+			/<tr>/        { if (needs_close) { print "</td></tr>"; }; needs_close=1; print; next }
+			/<\/[T]able>/ { if (needs_close) { print "</td></tr>"; }; needs_close=0; print; next }
+			              { print }
+		' | sed -E 's,(<(h[0-9]+)>.*)<figure>,\1</\2><figure>,'
+	} | {
+		# Normalize the HTML.
+		pandoc --from=html --to=html --mathml --wrap=preserve
+	}
+}
+
+sed_lhs_escape() {
+	printf '%s' "$*" |
+		sed \
+			-e 's,/,\\/,g' \
+			-e 's/\./\\\./g'
+}
+
+sed_rhs_escape() {
+	printf '%s' "$*" |
+		tr $'\n' $'\r' |
+		sed \
+			-e 's,\\,\\\\,g' \
+			-e 's,/,\\/,g' \
+			-e 's/&/\\\&/g' \
+			-e $'s/\r/\\\\n/g'
+}
+
+main "$@"

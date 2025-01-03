@@ -1,0 +1,17 @@
+<figure><pre>
+ 1 byte    2 bytes       2 bytes     Variable length
++------+------+------+------+------+---------------------------
+| Type |     Tag     |     fid     | Contents
++-^----+-----^+------+-----^+------+-^-------------------------
+  |          |             |         |
+  |          |             |         +-- Contains arguments for
+  |          |             |             specific commands
+  |          |             |
+  |          |             +-- 16-bit unsigned integer that
+  |          |                 identifies the "current" file
+  |          |            
+  |          +-- Unique identifier used to track commands
+  |
+  +-- Indicates message type: initial transmission
+      (T-message or reply (R-message)
+</pre></figure>
