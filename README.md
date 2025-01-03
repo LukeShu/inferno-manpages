@@ -23,8 +23,8 @@
 | `  *` | 2014-06-30 |                 | 4.0 end-of-2014 snapshot        | [./inferno-4e2014/] | https://github.com/inferno-os/inferno-os/commit/fd3db37e4301445f112600ce4041a1a99a563d36 |
 | `  *` | 2015-12-07 |                 | 4.0 end-of-2015 snapshot        | [./inferno-4e2015/] | https://github.com/inferno-os/inferno-os/commit/4967dadcdf358bb3b8237f5a877490b87d3d2b8a |
 | `  *` | 2018-12-23 |                 | 4.0 end-of-2018 snapshot        | [./inferno-4e2018/] | https://github.com/inferno-os/inferno-os/commit/55520626f59983d296c98c008af92f7c5c27bf5f |
-| `  *` | 2019-12-31 |                 | 4.0 end-of-2019 snapshot        | [./inferno-4e2019/] | https://github.com/inferno-os/inferno-os/commit/7828d5d2aa2aeba1588dba190fd80dcab95d982b |
-| `  *` | 2020-12-29 |                 | 4.0 end-of-2020 snapshot        | [./inferno-4e2020/] | https://github.com/inferno-os/inferno-os/commit/c5728686379484100b7d59abf4f0b47928b1631e |
+| `  *` | 2019-12-31 |                 | 4.0 end-of-2019 snapshot        | [./inferno-4e2019/] | https://github.com/inferno-os/inferno-os/commit/012b00b7e47ed291b1f2ab07745f5a53db357c91 |
+| `  *` | 2020-11-09 |                 | 4.0 end-of-2020 snapshot        | [./inferno-4e2020/] | https://github.com/inferno-os/inferno-os/commit/ff5ab8e7bad9f4c04b5d06dbc4290fe0f43c4467 |
 | `  *` | 2024-06-13 |                 | 4.0 end-of-2024 snapshot        | [./inferno-4e2024/] | https://github.com/inferno-os/inferno-os/commit/67e70befb2ad0058fd7894be34c492ddb6d09988 |
 
 - 2006: Mercurial repo (on BitBucket?)
