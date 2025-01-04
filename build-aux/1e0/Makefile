@@ -129,7 +129,7 @@ $(tmp_dir)/md_tk-0intro.htm: $(MAKEFILE_LIST) | $(tmp_dir)
 
 # Populate $(tmp_dir): Copy in other $(htmlnames) ##############################
 
-$(tmp_dir)/%.htm: $(src_dir)/%.htm
+$(tmp_dir)/%.htm: $(src_dir)/%.htm | $(tmp_dir)
 	cp -fT -- $< $@
 
 # Populate $(tmp_dir): Add image-file replacements #############################
