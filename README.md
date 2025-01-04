@@ -33,6 +33,25 @@
 | `  *` | 2020-11-09 |                 | 4.0 end-of-2020 snapshot        | [./inferno-4e2020/] | https://github.com/inferno-os/inferno-os/commit/ff5ab8e7bad9f4c04b5d06dbc4290fe0f43c4467 |
 | `  *` | 2024-06-13 |                 | 4.0 end-of-2024 snapshot        | [./inferno-4e2024/] | https://github.com/inferno-os/inferno-os/commit/67e70befb2ad0058fd7894be34c492ddb6d09988 |
 
-- 2006: Mercurial repo (on BitBucket?)
-- 2019-12: Mercurial repo converted to Git on BitBucket (8c6479d1d73b82a8a0bb407f9a508cab2832a067 is https://bitbucket.org/inferno-os/inferno-os/pull-requests/1)
-- 2022?: Git repo moved to GitHub
+Notes about the 4e snapshots:
+- If the `man/` directory wasn't changed in a year, I didn't create a
+  snapshot for that year, even if there were other changes that year.
+- I was careful that the end-of-year snapshots were actually merged,
+  and weren't not-yet-merged PRs.
+- 2006: 4e was first imported into a public Mercurial repo (on
+  BitBucket?)
+- 2019: the Mercurial repo was converted to Git on BitBucket
+  (8c6479d1d73b82a8a0bb407f9a508cab2832a067 is
+  https://bitbucket.org/inferno-os/inferno-os/pull-requests/1)
+- 2022?: the Git repo moved to GitHub
+
+Other notes:
+- The 1e manpages were published as HTML (authored in Adobe
+  PageMaker?).  I have done my best to script transforming them into
+  actual manpages ((1) roff files (2) named by what command they
+  describe, (3) in directories named by the chapter number, (4) plus
+  a 0intro file for each chapter).
+- The 2e manpages were authored in Adobe PageMaker, and have not been
+  included in a historical snapshot.
+- Vita Nuova took over with 3e, they switched to traditional manpages
+  (thankfully!)
