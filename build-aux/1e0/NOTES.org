@@ -19,3 +19,9 @@
 |  14 | math     | md_math  | Limbo Math Module                       | 14-md_math   | between "sec" and "draw" in i_modu.htm |
 |  15 | misc     | md_misc  | Limbo Miscellaneous Modules             | 15-md_misc   |                                        |
 |   A | format   | formats  | Inferno Format Specifications           | 16-format    |                                        |
+
+TODO:
+ - Better handling of <h3> and <h4> (`roff -man` only has 2 levels: .SH and .SS)
+ - Rewrite <a> elements
+ - Proof-read 0intro pages for markup weirdness
+ - fix table and figure numbers
