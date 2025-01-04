@@ -73,6 +73,7 @@ img-phtmls: $(target/img-phtmls)
 
 .DELETE_ON_ERROR:
 .NOTINTERMEDIATE:
+.SHELLFLAGS += -eEu -o pipefail
 
 # Create $(tmp_dir) ############################################################
 

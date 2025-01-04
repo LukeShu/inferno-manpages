@@ -65,7 +65,9 @@ There are 4 nested loops to pick the (red, green, blue) coordinates of the subcu
 .
 The order in which the color map is indexed distributes the grey shades uniformly through map\-the 
 .I i
-\[aq]th grey shade,$0 &le i &le 15$ has index 255 − 
+\[aq]th grey shade,0 ≤ 
+.I i
+≤ 15 has index 255 − 
 .I i
 × 17 with white going to 0 and black to 255.
 When a call to 
