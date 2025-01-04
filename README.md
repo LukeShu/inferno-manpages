@@ -45,7 +45,7 @@ Notes about the 4e snapshots:
   https://bitbucket.org/inferno-os/inferno-os/pull-requests/1)
 - 2022?: the Git repo moved to GitHub
 
-Other notes:
+Notes about file formats:
 - The 1e manpages were published as HTML (authored in Adobe
   PageMaker?).  I have done my best to script transforming them into
   actual manpages ((1) roff files (2) named by what command they
@@ -55,3 +55,10 @@ Other notes:
   included in a historical snapshot.
 - Vita Nuova took over with 3e, they switched to traditional manpages
   (thankfully!)
+
+Other:
+- Q: Why is this on GitHub?  Of the options for Git hosting, GitHub is
+  the one you complain about most!  A: Because [Inferno
+  itself](https://github.com/inferno-os) is on GitHub, and I wanted to
+  increase the likelyhood that the Inferno community/maintainers to
+  fork/rename this repo.
