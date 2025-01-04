@@ -22,4 +22,4 @@ while read -r dir url; do
 	cp -aT -- cache/tmp/man "$dir"
 	rm -rf -- cache/tmp
 	git -C "$git_dir" worktree prune
-done < <(<README.md sed -En 's,^\|.*\[\./(inferno-[^/]*)/\] *\| (https://github.com/\S*) *\|$,\1 \2,p')
+done < <(<README.md sed -En 's,^\|.*\[\./(inferno-[^/]*)/\]\[\] *\| (https://github.com/\S*) *\|$,\1 \2,p')
