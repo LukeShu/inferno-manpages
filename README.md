@@ -18,7 +18,7 @@
 | 1999 | `  ┿   │  ` | 2.0 Build 1                     |                                      |                                                                                                                    |
 |      | `  ╰───┤  ` |                                 |                                      |                                                                                                                    |
 | 2001 | `      ┿  ` | 3.0 Build 1                     |                                      |                                                                                                                    |
-| 2003 | `      ┿  ` | 3.0 Build <last>                | [inferno-3e/](./inferno-3e/)         | [inferno-3e.git](https://github.com/inferno-os/inferno-3e)                                                         |
+| 2003 | `      ┿  ` | 3.0 Build {last}                | [inferno-3e/](./inferno-3e/)         | [inferno-3e.git](https://github.com/inferno-os/inferno-3e)                                                         |
 | 2004 | `      ┿  ` | 4.0 Build 1                     |                                      |                                                                                                                    |
 | 2006 | `      ┿  ` | 4.0 imported to Mercurial       | [inferno-4e0hg/](./inferno-4e0hg/)   | [inferno-os.git@74a4d8c](https://github.com/inferno-os/inferno-os/commit/74a4d8c26dd3c1e9febcb717cfd6cb6512991a7a) |
 | 2006 | `      ┿  ` | 4.0 end-of-2006 snapshot        | [inferno-4e2006/](./inferno-4e2006/) | [inferno-os.git@0e96539](https://github.com/inferno-os/inferno-os/commit/0e96539ff7cff23233d3f0a64bb285b385a3a1f4) |
