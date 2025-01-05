@@ -14,18 +14,18 @@ They are as follows:
 tab(@);
 l l.
 T{
-.I asm \- Dis assembler
 
+.IR asm (4)
 T}@T{
 T}
 T{
-.I emu \- Inferno emulator
 
+.IR emu (4)
 T}@T{
 T}
 T{
-.I limbo \- Limbo compiler
 
+.IR limbo (4)
 T}@T{
 T}
 .TE

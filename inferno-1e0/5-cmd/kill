@@ -29,9 +29,9 @@ T{
 T}@T{
 This option specifies that the message be 
 .I killgrp
-, requesting that all processes in the process group (see 
-.I pctl \- process control
-in Chapter 8) be terminated.
+, requesting that all processes in the process group (see
+.IR pctl (8)
+) be terminated.
 T}
 .TE
 .PP
@@ -52,5 +52,5 @@ T}
 
 .PP
 .SH SEE ALSO
-.I prog \- interface to running programs
-in Chapter 2
+
+.IR 0intro (2)

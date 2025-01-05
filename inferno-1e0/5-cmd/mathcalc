@@ -20,5 +20,5 @@ The user is prompted (
 The user\[aq]s input is relayed to the calculator module and the results are displayed on standard output.
 .PP
 .SH SEE ALSO
-.I tklib: tkquote, is_err, tkcmds, dialog, getstring, notice, mktabs, tabsctl \- Tk user interface functions
-in Chapter 13
+
+.IR tklib (13)

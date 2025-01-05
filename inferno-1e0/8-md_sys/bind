@@ -26,9 +26,9 @@ For both calls,
 is the name of an existing file or directory in the current name space where the modification is to be made.
 The name 
 .I target
-is evaluated as described in 
-.I File Name Expansion
-in Chapter 5, except that no translation of the final path element is done.
+is evaluated as described in
+.IR sh (5)
+, except that no translation of the final path element is done.
 .PP
 .SS BIND (SOURCE, TARGET, FLAG)
 For 
@@ -74,9 +74,9 @@ With
 , the file descriptor 
 .I fd
 must be open for reading and writing and connected to a file server.
-(See 
-.I dial, announce, export, listen \- make network connections
-.)
+(See
+.IR dial (8)
+&.)
 .PP
 After the 
 .I mount
@@ -162,8 +162,8 @@ set.
 The file is created in that directory; if that attempt fails, the 
 .I create
 fails.
-(see 
-.I open, create \- open/create a file for reading or writing
+(see
+.IR open (8)
 )
 .PP
 .SS UNMOUNT (NAME, TARGET)
@@ -202,12 +202,12 @@ command will not return until it has successfully attached to the file server, s
 cannot be the one serving.
 .PP
 .SH EXAMPLES
-See 
-.I Examples
-in Chapter 5
+See
+.IR bind (5)
 .PP
 .SH SEE ALSO
-.I Limbo System Module
+
+.IR 0intro (8)
 , 
 .I bind, mount, unmount \- change name space
 in Chapter 5

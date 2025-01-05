@@ -26,5 +26,5 @@ command requires the previous binding of
 
 .PP
 .SH SEE ALSO
-.I cmd \- interface to host operating system commands
-in Chapter 2
+
+.IR 0intro (2)

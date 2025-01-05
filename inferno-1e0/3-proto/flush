@@ -62,6 +62,4 @@ flushing an invalid tag
 .SH SEE ALSO
 
 .I 
-read, write, stream \- read, write, or stream file
-.I  in Chapter 8
-.I 
+.IR read (8)

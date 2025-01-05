@@ -103,9 +103,9 @@ T}@T{
 Create a locally addressable pointer to a public 
 .I Screen
 .
-See 
-.I screen \- type to define the abstract data structures for the windows on a display
-.
+See
+.IR screen (11)
+&.
 T}
 T{
 
@@ -196,9 +196,8 @@ This function will implicitly handle either
 or 
 .I uncompressed
 formats.
-(See 
-.I image \- external format for images
-in Appendix A 
+(See
+.IR image (A)
 .I 
 for further details)
 T}
@@ -235,9 +234,8 @@ to the open file descriptor,
 This image is always written in a 
 .I compressed
 format.
-See 
-.I image \- external format for images
-in Appendix A 
+See
+.IR image (A)
 .I 
 for further details.
 T}

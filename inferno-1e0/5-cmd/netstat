@@ -47,5 +47,5 @@ directory; therefore, there must be a prior binding of the system\[aq]s
 driver to that directory.
 .PP
 .SH SEE ALSO
-.I ip \- TCP, UDP network protocols over IP
-in Chapter 2
+
+.IR 0intro (2)

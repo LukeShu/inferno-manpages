@@ -35,12 +35,12 @@ The conversion from Greenwich Mean Time to local time depends on the contents of
 tab(@);
 l.
 T{
-.I daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions
-in Chapter 15
+
+.IR daytime (15)
 T}
 T{
-.I time \- time command execution
 
+.IR time (5)
 T}
 .TE
 .PP

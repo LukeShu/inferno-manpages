@@ -761,8 +761,8 @@ T}
 .TE
 .PP
 .SS WIN.ORIGIN (LOG, SRC)
-When a window is created (see 
-.I screen \- type to define the abstract data structures for the windows on a display
+When a window is created (see
+.IR screen (11)
 ), the coordinate system within the window is identical to that of the screen: the upper left corner of the window rectangle is its physical location on the display, not for example (0, 0).
 This symmetry may be broken, however: 
 .I origin

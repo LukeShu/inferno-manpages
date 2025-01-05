@@ -32,16 +32,16 @@ Execution continues for the remaining names in the argument list, if any.
 tab(@);
 l.
 T{
-.I chmod \- change file mode (permissions)
 
+.IR chmod (5)
 T}
 T{
-.I rm \- remove file(s)
 
+.IR rm (5)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
-in Chapter 8
+
+.IR open (8)
 T}
 .TE
 .PP

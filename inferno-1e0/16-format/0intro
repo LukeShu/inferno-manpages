@@ -13,24 +13,24 @@ The following utilities are used for formatting in Inferno:
 tab(@);
 l.
 T{
-.I db \- connection service database
 
+.IR db (A)
 T}
 T{
-.I font, subfont \- external format for character fonts and subfonts
 
+.IR font (A)
 T}
 T{
-.I image \- external format for images
 
+.IR image (A)
 T}
 T{
-.I rgbv \- color map
 
+.IR rgbv (A)
 T}
 T{
-.I UTF, Unicode, ASCII \- character set and format
 
+.IR utf (A)
 T}
 .TE
 .PP

@@ -55,9 +55,9 @@ translate to flag values
 Option 
 .I i
 means to ignore errors.
-See 
-.I bind, mount, unmount \- change file name space
-in Chapter 8.
+See
+.IR bind (8)
+&.
 .PP
 .SS CD DIRECTORY
 Change working directory to 
@@ -71,9 +71,9 @@ This is equivalent to passing a value of
 to the 
 .I pctl
 system call.
-See 
-.I pctl \- process control
-in Chapter 8.
+See
+.IR pctl (8)
+&.
 .PP
 .SS NODEV
 Disallow device attaches.
@@ -82,9 +82,9 @@ This is equivalent to passing a value of
 to the 
 .I pctl
 system call.
-See 
-.I pctl \- process control
-in Chapter 8.
+See
+.IR pctl (8)
+&.
 .PP
 .SS MOUNT [\-ABRCI] [NET!MACHINE] TO [TARGET]
 Mount the file tree of 
@@ -117,20 +117,20 @@ string is ignored.
 tab(@);
 l.
 T{
-.I nsbuild \- build Inferno name space
-in Chapter 5
+
+.IR nsbuild (5)
 T}
 T{
-.I bind, mount, unmount \- change file name space
-in Chapter 8
+
+.IR bind (8)
 T}
 T{
-.I chdir \- change working directory
-in Chapter 8
+
+.IR chdir (8)
 T}
 T{
-.I pctl \- process control
-in Chapter 8
+
+.IR pctl (8)
 T}
 .TE
 .PP

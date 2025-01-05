@@ -164,8 +164,8 @@ value and an
 abstract data type is returned.
 This adt can be used with the 
 .I auth
-function (see 
-.I auth, readauthinfo, writeauthinfo \- authenticate a connection
+function (see
+.IR auth (9)
 ) to authenticate future connections.
 .PP
 .SS GETAUTHINFO (CTXT, KEYNAME, PATH)
@@ -180,8 +180,8 @@ It will first try to read the file,
 .I Authinfo
 adt (see the description of the 
 .I readauthfinfo
-function on 
-.I auth, readauthinfo, writeauthinfo \- authenticate a connection
+function on
+.IR auth (9)
 ).
 If path is 
 .I nil
@@ -206,9 +206,9 @@ If the box is not checked,
 .I getauthinfo
 will use the system 
 .I file2chan
-function (see 
-.I file2chan \- create file connected to Limbo channel
-in Chapter 8) to create a temporary file, 
+function (see
+.IR file2chan (8)
+) to create a temporary file, 
 .I path
 , that will disappear if unmounted, or when the system is re\-booted.
 .PP
@@ -224,12 +224,12 @@ protocol uses TCP port 6673 with the symbolic name
 tab(@);
 l.
 T{
-.I auth, readauthinfo, writeauthinfo \- authenticate a connection
 
+.IR auth (9)
 T}
 T{
-.I file2chan \- create file connected to Limbo channel
-in Chapter 8
+
+.IR file2chan (8)
 T}
 .TE
 .PP

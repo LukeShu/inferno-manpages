@@ -58,4 +58,5 @@ This argument is a string that is used as a prefix to commands to the device, fo
 /dev/volume
 .PP
 .SH SEE ALSO
-.I ir \- infrared remote control
+
+.IR ir (15)

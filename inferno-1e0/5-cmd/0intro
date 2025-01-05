@@ -13,132 +13,132 @@ The following utilities described in this chapter are the commands that are norm
 tab(@);
 l.
 T{
-.I bind, mount, unmount \- change name space
 
+.IR bind (5)
 T}
 T{
-.I cat \- concatenate files
 
+.IR cat (5)
 T}
 T{
-.I cd \- change working directory
 
+.IR cd (5)
 T}
 T{
-.I chmod \- change file mode (permissions)
 
+.IR chmod (5)
 T}
 T{
-.I cmp \- compare files
 
+.IR cmp (5)
 T}
 T{
-.I cp \- copy files
 
+.IR cp (5)
 T}
 T{
-.I cs \- start connection server daemon
 
+.IR cs (5)
 T}
 T{
-.I date \- print the date
 
+.IR date (5)
 T}
 T{
-.I diff \- differential file comparator
 
+.IR diff (5)
 T}
 T{
-.I du \- disk usage
 
+.IR du (5)
 T}
 T{
-.I echo \- print arguments
 
+.IR echo (5)
 T}
 T{
-.I grep \- search file(s) for a pattern
 
+.IR grep (5)
 T}
 T{
-.I kill \- terminate process(es)
 
+.IR kill (5)
 T}
 T{
-.I limbo \- Limbo compiler
 
+.IR limbo (5)
 T}
 T{
-.I ls \- list contents of directory
 
+.IR ls (5)
 T}
 T{
-.I mathcalc \- interface to a TclLib calculator module
 
+.IR mathcalc (5)
 T}
 T{
-.I mkdir \- make a directory
 
+.IR mkdir (5)
 T}
 T{
-.I mv \- rename/move files
 
+.IR mv (5)
 T}
 T{
-.I netstat \- summarize network connections
 
+.IR netstat (5)
 T}
 T{
-.I nsbuild \- build Inferno name space
 
+.IR nsbuild (5)
 T}
 T{
-.I os \- interface OS commands (hosted Inferno only)
 
+.IR os (5)
 T}
 T{
-.I p \- paginate
 
+.IR p (5)
 T}
 T{
-.I ps \- thread status
 
+.IR ps (5)
 T}
 T{
-.I pwd \- print working directory
 
+.IR pwd (5)
 T}
 T{
-.I rcmd \- remote command execution
 
+.IR rcmd (5)
 T}
 T{
-.I rm \- remove file(s)
 
+.IR rm (5)
 T}
 T{
-.I sh \- command line interface to the Inferno system
 
+.IR sh (5)
 T}
 T{
-.I sleep \- suspend execution for an interval
 
+.IR sleep (5)
 T}
 T{
-.I time \- time command execution
 
+.IR time (5)
 T}
 T{
-.I unicode \- interpret Unicode characters
 
+.IR unicode (5)
 T}
 T{
-.I wc \- word (and other things) counter
 
+.IR wc (5)
 T}
 T{
-.I wish \- interface to the Tk graphics toolkit
 
+.IR wish (5)
 T}
 .TE
 .PP

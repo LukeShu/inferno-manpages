@@ -158,20 +158,20 @@ T}
 tab(@);
 l.
 T{
-.I Limbo System Module
 
+.IR 0intro (8)
 T}
 T{
-.I dirread \- read directory
 
+.IR dirread (8)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
 
+.IR open (8)
 T}
 T{
-.I stat, wstat \- inquire or change file attributes
-in Chapter 3
+
+.IR stat (3)
 T}
 .TE
 .PP

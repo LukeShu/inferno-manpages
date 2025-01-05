@@ -50,9 +50,9 @@ T}@T{
 length of int (4)
 T}@T{
 Expiration data in seconds of epoch (Jan 1 00:00 1970 GMT).
-See 
-.I daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions
-in Chapter 15.
+See
+.IR daytime (15)
+&.
 T}
 T{
 other
@@ -140,12 +140,12 @@ If some transformation is needed (for example, encryption of the pw value), the 
 tab(@);
 l.
 T{
-.I logind \- login daemon
-in Chapter 9
+
+.IR logind (9)
 T}
 T{
-.I changelogin \- command to create/update the password file
 
+.IR changelogin (9)
 T}
 .TE
 .PP

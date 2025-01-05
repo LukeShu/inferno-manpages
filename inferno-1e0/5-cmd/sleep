@@ -16,5 +16,5 @@ command suspends its own execution for
 seconds then returns.
 .PP
 .SH SEE ALSO
-.I sleep \- delay execution
-in Chapter 8
+
+.IR sleep (8)

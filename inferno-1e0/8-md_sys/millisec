@@ -26,8 +26,6 @@ A reboot resets the epoch.
 .SH SEE ALSO
 
 .I 
-Limbo System Module
-.I  
-.I  and 
-sleep \- delay execution
-.I 
+.IR 0intro (8)
+
+.IR sleep (8)

@@ -48,14 +48,14 @@ message.
 .SH ENTRY POINTS
 An 
 .I attach
-transaction will be generated for kernel devices (see 
-.I Inferno Devices
-in Chapter 2) when a system call evaluates a file name beginning with #.
+transaction will be generated for kernel devices (see
+.IR 0intro (2)
+) when a system call evaluates a file name beginning with #.
 A 
 .B mount
-call (see 
-.I bind, mount, unmount \- change file name space
-in Chapter 8) generates an 
+call (see
+.IR bind (8)
+) generates an 
 .I attach
 message to the remote file server.
 When the kernel boots, an 
@@ -72,16 +72,16 @@ is made to the requested file server machine.
 tab(@);
 l.
 T{
-.I bind, mount, unmount \- change file name space
-in Chapter 8
+
+.IR bind (8)
 T}
 T{
-.I Limbo Miscellaneous Modules
-in Chapter 15
+
+.IR 0intro (15)
 T}
 T{
-.I root \- the root file system
-in Chapter 2
+
+.IR 0intro (2)
 T}
 .TE
 .PP

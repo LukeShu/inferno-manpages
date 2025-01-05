@@ -39,12 +39,12 @@ $MAILSERVER         dante
 tab(@);
 l.
 T{
-.I cs \- start connection server daemon
-in Chapter 5
+
+.IR cs (5)
 T}
 T{
-.I cs \- connection server daemon
-in Chapter 6
+
+.IR cs (6)
 T}
 .TE
 .PP

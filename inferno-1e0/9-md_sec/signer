@@ -22,8 +22,8 @@ daemon constructs an authentication certificate from the local key (in /keydb/si
 If non\-existent, the 
 .I signer
 daemons creates and initializes /keydb/signerkey with an owner name of \[aq]*\[aq].
-That file can also be created with the createsignerkey command (see 
-.I createsignerkey \- command to create signer key on authentication server
+That file can also be created with the createsignerkey command (see
+.IR createsignerkey (9)
 ).
 .PP
 The signer daemon \[aq]blinds\[aq] the certificate by the technique of XOR\-ing it with a random bit mask, then sends the result to the requesting client.
@@ -72,8 +72,8 @@ T}
 tab(@);
 lw(35.0n) lw(35.0n).
 T{
-.I createsignerkey \- command to create signer key on authentication server
 
+.IR createsignerkey (9)
 .PP
 T}@T{
 Initialization of 
@@ -81,21 +81,21 @@ Initialization of
 .
 T}
 T{
-.I register \- command to register set\-top\-box identity with signer
 
+.IR register (9)
 .PP
 T}@T{
 Client side of set\-top\-box registration.
 T}
 T{
-.I srv \- start server daemons
 
+.IR srv (6)
 T}@T{
 Launching signer and countersigner daemons.
 T}
 T{
-.I verify \- command to authenticate receiver of blinded certificate
 
+.IR verify (9)
 T}@T{
 Extract the \[aq]unblinded\[aq] certificate from /keydb/signed/
 .I set\-top\-box\-id

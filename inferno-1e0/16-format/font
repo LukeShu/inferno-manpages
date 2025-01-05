@@ -14,9 +14,9 @@ function.
 The 
 .I Font.build
 function reads the same format from a string rather than a file.
-(See 
-.I font \- character images for Unicode text
-in Chapter 11).
+(See
+.IR font (11)
+).
 .PP
 The format is a header followed by any number of subfont range specifications.
 The header contains two numbers: the 
@@ -45,9 +45,9 @@ External subfonts are represented in a more rigid format.
 The components must appear in the following order:
 .PP
 .SS AN IMAGE CONTAINING CHARACTER IMAGES
-The image has the format for external image files described in 
-.I image \- external format for images
-.
+The image has the format for external image files described in
+.IR image (A)
+&.
 .PP
 .SS A SUBFONT HEADER
 The subfont header has 3 decimal strings: 
@@ -104,6 +104,7 @@ There is a convention of using the character with value zero (
 This means that fonts should have, as their zero\-th character, a character with non\-zero width.
 See the description of the 
 .I Image.text
-function in 
-.I Image \- pictures and drawing
+function in
+.IR image (11)
+
 .I .

@@ -170,4 +170,5 @@ This is usually the information received by the channel returned from
 The index of the newly selected page is returned.
 .PP
 .SH SEE ALSO
-.I Tk \-graphics toolkit
+
+.IR tk (13)

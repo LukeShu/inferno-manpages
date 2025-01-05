@@ -57,12 +57,12 @@ is for the loading of
 tab(@);
 l.
 T{
-.I sh \- command line interface to the Inferno system
 
+.IR sh (5)
 T}
 T{
-.I millisec \- millisecond timer
-in Chapter 8
+
+.IR millisec (8)
 T}
 .TE
 .PP

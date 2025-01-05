@@ -139,5 +139,5 @@ B. Schneier,
 .I Applied Cryptography
 , 1996, J. Wiley & Sons, Inc.
 .PP
-.I connect, secret \- interface to the Secure Sockets Layer device
-in Chapter 7
+
+.IR connect (9)

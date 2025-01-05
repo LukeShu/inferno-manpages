@@ -35,5 +35,5 @@ on Unix\-hosted systems and
 on Windows\-hosted systems.
 .PP
 .SH SEE ALSO
-.I chdir \- change working directory
-in Chapter 8
+
+.IR chdir (8)

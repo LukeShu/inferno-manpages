@@ -16,7 +16,7 @@ This value emulates under directory /nvfs (non\-volatile file system) the serial
 This value is referenced by the register command.
 .PP
 .SH SEE ALSO
-.I register \- command to register set\-top\-box identity with signer
 
+.IR register (9)
 .PP
 Use of /nvfs/ID to provide an authenticated certificate in /nvfs/default.

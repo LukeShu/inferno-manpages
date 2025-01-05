@@ -14,8 +14,8 @@ The
 daemon monitors requests for name service arriving on UDP port 
 .I virgil
 .
-Those requests are translated into a network address via the local connection server (see 
-.I cs \- connection server daemon
+Those requests are translated into a network address via the local connection server (see
+.IR cs (6)
 ) and sent back to the requesting client.
 .PP
 Requests should be of the form:
@@ -27,9 +27,9 @@ Requests should be of the form:
 The 
 .I userid
 field is currently unused but must be supplied to satisfy the required syntax.
-The machine name can be a symbolic service name as described in 
-.I db \- connection service database
-in Appendix A.
+The machine name can be a symbolic service name as described in
+.IR db (A)
+&.
 Such names are resolved against the 
 .I /services/cs/db
 file on the machine running 
@@ -61,12 +61,12 @@ daemon is (currently) single threaded.
 tab(@);
 l.
 T{
-.I cs \- connection server daemon
 
+.IR cs (6)
 T}
 T{
-.I rcmd \- remote command execution
-in Chapter 5
+
+.IR rcmd (5)
 T}
 .TE
 .PP

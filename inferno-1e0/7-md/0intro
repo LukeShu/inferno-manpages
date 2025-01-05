@@ -63,16 +63,16 @@ This enables Limbo programs to be written and tested on any Inferno system.While
 Some modules are described in a single page, such as 
 .I regex
 .
-Larger modules are divided into several related pages, such as 
-.I Limbo Math Module
-, 
-.I elem \- elementary functions of applied mathematics
-, 
-.I fp \- floating point operations
+Larger modules are divided into several related pages, such as
+.IR 0intro (14)
+,
+.IR elem (14)
+,
+.IR fp (14)
 , and 
 .I 
-linalg \- linear algebra primitives.
-.I 
+.IR linalg (14)
+
 
 .PP
 .SH SYNOPSIS

@@ -240,12 +240,12 @@ on Windows\-hosted systems.
 tab(@);
 l.
 T{
-.I limbo \- Limbo compiler
 
+.IR limbo (4)
 T}
 T{
-.I sh \- command line interface to the Inferno system
-in Chapter 5
+
+.IR sh (5)
 T}
 .TE
 .PP

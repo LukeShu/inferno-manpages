@@ -26,16 +26,16 @@ This behavior arises when a combination of mounts or binds produces a graph in t
 tab(@);
 l.
 T{
-.I cd \- change working directory
 
+.IR cd (5)
 T}
 T{
-.I bind, mount, unmount \- change name space
 
+.IR bind (5)
 T}
 T{
-.I bind, mount, unmount \- change file name space
-in Chapter 8
+
+.IR bind (8)
 T}
 .TE
 .PP

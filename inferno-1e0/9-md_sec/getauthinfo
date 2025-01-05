@@ -27,8 +27,8 @@ The
 .I id
 is of the form 
 .I net!machine
-, where machine is the address of the \[aq]signer\[aq] server (see 
-.I bind, mount, unmount \- change name space
+, where machine is the address of the \[aq]signer\[aq] server (see
+.IR bind (5)
 for more information about addresses of this form).
 .PP
 In order to perform authentication, two machines must have a certificate from the same \[aq]signer\[aq] server.
@@ -120,7 +120,8 @@ T}
 .TE
 .PP
 .SH SEE ALSO
-.I changelogin \- command to create/update the password file
 
+.IR changelogin (9)
 .PP
-.I login, getauthinfo \- get an Authinfo adt from a certificate authority
+
+.IR login (9)

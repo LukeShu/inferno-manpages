@@ -49,12 +49,11 @@ If no command is provided, the client gets a remote Inferno shell.
 tab(@);
 lw(70.0n).
 T{
-.I srv \- start server daemons
-in Chapter 6
+
+.IR srv (6)
 .PP
-In particular see 
-.I Remote Execution Services
-in Chapter 6
+In particular see
+.IR srv (6)
 T}
 .TE
 .PP

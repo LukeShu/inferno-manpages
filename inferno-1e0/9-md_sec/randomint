@@ -34,10 +34,10 @@ T}
 .TE
 .PP
 .SH SEE ALSO
-.I random (read\-only)
-of 
-.I cons \- console device
-in Chapter 2
+
+.IR cons (2)
+of
+.IR cons (2)
 .PP
 The /dev/random file is implemented as part of the console device.
 .PP

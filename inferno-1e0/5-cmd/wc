@@ -108,8 +108,8 @@ T}
 tab(@);
 l.
 T{
-.I UTF, Unicode, ASCII \- character set and format
-in Appendix A
+
+.IR utf (A)
 T}
 .TE
 .PP

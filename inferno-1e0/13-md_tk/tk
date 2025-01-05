@@ -34,9 +34,9 @@ function, given an existing
 .I Screen
 (usually one inherited from the graphics 
 .I Context
-; see 
-.I context \- graphics environment
-in Chapter 11), creates a new window, called a Toplevel, under the control of the Tk toolkit.
+; see
+.IR context (11)
+), creates a new window, called a Toplevel, under the control of the Tk toolkit.
 The 
 .I Toplevel
 is passed to the 
@@ -108,16 +108,16 @@ input is handled globally, there can be only one instance of a Tk implementation
 tab(@);
 l.
 T{
-.I context \- graphics environment
-in Chapter 11
-T}
-T{
-.I tklib: tkquote, is_err, tkcmds, dialog, getstring, notice, mktabs, tabsctl \- Tk user interface functions
 
+.IR context (11)
 T}
 T{
-.I wmlib \- window manager toolkit
-in Chapter 15
+
+.IR tklib (13)
+T}
+T{
+
+.IR wmlib (15)
 T}
 T{
 John K. Ousterhout, 

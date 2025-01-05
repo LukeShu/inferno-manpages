@@ -13,9 +13,9 @@ unicode [\-n]  characters
 .SH DESCRIPTION
 The 
 .I unicode
-command converts between UTF and character values from the Unicode Standard (see 
-.I UTF, Unicode, ASCII \- character set and format
-in Appendix A).
+command converts between UTF and character values from the Unicode Standard (see
+.IR utf (A)
+).
 .PP
 If given a range of hexadecimal numbers, 
 .I unicode
@@ -111,12 +111,12 @@ T}
 tab(@);
 l.
 T{
-.I UTF, Unicode, ASCII \- character set and format
-in Appendix A
+
+.IR utf (A)
 T}
 T{
-.I font, subfont \- external format for character fonts and subfonts
-in Appendix A
+
+.IR font (A)
 T}
 .TE
 .PP

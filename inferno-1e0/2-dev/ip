@@ -194,5 +194,5 @@ functions in the
 module provide an alternate method to perform the necessary I/O to establish and manipulate network connections.
 .PP
 .SH SEE ALSO
-.I dial, announce, export, listen \- make network connections
-in Chapter 8
+
+.IR dial (8)

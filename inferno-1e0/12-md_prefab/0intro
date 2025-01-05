@@ -18,20 +18,20 @@ contains components for building graphics objects suitable for Interactive Telev
 tab(@);
 l.
 T{
-.I compound \- windows for ITV toolkit
 
+.IR compound (12)
 T}
 T{
-.I element \- menu and display elements for ITV toolkit
 
+.IR element (12)
 T}
 T{
-.I environ \- environment for ITV toolkit to provide a graphics framework for a item collections
 
+.IR environ (12)
 T}
 T{
-.I style \- fonts and colors for IITV toolkit
 
+.IR style (12)
 T}
 .TE
 .PP
@@ -53,9 +53,9 @@ prefab:= load Prefab Prefab\->PATH;
 .SH DESCRIPTION
 Using the 
 .I Draw
-module\[aq]s operations for simple text and images (see 
-.I Draw Module
-in Chapter 11), the toolkit can group individual items, treat those groups as units, and then activate the items on command.
+module\[aq]s operations for simple text and images (see
+.IR 0intro (11)
+), the toolkit can group individual items, treat those groups as units, and then activate the items on command.
 The other user interface toolkit provides facilities for keyboard\- and mouse\-driven applications (see 
 .I tk)
 .
@@ -99,8 +99,6 @@ Although the type definitions make data members visible, the members should be t
 .SH SEE ALSO
 
 .I 
-Draw Module
-.I  in Chapter 11 
-.I  and 
-ir \- infrared remote control
-.I  in Chapter 15
+.IR 0intro (11)
+
+.IR ir (15)

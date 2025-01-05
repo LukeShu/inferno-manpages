@@ -15,9 +15,9 @@ The function
 will handle either format implicitly; however, the 
 .I Display.writeimage
 function produces only the compressed form.
-See 
-.I display \- connection to draw device
-in Chapter 11.
+See
+.IR display (11)
+&.
 .PP
 .SS UNCOMPRESSED FORMAT
 An uncompressed image file starts with 5 decimal strings: 

@@ -32,4 +32,5 @@ The
 function returns zero if it deletes the file, \-1 otherwise.
 .PP
 .SH SEE ALSO
-.I Limbo System Module
+
+.IR 0intro (8)

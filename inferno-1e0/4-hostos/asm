@@ -48,7 +48,8 @@ T}
 .TE
 .PP
 .SH SEE ALSO
-.I emu \- Inferno emulator
 
+.IR emu (4)
 .PP
-.I limbo \- Limbo compiler
+
+.IR limbo (4)

@@ -16,9 +16,9 @@ bind \[aq]#d\[aq] /dev
 .SH DESCRIPTION
 The 
 .I draw
-device serves a two\-level file system providing an interface to the graphics facilities of the system; the Limbo Draw module (see 
-.I Draw Module
-in Chapter 11) accesses the device to implement its functions.
+device serves a two\-level file system providing an interface to the graphics facilities of the system; the Limbo Draw module (see
+.IR 0intro (11)
+) accesses the device to implement its functions.
 .PP
 Each client of the device connects by opening 
 .I /dev/draw/new
@@ -123,5 +123,5 @@ T}
 .RE
 .PP
 .SH SEE ALSO
-.I Draw Module
-in Chapter 11
+
+.IR 0intro (11)

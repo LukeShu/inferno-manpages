@@ -83,5 +83,5 @@ is
 ) the order of sorting is reversed.
 .PP
 .SH SEE ALSO
-.I read, write, stream \- read, write, or stream file
-in Chapter 8
+
+.IR read (8)

@@ -25,8 +25,6 @@ is 0, the process gives up the CPU if another process is waiting to run, returni
 .SH SEE ALSO
 
 .I 
-Limbo System Module
-.I  
-.I  and 
-millisec \- millisecond timer
-.I 
+.IR 0intro (8)
+
+.IR millisec (8)

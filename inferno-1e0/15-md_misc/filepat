@@ -123,15 +123,14 @@ If any character is preceded by the character
 tab(@);
 l.
 T{
-.I readdir \- read directory and sort files
 
+.IR readdir (15)
 T}
 T{
 
 .I 
-tokenize \- split string into words
-.I  in Chapter 8 
-.I 
+.IR tokenize (8)
+
 
 T}
 .TE

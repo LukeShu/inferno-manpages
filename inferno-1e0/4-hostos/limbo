@@ -413,5 +413,6 @@ on Unix\-based systems and
 on Windows\-based systems.
 .PP
 .SH SEE ALSO
-.I Introduction to Limbo Modules
-in Chapter 7,
+
+.IR 0intro (7)
+,

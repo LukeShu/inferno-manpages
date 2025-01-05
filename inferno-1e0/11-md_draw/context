@@ -52,9 +52,9 @@ The
 adt to which the application is connected; can be 
 .I nil
 .
-See 
-.I screen \- type to define the abstract data structures for the windows on a display
-.
+See
+.IR screen (11)
+&.
 T}
 T{
 display
@@ -64,9 +64,9 @@ The
 adt to which the application is connected; can be 
 .I nil
 .
-See 
-.I display \- connection to draw device
-.
+See
+.IR display (11)
+&.
 T}
 .TE
 .PP
@@ -186,8 +186,8 @@ T}
 tab(@);
 l.
 T{
-.I ir \- infrared remote control
-in Chapter 15
+
+.IR ir (15)
 T}
 .TE
 .PP

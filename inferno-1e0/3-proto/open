@@ -171,9 +171,8 @@ system call uses
 with truncation.
 (see 
 .I 
-open, create \- open/create a file for reading or writing
-.I  in Chapter 8
-.I )
+.IR open (8)
+
 
 .PP
 The algorithm used by the 
@@ -204,9 +203,9 @@ and
 (with the truncate option) again.
 For the behavior of 
 .I create
-on a union directory, (See 
-.I bind, mount, unmount \- change file name space
-in Chapter 8).
+on a union directory, (See
+.IR bind (8)
+).
 .PP
 .SH ENTRY POINTS
 The 
@@ -229,24 +228,22 @@ l.
 T{
 
 .I 
-bind, mount, unmount \- change file name space
-.I  in Chapter 8
-.I 
+.IR bind (8)
+
 
 T}
 T{
 
 .I 
-open, create \- open/create a file for reading or writing
-.I  in Chapter 8
-.I 
+.IR open (8)
+
 
 T}
 T{
 
 .I 
-stat, wstat \- inquire or change file attributes
-.I 
+.IR stat (3)
+
 
 T}
 .TE

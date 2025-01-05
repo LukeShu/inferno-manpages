@@ -18,7 +18,8 @@ main() {
 	# body
 	{
 		# The main conversion.
-		pandoc --from=html --to=man --wrap=preserve
+		pandoc --from=html --to=man --wrap=preserve \
+		       --lua-filter="${BASH_SOURCE[0]}.fixlinks.lua"
 	} | {
 		# Fuss with markup to be more old-school flavored.
 		sed -E \

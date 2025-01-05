@@ -13,36 +13,36 @@ The Inferno devices described in this chapter include:
 tab(@);
 l.
 T{
-.I audio \- interface to audio devices
 
+.IR audio (2)
 T}
 T{
-.I cmd \- interface to host operating system commands
 
+.IR cmd (2)
 T}
 T{
-.I cons \- console device
 
+.IR cons (2)
 T}
 T{
-.I draw \- graphics device
 
+.IR draw (2)
 T}
 T{
-.I ip \- TCP, UDP network protocols over IP
 
+.IR ip (2)
 T}
 T{
-.I prog \- interface to running programs
 
+.IR prog (2)
 T}
 T{
-.I root \- the root file system
 
+.IR root (2)
 T}
 T{
-.I ssl \- secure sockets layer device
 
+.IR ssl (2)
 T}
 .TE
 .PP
@@ -63,7 +63,9 @@ For example, each UART can be represented by a
 file and 
 .I control
 file.
-A more complex device driver such as an Ethernet driver can be represented by a two\-level file tree (Figure 2\-1) to provide the following:
+A more complex device driver such as an Ethernet driver can be represented by a two\-level file tree (
+.IR 0intro (2)
+) to provide the following:
 .IP \[bu] 2
 device control and configuration
 .IP \[bu] 2
@@ -97,9 +99,9 @@ Reading the control file returns the ASCII connection number, which can be used 
 A kernel device driver is a 
 .I server
 in the sense of the Inferno file protocol, Styx, with the messages implemented by local rather than remote procedure calls.
-(See 
-.I Inferno Communications Protocol, Styx
-in Chapter 3.)
+(See
+.IR 0intro (3)
+&.)
 .PP
 .SH ADVANTAGES OF DEVICES AS FILE SYSTEM
 The representation of a device as a set of files using strings for communication has several advantages:
@@ -146,9 +148,9 @@ If there are any characters after the device character but before the next slash
 or end of string, those characters are passed as parameter 
 .I aname
 to the attach.
-(See 
-.I attach, nop \- messages to initiate activity
-in Chapter 3.)
+(See
+.IR attach (3)
+&.)
 .PP
 Each kernel device has a conventional place at which a device is bound to the name space.
 The device synopses in the following pages include an Inferno shell 
@@ -158,7 +160,9 @@ Most of these binds are done automatically by the system when it initializes.
 .PP
 File names beginning with #, specify the root of a file tree that is implemented by a kernel device driver.
 The character following the pound sign identifies the particular device driver.
-Table 2\-1 lists some of the standard Inferno device characters.
+
+.IR 0intro (2)
+lists some of the standard Inferno device characters.
 .PP
 .SS KERNEL DEVICE DRIVERS
 .PP
@@ -288,14 +292,13 @@ l.
 T{
 
 .I 
-Introduction to Limbo Modules
-.I  in Chapter 7
-.I 
+.IR 0intro (7)
+
 
 T}
 T{
-.I Inferno Communications Protocol, Styx
-in Chapter 3
+
+.IR 0intro (3)
 T}
 .TE
 .PP

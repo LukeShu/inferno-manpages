@@ -18,14 +18,14 @@ The size of the key is given by the second argument (default: 512 bits) and the 
 tab(@);
 l l.
 T{
-.I genSK, genSKfromPK, sktopk, dhparams \- generate keys
 
+.IR gensk (9)
 T}@T{
 Generation of secret key.
 T}
 T{
-.I signer, countersigner \- daemons for set\-top box authentication
 
+.IR signer (9)
 T}@T{
 Description of how the signer daemon uses the signer key.
 T}

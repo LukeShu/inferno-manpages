@@ -517,5 +517,5 @@ T}
 .TE
 .PP
 .SH SEE ALSO
-.I ps \- thread status
-in Chapter 5
+
+.IR ps (5)

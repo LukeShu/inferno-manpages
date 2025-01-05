@@ -57,8 +57,8 @@ The string returned describes errors encountered, if any; otherwise it is nil.
 tab(@);
 l.
 T{
-.I ssl \- secure sockets layer device
-in Chapter 2
+
+.IR ssl (2)
 T}
 .TE
 .PP

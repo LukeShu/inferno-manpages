@@ -48,12 +48,12 @@ Directories cannot be renamed or moved into other directories.
 tab(@);
 l.
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8
+
+.IR stat (8)
 T}
 T{
-.I remove \- remove a file
-in Chapter 8
+
+.IR remove (8)
 T}
 .TE
 .PP

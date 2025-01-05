@@ -57,12 +57,12 @@ T{
 T}
 .TE
 .PP
-Typed keystrokes produce 16\-bit characters that are translated into the variable\-length UTF encoding (see 
-.I UTF, Unicode, ASCII \- character set and format
-in Chapter A) before putting them into the buffer.
-A 
-.I read, write, stream \- read, write, or stream file
-in Chapter 8 of length greater than zero causes the process to wait until a newline or a 
+Typed keystrokes produce 16\-bit characters that are translated into the variable\-length UTF encoding (see
+.IR utf (A)
+) before putting them into the buffer.
+A
+.IR read (8)
+of length greater than zero causes the process to wait until a newline or a 
 .I \[ha]D
 ends the buffer, and then returns as much of the buffer as the argument to 
 .B read
@@ -141,9 +141,9 @@ The read blocks until the state has changed since the last read.
 The read returns an 
 .I m
 character followed by three integers in the standard Inferno 12\-character decimal format.
-See 
-.I Limbo Miscellaneous Modules
-in Chapter 15.
+See
+.IR 0intro (15)
+&.
 .PP
 The integers are the device\[aq]s coordinates on the screen (
 .I x
@@ -268,5 +268,5 @@ These sequences have no special meaning when running the emulator (
 ).
 .PP
 .SH SEE ALSO
-.I UTF, Unicode, ASCII \- character set and format
-in Chapter A
+
+.IR utf (A)

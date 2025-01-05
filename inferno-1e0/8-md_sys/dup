@@ -57,8 +57,6 @@ if it cannot convert
 .SH SEE ALSO
 
 .I 
-Limbo System Module
-.I  
-.I  and 
-open, create \- open/create a file for reading or writing
-.I 
+.IR 0intro (8)
+
+.IR open (8)

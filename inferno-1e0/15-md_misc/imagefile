@@ -74,9 +74,9 @@ The
 .I Rawimage
 type can be converted to a regular 
 .I Image
-(see 
-.I Image \- pictures and drawing
-in Chapter 11) by calling function 
+(see
+.IR image (11)
+) by calling function 
 .I remap
 in the 
 .I Imageremap

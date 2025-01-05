@@ -86,8 +86,8 @@ They represent and display text and pictures that can be grouped in arbitrary tw
 .I Elements
 are packaged within 
 .I Compounds
-for display (see 
-.I compound \- windows for ITV toolkit
+for display (see
+.IR compound (12)
 ).
 .PP
 .SS ENVIRON
@@ -149,9 +149,9 @@ The mask
 is used as an argument to 
 .I Image.draw
 .
-See 
-.I Draw Module
-in Chapter 11.
+See
+.IR 0intro (11)
+&.
 .PP
 .SS R
 All 
@@ -441,6 +441,6 @@ objects are not drawn explicitly, and they are not drawn after any
 operation.
 They are made visible only by calls to 
 .I Compound.draw
-, described in 
-.I compound \- windows for ITV toolkit
-.
+, described in
+.IR compound (12)
+&.

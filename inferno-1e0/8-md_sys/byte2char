@@ -95,16 +95,16 @@ If the array bounds are invalid or insufficient to hold results, a run\-time err
 tab(@);
 l.
 T{
-.I Limbo System Module
 
+.IR 0intro (8)
 T}
 T{
-.I utfbytes \- compute the Unicode length of a UTF byte sequence
 
+.IR utfbytes (8)
 T}
 T{
-.I UTF, Unicode, ASCII \- character set and format
-in Appendix A
+
+.IR utf (A)
 T}
 .TE
 .PP

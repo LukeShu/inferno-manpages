@@ -33,16 +33,16 @@ can generate a bounds check error, if the length argument is larger than the arr
 tab(@);
 l.
 T{
-.I Limbo System Module
 
+.IR 0intro (8)
 T}
 T{
-.I byte2char, char2byte \- convert between bytes and characters
 
+.IR byte2char (8)
 T}
 T{
-.I UTF, Unicode, ASCII \- character set and format
-in Appendix A
+
+.IR utf (A)
 T}
 .TE
 .PP

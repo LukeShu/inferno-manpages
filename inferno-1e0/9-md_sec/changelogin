@@ -24,9 +24,9 @@ password
 T}@T{
 The user is prompted for a string at least 7 characters in length.
 The SHA digest of the entered string is stored in the password file.
-See 
-.I sha, md5, sign, verify \- cryptographic digests and digital signatures
-.
+See
+.IR sha (9)
+&.
 .PP
 By default, the password for an existing entry is unchanged.
 T}
@@ -53,8 +53,8 @@ T{
 T}
 .TE
 .PP
-The lengths of each value is subject to the size limitations defined by the Password Module (see 
-.I get, put \- read and write password entries in the password file
+The lengths of each value is subject to the size limitations defined by the Password Module (see
+.IR get (9)
 ).
 .PP
 .SH FILES
@@ -82,12 +82,12 @@ T}
 tab(@);
 l.
 T{
-.I get, put \- read and write password entries in the password file
 
+.IR get (9)
 T}
 T{
-.I logind \- login daemon
 
+.IR logind (9)
 T}
 .TE
 .PP

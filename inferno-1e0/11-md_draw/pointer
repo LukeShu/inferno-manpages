@@ -47,6 +47,6 @@ T}
 .PP
 The pointer\[aq]s position and button state is passed through a channel in the 
 .I Context
-, as described in 
-.I context \- graphics environment
-.
+, as described in
+.IR context (11)
+&.

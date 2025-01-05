@@ -34,36 +34,32 @@ lib/signer
 T}@T{
 infsigner
 T}@T{
-See 
-.I signer, countersigner \- daemons for set\-top box authentication
-in Chapter 9
+See
+.IR signer (9)
 T}
 T{
 lib/countersigner
 T}@T{
 infcsigner
 T}@T{
-See 
-.I signer, countersigner \- daemons for set\-top box authentication
-in Chapter 9
+See
+.IR signer (9)
 T}
 T{
 lib/logind
 T}@T{
 inflogin
 T}@T{
-See 
-.I logind \- login daemon
-
+See
+.IR logind (9)
 T}
 T{
 lib/virgild
 T}@T{
 virgil
 T}@T{
-See 
-.I virgild \- connection service for remote clients
-
+See
+.IR virgild (6)
 T}
 T{
 file service
@@ -79,9 +75,9 @@ remote execution services
 T}@T{
 rstyx
 T}@T{
-See 
-.I rcmd \- remote command execution
-in Chapter 5.
+See
+.IR rcmd (5)
+&.
 T}
 .TE
 .PP
@@ -98,15 +94,15 @@ Prior to starting the daemons, the
 command defines its name space according to the specification in file 
 .I server/namespace
 (relative to the current directory).
-See 
-.I newns \- build a new name space from a description file
-in Chapter 15 for the specification format.
+See
+.IR newns (15)
+for the specification format.
 .PP
 The 
 .I srv
 command also starts the connection service for resolving network addresses.
-See 
-.I cs \- start connection server daemon
+See
+.IR cs (5)
 command.
 .PP
 .SS FILE SERVICE
@@ -116,9 +112,9 @@ command spawns a thread that monitors requests on the
 .I styx
 service port.
 For each incoming request, yet another thread is spawned to authenticate the connection and provide access to the local file system.
-See 
-.I dial, announce, export, listen \- make network connections
-in Chapter 8 for the discussion of the 
+See
+.IR dial (8)
+for the discussion of the 
 .I export
 function.
 .PP
@@ -129,9 +125,9 @@ command is a thread that monitors requests on service port
 .I rstyx.
 These requests represent requests by clients for commands to be executed on the server.
 .PP
-See 
-.I rcmd \- remote command execution
-in Chapter 5 for the description of a client interface for sending command requests to a server.
+See
+.IR rcmd (5)
+for the description of a client interface for sending command requests to a server.
 .PP
 Each incoming request is logged to the server\[aq]s console.
 The message includes the client\[aq]s network address.
@@ -167,16 +163,16 @@ command was issued.
 The client\[aq]s commands are executed on the server with standard input, output, and error redirected to the 
 .I /dev/cons
 device on the client.
-This redirection requires that the client export its file system (see 
-.I dial, announce, export, listen \- make network connections
-in Chapter 8) over the connection it creates to the server.
+This redirection requires that the client export its file system (see
+.IR dial (8)
+) over the connection it creates to the server.
 .PP
 .SS TERMINATION
 Once the daemons have been started, the 
 .I srv
-command starts the Inferno shell (see 
-.I sh \- command line interface to the Inferno system
-in Chapter 5) to process command line input.
+command starts the Inferno shell (see
+.IR sh (5)
+) to process command line input.
 The 
 .I srv
 command does not terminate.

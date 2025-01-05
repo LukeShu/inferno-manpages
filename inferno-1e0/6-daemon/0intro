@@ -13,20 +13,20 @@ The Inferno daemons are as follows:
 tab(@);
 l.
 T{
-.I cs \- connection server daemon
 
+.IR cs (6)
 T}
 T{
-.I httpd, echo, stats \- HTTP server
 
+.IR httpd (6)
 T}
 T{
-.I srv \- start server daemons
 
+.IR srv (6)
 T}
 T{
-.I virgild \- connection service for remote clients
 
+.IR virgild (6)
 T}
 .TE
 .PP
@@ -45,9 +45,9 @@ T}
 
 .PP
 
-.I The daemons related to security are found in 
-Inferno Security Modules and Utilities
-.I  in Chapter 9
+.I The daemons related to security are found in
+.IR 0intro (9)
+
 
 .PP
    *   *   *   *   *

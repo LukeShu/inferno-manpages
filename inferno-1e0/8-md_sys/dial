@@ -34,9 +34,8 @@ The address must be of the form:
 .PP
 network!destination!serviceport
 .PP
-For more information about the structure of this address, see 
-.I Request Format
-in Chapter 6
+For more information about the structure of this address, see
+.IR cs (6)
 .PP
 .SS THE CONNECTION SERVER
 If the connection server is running, the 
@@ -44,8 +43,8 @@ If the connection server is running, the
 function will pass 
 .I addr
 to that daemon for the translation of host names, symbolic service names, and so on, to addresses of the designated network (the first component).
-See 
-.I cs \- connection server daemon
+See
+.IR cs (6)
 for description of the supported conversion.
 .PP
 If the connection server daemon is not running, the 
@@ -144,9 +143,9 @@ T{
 T}
 .TE
 .PP
-See the appropriate Network device pages (for example, 
-.I ip \- TCP, UDP network protocols over IP
-in Chapter 2) for further details of using this interface.
+See the appropriate Network device pages (for example,
+.IR 0intro (2)
+) for further details of using this interface.
 .PP
 .SS ANNOUNCE (ADDR)
 The 
@@ -362,12 +361,12 @@ dialauth(service: string): (int, Connection) { return sys\->dial(\[dq]net!$SIGNE
 tab(@);
 l.
 T{
-.I bind, mount, unmount \- change file name space
 
+.IR bind (8)
 T}
 T{
-.I cs \- connection server daemon
-in Chapter 6
+
+.IR cs (6)
 T}
 .TE
 .PP

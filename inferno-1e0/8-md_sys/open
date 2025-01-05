@@ -83,8 +83,8 @@ The
 .I open
 function returns 
 .I nil
-if the file does not exist or the user does not have permission to open it as requested (see 
-.I stat, fstat, fwstat, wstat \- get and put file status
+if the file does not exist or the user does not have permission to open it as requested (see
+.IR stat (8)
 for a description of permissions).
 .PP
 .SS CREATE (FILE, OMODE, PERM)
@@ -110,9 +110,9 @@ Also the permissions to
 are 
 .I AND\[aq]ed
 with the permissions of the containing directory.
-See the section \- 
-.I The create Transaction
-in Chapter 3 of 
+See the section \-
+.IR open (3)
+of 
 .I open
 .
 .PP
@@ -186,11 +186,11 @@ be evaluated, if the user does not have write permission in the final directory,
 .I omode
 .
 .PP
-If the file is new and the directory in which it is created is a union directory (see 
-.I Limbo System Module
-), then the directory where the file is created depends on the structure of the union: see 
-.I bind, mount, unmount \- change file name space
-.
+If the file is new and the directory in which it is created is a union directory (see
+.IR 0intro (8)
+), then the directory where the file is created depends on the structure of the union: see
+.IR bind (8)
+&.
 .PP
 .SH CAVEAT
 There is no explicit close routine; when the last reference to the file descriptor is released, the system closes the associated file.
@@ -200,9 +200,9 @@ For devices and network protocols where shutdown must be guaranteed, write a
 message to the associated control file and use the return value of the 
 .I write
 to verify closure.
-For example, see 
-.I ip \- TCP, UDP network protocols over IP
-in Chapter 2.
+For example, see
+.IR 0intro (2)
+&.
 .PP
 .SH SEE ALSO
 .PP
@@ -210,20 +210,20 @@ in Chapter 2.
 tab(@);
 l.
 T{
-.I Limbo System Module
 
+.IR 0intro (8)
 T}
 T{
-.I bind, mount, unmount \- change file name space
 
+.IR bind (8)
 T}
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
 
+.IR stat (8)
 T}
 T{
-.I open, create \- prepare a fid for I/O on a file
-in Chapter 3
+
+.IR open (3)
 T}
 .TE
 .PP

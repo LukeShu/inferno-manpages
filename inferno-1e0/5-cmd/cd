@@ -11,11 +11,11 @@ cd [directory]
 .SH DESCRIPTION
 The 
 .I cd
-command changes the working directory for the Inferno shell and all processes in its process group (see 
-.I Note
-on 
-.I pctl \- process control
-in Chapter 8) to the 
+command changes the working directory for the Inferno shell and all processes in its process group (see
+.IR pctl (8)
+on
+.IR pctl (8)
+) to the 
 .I directory
 specified on the command line.
 If no argument is given, the command attempts to change to 
@@ -37,20 +37,21 @@ is obtained from
 tab(@);
 l.
 T{
-.I pwd \- print working directory
 
+.IR pwd (5)
 T}
 T{
-.I chdir \- change working directory
-in Chapter 8
+
+.IR chdir (8)
 T}
 T{
-.I pctl \- process control
-in Chapter 8
+
+.IR pctl (8)
 T}
 T{
-.I cons \- console device
-in Chapter 2 for a description of 
+
+.IR 0intro (2)
+for a description of 
 .I /dev/user
 
 T}

@@ -11,9 +11,9 @@ lib/logind
 .SH DESCRIPTION
 Started by 
 .I lib/srv
-(see 
-.I srv \- start server daemons
-in Chapter 6) to service request on the 
+(see
+.IR srv (6)
+) to service request on the 
 .I inflogin
 port and provide a identity authentication (that is, \[aq]
 .I signer\[aq]
@@ -38,8 +38,8 @@ This is used to access the
 file via the 
 .I Password
 module.
-(See 
-.I get, put \- read and write password entries in the password file
+(See
+.IR get (9)
 ).
 .RS 2
 .PP
@@ -47,12 +47,12 @@ The protocol involves an exchange of information between the client and server.
 The client side of this exchange can be managed by the 
 .I Login
 module.
-See 
-.I login, getauthinfo \- get an Authinfo adt from a certificate authority
+See
+.IR login (9)
 for a description of the module and the protocol.
 .PP
-Client and server communicate over the Secure Socket Layer Device (see 
-.I ssl \- secure sockets layer device
+Client and server communicate over the Secure Socket Layer Device (see
+.IR ssl (2)
 ).
 .RE
 .PP
@@ -85,24 +85,24 @@ T}
 tab(@);
 l.
 T{
-.I changelogin \- command to create/update the password file
 
+.IR changelogin (9)
 T}
 T{
-.I login, getauthinfo \- get an Authinfo adt from a certificate authority
 
+.IR login (9)
 T}
 T{
-.I ssl \- secure sockets layer device
 
+.IR ssl (2)
 T}
 T{
-.I ssl \- secure sockets layer device
-in Chapter 2
+
+.IR ssl (2)
 T}
 T{
-.I srv \- start server daemons
-in Chapter 6
+
+.IR srv (6)
 T}
 .TE
 .PP

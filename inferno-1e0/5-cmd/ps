@@ -35,12 +35,12 @@ driver to that directory.
 tab(@);
 l.
 T{
-.I kill \- terminate process(es)
 
+.IR kill (5)
 T}
 T{
-.I prog \- interface to running programs
-in Chapter 2
+
+.IR 0intro (2)
 T}
 .TE
 .PP

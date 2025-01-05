@@ -68,16 +68,16 @@ directory.
 tab(@);
 l.
 T{
-.I file2chan \- create file connected to Limbo channel
-in Chapter 8
+
+.IR file2chan (8)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
-in Chapter 8
+
+.IR open (8)
 T}
 T{
-.I read, write, stream \- read, write, or stream file
-in Chapter 8
+
+.IR read (8)
 T}
 .TE
 .PP

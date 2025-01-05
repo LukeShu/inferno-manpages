@@ -16,5 +16,5 @@ A directory is removed only if it is empty.
 Removal of a file requires write permission in its directory, but does not require read nor write permission on the file itself.
 .PP
 .SH SEE ALSO
-.I remove \- remove a file
-in Chapter 8
+
+.IR remove (8)

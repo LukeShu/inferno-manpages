@@ -71,4 +71,5 @@ or the empty string) or a single\-item list with a copy of
 .
 .PP
 .SH SEE ALSO
-.I Limbo System Module
+
+.IR 0intro (8)

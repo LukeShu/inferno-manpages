@@ -76,9 +76,9 @@ Creates a
 .I Compound
 whose contents are made by calling 
 .I Element.icon
-(see 
-.I elem \- elementary functions of applied mathematics
-in Chapter 14) using the 
+(see
+.IR elem (14)
+) using the 
 .I icon
 and 
 .I mask
@@ -188,9 +188,9 @@ The channel,
 .I chan of int
 connected to an IR remote control interface, typically acquired through the program\[aq]s 
 .I Context
-(see 
-.I context \- graphics environment
-in Chapter 11).
+(see
+.IR context (11)
+).
 T}
 .TE
 .PP

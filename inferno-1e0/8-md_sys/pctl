@@ -135,8 +135,6 @@ with the FORKNS option.
 .SH SEE ALSO
 
 .I 
-Limbo System Module
-.I  
-.I  and 
-sh \- command line interface to the Inferno system
-.I  in Chapter 5
+.IR 0intro (8)
+
+.IR sh (5)

@@ -15,9 +15,9 @@ The
 .I bind
 and 
 .I mount
-commands modify the file name space of the current process and other processes in the same name space group (see 
-.I pctl \- process control
-in Chapter 8).
+commands modify the file name space of the current process and other processes in the same name space group (see
+.IR pctl (8)
+).
 For both calls, 
 .I target
 is the name of an existing file or directory in the current name space.
@@ -55,10 +55,10 @@ is an alias for the object originally named by
 will also still refer to its original file.
 The evaluation of 
 .I source
-(see 
-.I File Name Expansion
-in 
-.I sh \- command line interface to the Inferno system
+(see
+.IR sh (5)
+in
+.IR sh (5)
 ) happens at the time of the 
 .I bind
 , not when the binding is later used.
@@ -77,9 +77,9 @@ can also be a two character sequence (
 .I #c
 ) representing a 
 .I kernel device driver
-(see 
-.I Limbo Miscellaneous Modules
-in Chapter 15).
+(see
+.IR 0intro (15)
+).
 For example, the following command binds the console driver to 
 .I /dev
 :
@@ -102,9 +102,8 @@ For example:
 .I bind \-a \[aq]#I\[aq] /net
 
 .PP
-If you wish to have an authenticated connection to the remote computer, you must issue the getauthinfo command (see 
-.I login, getauthinfo \- get an Authinfo adt from a certificate authority
-).
+If you wish to have an authenticated connection to the remote computer, you must issue the getauthinfo command (see
+.IR login (9)
 For example: 
 .I getauthinfo net!machine
 
@@ -273,9 +272,9 @@ T}@T{
 For mount only, specify the algorithm, 
 .I alg
 , used in authentication.
-See 
-.I ssl \- secure sockets layer device
-in Chapter 2 for the supported algorithms.
+See
+.IR 0intro (2)
+for the supported algorithms.
 The default value is 
 .I none
 .
@@ -552,28 +551,28 @@ xxx$
 tab(@);
 l.
 T{
-.I sh \- command line interface to the Inferno system
 
+.IR sh (5)
 T}
 T{
-.I auth, readauthinfo, writeauthinfo \- authenticate a connection
-in Chapter 9
-T}
-T{
-.I Limbo System Module
-in Chapter 8
-T}
-T{
-.I bind, mount, unmount \- change file name space
-in Chapter 8
-T}
-T{
-.I dial, announce, export, listen \- make network connections
 
+.IR auth (9)
 T}
 T{
-.I Limbo Miscellaneous Modules
-in Chapter 15
+
+.IR 0intro (8)
+T}
+T{
+
+.IR bind (8)
+T}
+T{
+
+.IR dial (8)
+T}
+T{
+
+.IR 0intro (15)
 T}
 .TE
 .PP

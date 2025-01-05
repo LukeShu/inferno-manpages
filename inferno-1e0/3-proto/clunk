@@ -35,5 +35,5 @@ message is generated when a file descriptor is closed (usually by the garbage co
 calls.
 .PP
 .SH SEE ALSO
-.I open, create \- open/create a file for reading or writing
-in Chapter 8
+
+.IR open (8)

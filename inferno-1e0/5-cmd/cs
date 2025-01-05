@@ -81,14 +81,16 @@ tab(@);
 l.
 T{
 
-.I db \- connection service database in Appendix A
 .I 
+.IR db (A)
+
 
 T}
 T{
 
-.I cs \- connection server daemon in Chapter 6
 .I 
+.IR cs (6)
+
 
 T}
 .TE

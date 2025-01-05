@@ -21,8 +21,8 @@ First, the register command interacts with the \[aq]signer daemon\[aq] (the thre
 This certificate is \[aq]blinded\[aq] by a random bit mask, sent back to the register command and displayed textually or graphically, as appropriate.
 .IP "2." 3
 The user running the register command must contact a human agent at the \[aq]signer\[aq] host by an independent, secure mechanism (for example, a telephone call).
-The agent at the \[aq]signer\[aq] host there runs the verify command (see 
-.I verify \- command to authenticate receiver of blinded certificate
+The agent at the \[aq]signer\[aq] host there runs the verify command (see
+.IR verify (9)
 ) to display the same \[aq]blinded\[aq] certificate being displayed to the user of register on the client.
 Once the agent is convinced that the \[aq]blinded\[aq] certificate has been delivered to the correct party, the agent tells verify to accept the identify of the caller.
 .IP "3." 3
@@ -64,16 +64,16 @@ T}
 tab(@);
 l.
 T{
-.I manufacture \- command to emulate set\-top\-box\-id in ROM
 
+.IR manufacture (9)
 T}
 T{
-.I db \- connection service database
-in Appendix A
+
+.IR db (A)
 T}
 T{
-.I signer, countersigner \- daemons for set\-top box authentication
 
+.IR signer (9)
 T}
 .TE
 .PP

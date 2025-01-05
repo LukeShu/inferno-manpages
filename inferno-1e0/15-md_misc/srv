@@ -55,5 +55,5 @@ function for the specified network (
 The port number is returned as a string.
 .PP
 .SH SEE ALSO
-.I cs \- start connection server daemon
-in Chapter 5
+
+.IR cs (5)

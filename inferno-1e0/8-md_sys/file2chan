@@ -52,9 +52,9 @@ type holding two channels used by the system to deliver
 and 
 .I Twrite
 Styx messages to the server.
-See 
-.I Introduction to Limbo Modules
-in Chapter 7.
+See
+.IR 0intro (7)
+&.
 The arguments are:
 .PP
 .TS
@@ -87,9 +87,8 @@ The
 argument specifies how that union is created.
 See 
 .I 
-bind, mount, unmount \- change file name space
-.I  
-.I  for a description of the flags.
+.IR bind (8)
+
 
 T}
 .TE
@@ -168,8 +167,8 @@ with a tuple,(
 is a string describing the error condition.
 The 
 .I errmsg
-string becomes the system error for the client (See 
-.I print, fprint, sprint \- print formatted output
+string becomes the system error for the client (See
+.IR print (8)
 ).
 .PP
 The client blocks in its 
@@ -252,8 +251,8 @@ request fail, the server\[aq]s response should be (
 describes the problem.
 The 
 .I errmsg
-string becomes the system error for the client (See 
-.I print, fprint, sprint \- print formatted output
+string becomes the system error for the client (See
+.IR print (8)
 ).
 .PP
 The client blocks in its 
@@ -278,9 +277,9 @@ The server can use these events to determine when to stop processing for a given
 The 
 .I fid
 received by the server can be used to manage the multiplexing of multiple active clients sharing a single file.
-See 
-.I Introduction to Limbo Modules
-in Chapter 7 for details.
+See
+.IR 0intro (7)
+for details.
 .PP
 .SH CAVEAT
 The 
@@ -300,31 +299,30 @@ should not be the one serving, to avoid deadlock.
 tab(@);
 l.
 T{
-.I Limbo System Module
 
+.IR 0intro (8)
 T}
 T{
-.I bind, mount, unmount \- change file name space
 
+.IR bind (8)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
 
+.IR open (8)
 T}
 T{
-.I read, write, stream \- read, write, or stream file
 
+.IR read (8)
 T}
 T{
-.I print, fprint, sprint \- print formatted output
 
+.IR print (8)
 T}
 T{
 
 .I 
-Introduction to Limbo Modules
-.I  in Chapter 7
-.I 
+.IR 0intro (7)
+
 
 T}
 .TE

@@ -94,12 +94,12 @@ command refuses to copy files onto themselves.
 tab(@);
 l.
 T{
-.I cat \- concatenate files
 
+.IR cat (5)
 T}
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8
+
+.IR stat (8)
 T}
 .TE
 .PP

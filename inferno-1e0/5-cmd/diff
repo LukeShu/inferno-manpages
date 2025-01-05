@@ -169,4 +169,5 @@ When running
 on directories, the notion of what is a text file is open to debate.
 .PP
 .SH SEE ALSO
-.I cmp \- compare files
+
+.IR cmp (5)

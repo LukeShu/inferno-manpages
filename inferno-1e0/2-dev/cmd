@@ -282,14 +282,16 @@ tab(@);
 l.
 T{
 
-.I emu \- Inferno emulator in Chapter 4
 .I 
+.IR emu (4)
+
 
 T}
 T{
 
-.I os \- interface OS commands (hosted Inferno only) in Chapter 5
 .I 
+.IR os (5)
+
 
 T}
 .TE

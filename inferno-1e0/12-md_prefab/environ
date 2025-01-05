@@ -68,16 +68,12 @@ T}
 tab(@);
 l.
 T{
-.I Limbo Prefab Module
-in Chapter 12
-.B ,
 
+.IR 0intro (12)
 T}
 T{
-.I screen \- type to define the abstract data structures for the windows on a display
-in Chapter 11
-.B 
 
+.IR screen (11)
 T}
 .TE
 .PP

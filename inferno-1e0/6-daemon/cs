@@ -184,24 +184,24 @@ That means that all available addresses have been obtained and the daemon\[aq]s 
 tab(@);
 l.
 T{
-.I cs \- start connection server daemon
-in Chapter 5
+
+.IR cs (5)
 T}
 T{
-.I seek \- change file offset
-in Chapter 8
+
+.IR seek (8)
 T}
 T{
-.I srv \- miscellaneous services from the host operating system
-in Chapter 15
+
+.IR srv (15)
 T}
 T{
-.I ip \- TCP, UDP network protocols over IP
-in Chapter 2
+
+.IR 0intro (2)
 T}
 T{
-.I Inferno Format Specifications
-in Appendix A
+
+.IR 0intro (A)
 T}
 .TE
 .PP

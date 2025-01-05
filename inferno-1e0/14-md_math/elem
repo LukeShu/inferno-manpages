@@ -245,4 +245,5 @@ The Bessel functions are computed by
 .
 .PP
 .SH SEE ALSO
-.I Limbo Math Module
+
+.IR 0intro (14)

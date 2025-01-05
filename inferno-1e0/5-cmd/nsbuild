@@ -18,9 +18,9 @@ and interprets the name space commands found in that file.
 .PP
 The commands executed by 
 .I nsbuild
-are described in 
-.I newns \- build a new name space from a description file
-in Chapter 15.
+are described in
+.IR newns (15)
+&.
 .PP
 .SH SEE ALSO
 .PP
@@ -28,16 +28,16 @@ in Chapter 15.
 tab(@);
 l.
 T{
-.I cd \- change working directory
 
+.IR cd (5)
 T}
 T{
-.I bind, mount, unmount \- change name space
 
+.IR bind (5)
 T}
 T{
-.I newns \- build a new name space from a description file
-in Chapter 15
+
+.IR newns (15)
 T}
 .TE
 .PP

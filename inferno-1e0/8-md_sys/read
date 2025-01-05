@@ -83,20 +83,20 @@ directly.
 tab(@);
 l.
 T{
-.I Limbo System Module
 
+.IR 0intro (8)
 T}
 T{
-.I dup \- duplicate an open file descriptor
 
+.IR dup (8)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
 
+.IR open (8)
 T}
 T{
-.I bufio \- buffered input/output module
-in Chapter 15
+
+.IR bufio (15)
 T}
 .TE
 .PP

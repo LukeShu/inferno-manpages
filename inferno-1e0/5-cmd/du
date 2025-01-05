@@ -84,12 +84,12 @@ option is always 0.
 tab(@);
 l.
 T{
-.I sh \- command line interface to the Inferno system
 
+.IR sh (5)
 T}
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8
+
+.IR stat (8)
 T}
 .TE
 .PP

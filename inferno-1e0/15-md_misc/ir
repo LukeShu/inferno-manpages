@@ -27,11 +27,10 @@ These codes are typically sent over the
 channel, which is managed by 
 .I Mux
 .
-(See 
-.I context \- graphics environment
-in Chapter 11 and 
-.I Limbo Prefab Module
-in Chapter 12
+(See
+.IR context (11)
+and
+.IR 0intro (12)
 .PP
 .SS INIT
 The 
@@ -306,16 +305,16 @@ init(nil: ref Draw\->Context, nil: list of string)
 tab(@);
 l.
 T{
-.I Draw Module
-in Chapter 11
+
+.IR 0intro (11)
 T}
 T{
-.I Introduction to Limbo Modules
-in Chapter 7
+
+.IR 0intro (7)
 T}
 T{
-.I limbo \- Limbo compiler
-in Chapter 4
+
+.IR limbo (4)
 T}
 .TE
 .PP

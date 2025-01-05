@@ -83,5 +83,5 @@ T}
 .TE
 .PP
 .SH SEE ALSO
-.I regex \- regular expression recognizer
-in Chapter 15
+
+.IR regex (15)

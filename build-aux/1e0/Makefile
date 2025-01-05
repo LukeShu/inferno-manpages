@@ -151,8 +151,8 @@ $(tmp_dir)/%.phtml: $(tmp_dir)/%.htm $(bin_dir)/htmlstrip $(bin_dir)/htmlclean $
 $(tmp_dir)/%.names: $(tmp_dir)/%.phtml $(bin_dir)/html2names
 	$(bin_dir)/html2names $< >$@
 
-$(tmp_dir)/%.man: $(tmp_dir)/%.phtml $(tmp_dir)/%.names $(tmp_dir)/%.htm $(bin_dir)/html2man $(MAKEFILE_LIST)
-	$(bin_dir)/html2man \
+$(tmp_dir)/%.man: $(tmp_dir)/%.phtml $(tmp_dir)/%.names $(tmp_dir)/%.htm $(bin_dir)/html2man $(bin_dir)/html2man.fixlinks.lua $(MAKEFILE_LIST)
+	tmp_dir=$(tmp_dir) $(bin_dir)/html2man \
 	  $$(<$(filter %.names,$^) sed -En '1s/(.*)\((.*)\)/\1 \2/p') \
 	  "$$(<$(filter %.htm,$^) sed -En 's,.*<title>(.*)</title>.*,\1,p' | sed 's/<br>/ /g' | sed -E 's/\s+/ /g')" \
 	  <$< \

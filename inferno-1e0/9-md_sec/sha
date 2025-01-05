@@ -61,12 +61,12 @@ T}
 tab(@);
 l.
 T{
-.I signer, countersigner \- daemons for set\-top box authentication
 
+.IR signer (9)
 T}
 T{
-.I register \- command to register set\-top\-box identity with signer
 
+.IR register (9)
 T}
 .TE
 .PP

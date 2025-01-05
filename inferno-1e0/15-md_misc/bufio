@@ -107,11 +107,11 @@ Flushing all dirty files is done with an explicit call to
 .SS SEEK (N, WHERE), READ (A, N), AND WRITE (A, N)
 Each function has parameters analogous to its complement in the 
 .I Sys
-module (see 
-.I seek \- change file offset
-and 
-.I read, write, stream \- read, write, or stream file
-in Chapter 8).
+module (see
+.IR seek (8)
+and
+.IR read (8)
+).
 .PP
 .SS GETB ( )
 Read a single byte from the buffered stream and return its value as an 
@@ -127,9 +127,9 @@ will read it.
 Read a single Unicode character, encoded in UTF, and return its value as an 
 .I int
 .
-(See 
-.I UTF, Unicode, ASCII \- character set and format
-in Appendix A.)
+(See
+.IR utf (A)
+&.)
 .PP
 .SS UNGETC ( )
 Put the single Unicode character, encoded in UTF, back into the buffered stream so that a subsequent 
@@ -217,20 +217,20 @@ lc = nil;
 tab(@);
 l.
 T{
-.I Introduction to Limbo Modules
-in Chapter 7
+
+.IR 0intro (7)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
-in Chapter 8
+
+.IR open (8)
 T}
 T{
-.I read, write, stream \- read, write, or stream file
-in Chapter 8
+
+.IR read (8)
 T}
 T{
-.I seek \- change file offset
-in Chapter 8
+
+.IR seek (8)
 T}
 .TE
 .PP

@@ -76,9 +76,9 @@ calls to an invalid offset will fail.
 Seeking in a directory is not allowed.
 .PP
 The current offset for a file is shared among processes of the same file descriptor group.
-See 
-.I pctl \- process control
-.
+See
+.IR pctl (8)
+&.
 .PP
 .SH SEE ALSO
 .PP
@@ -86,22 +86,25 @@ See
 tab(@);
 l.
 T{
-.I Limbo System Module
+
+.IR 0intro (8)
 ,
 T}
 T{
-.I open, create \- open/create a file for reading or writing
+
+.IR open (8)
 ,
 T}
 T{
-.I pctl \- process control
-, 
-.I read, write, stream \- read, write, or stream file
+
+.IR pctl (8)
+,
+.IR read (8)
 ,
 T}
 T{
-.I bufio \- buffered input/output module
-in Chapter 15
+
+.IR bufio (15)
 T}
 .TE
 .PP

@@ -15,9 +15,9 @@ command provides a command line interface to the Tk graphics toolkit.
 A Tk module is first loaded and initialized.
 Then input is packaged into Tk commands and sent to that module.
 The input should be in the format of Tk commands.
-(See 
-.I Tk \-graphics toolkit
-in Chapter 13)
+(See
+.IR tk (13)
+)
 .PP
 Input is first taken from the files, if any, named as command line arguments; afterward, commands are read from standard input.
 .PP
@@ -65,5 +65,5 @@ T}
 
 .PP
 .SH SEE ALSO
-.I Tk \-graphics toolkit
-in Chapter 13
+
+.IR tk (13)

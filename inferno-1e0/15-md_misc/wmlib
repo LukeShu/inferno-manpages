@@ -77,9 +77,9 @@ Most applications should use the buttons defined by the constant
 An application is informed of Tk events by a channel that is returned by 
 .I titlebar
 .
-(See 
-.I Tk \-graphics toolkit
-in Chapter 13).
+(See
+.IR tk (13)
+).
 Messages received on it should be processed by the application.
 The messages that may arrive on the returned channel are:
 .PP
@@ -203,9 +203,9 @@ argument gives the directory where the file search should begin.
 Only files that match pattern 
 .I pat
 are displayed.
-The rules for defining match patters are described in 
-.I filepat: expand, match \- file pattern matching
-.
+The rules for defining match patters are described in
+.IR filepat (15)
+&.
 .PP
 The returned string is the name of the selected file, or the empty string if no file was selected.
 .PP
@@ -265,16 +265,16 @@ T}
 tab(@);
 l.
 T{
-.I context \- graphics environment
-in Chapter 11
+
+.IR context (11)
 T}
 T{
-.I Tk \-graphics toolkit
-in Chapter 13
+
+.IR tk (13)
 T}
 T{
-.I tklib: tkquote, is_err, tkcmds, dialog, getstring, notice, mktabs, tabsctl \- Tk user interface functions
-in Chapter 13
+
+.IR tklib (13)
 T}
 .TE
 .PP

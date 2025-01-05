@@ -13,44 +13,44 @@ The following Styx messages are described in this chapter:
 tab(@);
 l.
 T{
-.I attach, nop \- messages to initiate activity
 
+.IR attach (3)
 T}
 T{
-.I clone \- duplicate a fid
 
+.IR clone (3)
 T}
 T{
-.I clunk \- forget about a fid
 
+.IR clunk (3)
 T}
 T{
-.I error \- return an error
 
+.IR error (3)
 T}
 T{
-.I flush \- abort a message
 
+.IR flush (3)
 T}
 T{
-.I open, create \- prepare a fid for I/O on a file
 
+.IR open (3)
 T}
 T{
-.I read, write \- transfer data from and to a file
 
+.IR read (3)
 T}
 T{
-.I remove \- remove a file from a server
 
+.IR remove (3)
 T}
 T{
-.I stat, wstat \- inquire or change file attributes
 
+.IR stat (3)
 T}
 T{
-.I walk \- descend a directory hierarchy
 
+.IR walk (3)
 T}
 .TE
 .PP
@@ -96,11 +96,11 @@ A server\[aq]s file tree is attached to a process group\[aq]s name space by
 and 
 .I mount
 and calls.
-See 
-.I bind, mount, unmount \- change file name space
-in Chapter 8 and 
-.I Limbo System Module
-in Chapter 8.
+See
+.IR bind (8)
+and
+.IR 0intro (8)
+&.
 Processes in the group are then clients of the server.
 Their system calls operating on the server\[aq]s files are translated into requests and transmitted over the connection to the appropriate server.
 The server\[aq]s response completes the request.
@@ -301,7 +301,9 @@ T}
 .TE
 .PP
 .SS STYX MESSAGE STRUCTURE
-The general structure of Styx messages is given in Figure 3\-1.
+The general structure of Styx messages is given in
+.IR 0intro (3)
+&.
 Each message consists of a sequence of bytes in defined byte order for machine independence.
 The first byte, 
 .I Type
@@ -390,9 +392,9 @@ Most T\-messages contain a
 Fids are like file descriptors in a user process, but they are not restricted to files open for I/O.
 They are also used when directories being examined, files are accessed by 
 .I stat
-(See 
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8), and so on.
+(See
+.IR stat (8)
+), and so on.
 All files being manipulated by the operating system are identified by fids.
 Fids are chosen by the client.
 .PP
@@ -484,9 +486,9 @@ An existing file can be
 \[aq]d or a new file may be 
 .I create
 \[aq]d in the current directory.
-(See 
-.I open, create \- prepare a fid for I/O on a file
-.)
+(See
+.IR open (3)
+&.)
 .PP
 I/O of a given number of bytes (limit 8192) at a given 
 .I offset
@@ -495,23 +497,23 @@ on an open file is done by
 and 
 .I write
 .
-(See 
-.I read, write \- transfer data from and to a file
-.)
+(See
+.IR read (3)
+&.)
 .PP
 A client should 
 .I clunk
 any fid that is no longer needed.
-(See 
-.I clunk \- forget about a fid
-.)
+(See
+.IR clunk (3)
+&.)
 .PP
 The 
 .I remove
 transaction deletes files.
-(See 
-.I remove \- remove a file from a server
-.)
+(See
+.IR remove (3)
+&.)
 .PP
 The 
 .I stat
@@ -524,11 +526,10 @@ The
 transaction allows some of a file\[aq]s properties to be changed.
 (See 
 .I 
-stat, fstat, fwstat, wstat \- get and put file status
-.I  in Chapter 8
-.I  and 
-stat, wstat \- inquire or change file attributes
-.I .)
+.IR stat (8)
+
+.IR stat (3)
+&.)
 
 .PP
 A request can be aborted with a 
@@ -548,17 +549,17 @@ until it gets the
 , at which point 
 .I oldtag
 may be reused.
-(See 
-.I flush \- abort a message
-.)
+(See
+.IR flush (3)
+&.)
 .PP
 .SS DIRECTORIES
 Directories are created by 
 .I create
 with 
 .I CHDIR
-set in the permissions argument (see 
-.I stat, wstat \- inquire or change file attributes
+set in the permissions argument (see
+.IR stat (3)
 ).
 The members of a directory can be found with 
 .I read
@@ -687,26 +688,26 @@ T}
 tab(@);
 l.
 T{
-.I Introduction to Limbo Modules
-in Chapter 7
-T}
-T{
-.I bind, mount, unmount \- change file name space
-in Chapter 8
-T}
-T{
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8
-T}
-T{
-.I read, write \- transfer data from and to a file
 
+.IR 0intro (7)
+T}
+T{
+
+.IR bind (8)
+T}
+T{
+
+.IR stat (8)
+T}
+T{
+
+.IR read (3)
 T}
 T{
 
 .I 
-stat, wstat \- inquire or change file attributes
-.I 
+.IR stat (3)
+
 
 T}
 .TE

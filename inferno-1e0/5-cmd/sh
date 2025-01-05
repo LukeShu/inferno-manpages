@@ -93,9 +93,9 @@ module as specified in
 Otherwise, the named file will not load.
 .PP
 .SS FILE NAME EXPANSION
-Command line arguments (including the command field itself) are expanded by the shell according to the regular expression rules described in 
-.I filepat: expand, match \- file pattern matching
-in Chapter 15.
+Command line arguments (including the command field itself) are expanded by the shell according to the regular expression rules described in
+.IR filepat (15)
+&.
 .PP
 This expansion is not applied to the filenames used for input/output redirection.
 .PP
@@ -236,11 +236,11 @@ When started, the shell creates an independent file name space that is a copy of
 .PP
 Command pipelines started by the shell are executed by threads that share the shell\[aq]s name space.
 If those commands modify the file name space (and they have not mimicked the shell in creating their own independent name space), those modifications will be perceived by the shell when it continues execution.
-See 
-.I bind, mount, unmount \- change name space
-and 
-.I pctl \- process control
-in Chapter 8.
+See
+.IR bind (5)
+and
+.IR pctl (8)
+&.
 .PP
 .SH FILES
 
@@ -267,32 +267,33 @@ Therefore, the shell\[aq]s approximation is not guaranteed if there are concurre
 tab(@);
 l.
 T{
-.I bind, mount, unmount \- change name space
 
+.IR bind (5)
 T}
 T{
-.I filepat: expand, match \- file pattern matching
-in Chapter 15
-T}
-T{
-.I pipe: fds, files \- get read/write file pair for a pipe
-in Chapter 15
-T}
-T{
-.I sh \- command interface
 
+.IR filepat (15)
 T}
 T{
-.I pctl \- process control
+
+.IR pipe (15)
+T}
+T{
+
+.IR sh (15)
+T}
+T{
+
+.IR pctl (8)
 See Notes on name space management
 T}
 T{
-.I cons \- console device
-in Chapter 2
+
+.IR 0intro (2)
 T}
 T{
-.I prog \- interface to running programs
-in Chapter 2
+
+.IR 0intro (2)
 T}
 .TE
 .PP

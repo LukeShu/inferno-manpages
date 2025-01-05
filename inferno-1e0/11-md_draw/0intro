@@ -13,36 +13,36 @@ Limbo Draw Module
 tab(@);
 l.
 T{
-.I context \- graphics environment
 
+.IR context (11)
 T}
 T{
-.I display \- connection to draw device
 
+.IR display (11)
 T}
 T{
-.I font \- character images for Unicode text
 
+.IR font (11)
 T}
 T{
-.I Image \- pictures and drawing
 
+.IR image (11)
 T}
 T{
-.I point \- coordinate position
 
+.IR point (11)
 T}
 T{
-.I pointer \- state of a pointer device such as a mouse
 
+.IR pointer (11)
 T}
 T{
-.I rectangle \- rectangular portion of the plane
 
+.IR rectangle (11)
 T}
 T{
-.I screen \- type to define the abstract data structures for the windows on a display
 
+.IR screen (11)
 T}
 .TE
 .PP
@@ -64,11 +64,11 @@ draw:=  load Draw Draw\->PATH;
 Inferno\[aq]s 
 .I Draw
 module provides basic graphics facilities, defining drawing contexts, images, character fonts, and rectangular geometric operations.
-See 
-.I Limbo Prefab Module
-in Chapter 12 and 
-.I Tk \-graphics toolkit
-in Chapter 13 for higher level operations, such as windows and menu handling.
+See
+.IR 0intro (12)
+and
+.IR tk (13)
+for higher level operations, such as windows and menu handling.
 .PP
 .SS PIXELS
 Images are defined on a rectangular region of an integer plane with a picture element, or 
@@ -80,9 +80,9 @@ Pixel values are integers with 1, 2, 4, or 8 bits per pixel, and all pixels in a
 Some operations allow images with different depths to be combined, for example to do masking.
 .PP
 When an image is displayed, the value of each pixel determines the color of the display.
-For color displays, Inferno uses a fixed color map for each display depth (see 
-.I rgbv \- color map
-in Appendix A), and the application is responsible for mapping its desired colors to the values available.
+For color displays, Inferno uses a fixed color map for each display depth (see
+.IR rgbv (A)
+), and the application is responsible for mapping its desired colors to the values available.
 Facilities exist to convert from red, green, blue triplets to pixel values.
 .PP
 .SS TERMINOLOGY
@@ -140,9 +140,9 @@ Besides the image of the display itself, the
 .I Display
 type also stores references to off\-screen images, fonts, and so on.
 The contents of such images are stored in the display device, not in the client of the display, which affects how they are allocated and used.
-See 
-.I Image \- pictures and drawing
-.
+See
+.IR image (11)
+&.
 T}
 T{
 Screen
@@ -158,8 +158,8 @@ T}@T{
 The 
 .I Image
 type provides basic operations on groups of pixels.
-Through a few simple operations, especially the draw image combination operator (see 
-.I Image \- pictures and drawing
+Through a few simple operations, especially the draw image combination operator (see
+.IR image (11)
 ), the Image type provides the building blocks for 
 .I Display
 , 
@@ -180,13 +180,13 @@ provide convenient and efficient management of display text.
 Inferno uses the 16\-bit Unicode character encoding, so 
 .I Fonts
 are managed hierarchically to control their size and to make common subsets such as ASCII or Greek efficient in practice.
-(See 
-.I font \- character images for Unicode text
-, 
-.I UTF, Unicode, ASCII \- character set and format
-in Appendix A, and 
-.I font, subfont \- external format for character fonts and subfonts
-in Appendix A)
+(See
+.IR font (11)
+,
+.IR utf (A)
+, and
+.IR font (A)
+)
 T}
 T{
 Context
@@ -237,8 +237,8 @@ causes the image to behave as if replicated across the entire integer plane, thu
 When replication is turned on, the clipping rectangle limits the extent of the replication and may even usefully be disjoint from 
 .I Image.r
 .
-See 
-.I Image \- pictures and drawing
+See
+.IR image (11)
 for examples.
 .PP
 The 
@@ -277,24 +277,24 @@ print format) for more information.
 tab(@);
 l.
 T{
-.I ir \- infrared remote control
-in Chapter 15
+
+.IR ir (15)
 T}
 T{
-.I Limbo Prefab Module
-in Chapter 12
+
+.IR 0intro (12)
 T}
 T{
-.I Tk \-graphics toolkit
-in Chapter 13
+
+.IR tk (13)
 T}
 T{
-.I font, subfont \- external format for character fonts and subfonts
-in Appendix A
+
+.IR font (A)
 T}
 T{
-.I image \- external format for images
-in Appendix A
+
+.IR image (A)
 T}
 .TE
 .PP

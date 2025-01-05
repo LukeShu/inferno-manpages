@@ -37,12 +37,12 @@ which destroy input files before reading them.
 tab(@);
 l.
 T{
-.I read, write, stream \- read, write, or stream file
-in Chapter 8
+
+.IR read (8)
 T}
 T{
-.I Integer File Descriptor
-in Chapter 8
+
+.IR 0intro (8)
 T}
 .TE
 .PP

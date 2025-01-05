@@ -88,7 +88,7 @@ Either reason suggests concentrating the available intensities at the low end of
 .RE
 .PP
 .SH SEE ALSO
-.I Draw Module
-in Chapter 11 and 
-.I Image \- pictures and drawing
-in Chapter 11
+
+.IR 0intro (11)
+and
+.IR image (11)

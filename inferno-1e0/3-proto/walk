@@ -23,8 +23,8 @@ For the
 to succeed, the file identified by 
 .I fid
 must be a directory and the implied user of the request must have permission to search the directory.
-(See 
-.I Inferno Communications Protocol, Styx
+(See
+.IR 0intro (3)
 ).
 .PP
 After a successful 
@@ -81,28 +81,28 @@ messages.
 tab(@);
 l.
 T{
-.I bind, mount, unmount \- change file name space
-in Chapter 8
-T}
-T{
-.I chdir \- change working directory
-in Chapter 8
-T}
-T{
-.I open, create \- open/create a file for reading or writing
-in Chapter 8
-T}
-T{
-.I remove \- remove a file
-in Chapter 8
-T}
-T{
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8
-T}
-T{
-.I Inferno Communications Protocol, Styx
 
+.IR bind (8)
+T}
+T{
+
+.IR chdir (8)
+T}
+T{
+
+.IR open (8)
+T}
+T{
+
+.IR remove (8)
+T}
+T{
+
+.IR stat (8)
+T}
+T{
+
+.IR 0intro (3)
 T}
 .TE
 .PP

@@ -18,13 +18,14 @@ function changes the working directory of the invoking process and its file name
 .I path
 .
 .PP
-The working directory is the starting point for evaluating file names that do not begin with / or #, as explained in 
-.I Limbo System Module
-.
+The working directory is the starting point for evaluating file names that do not begin with / or #, as explained in
+.IR 0intro (8)
+&.
 .PP
 When Inferno boots, the initial process has / for its working directory.
 .PP
 .SH SEE ALSO
-.I Limbo System Module
-, 
-.I File Name Space
+
+.IR 0intro (8)
+,
+.IR 0intro (8)

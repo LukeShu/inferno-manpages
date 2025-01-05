@@ -26,8 +26,8 @@ These
 structures are equivalent to the result of a 
 .I stat
 call on each file in the directory.
-See 
-.I stat, fstat, fwstat, wstat \- get and put file status
+See
+.IR stat (8)
 for a description of 
 .I stat
 and 
@@ -43,8 +43,8 @@ The number returned may be less than the number requested.
 The file offset is advanced by the number of bytes actually read.
 A return of 0 indicates the end of the directory.
 .PP
-Seeks (see 
-.I seek \- change file offset
+Seeks (see
+.IR seek (8)
 ) are not allowed on directories.
 .PP
 .SH SEE ALSO
@@ -53,28 +53,28 @@ Seeks (see
 tab(@);
 l.
 T{
-.I Limbo System Module
 
+.IR 0intro (8)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
 
+.IR open (8)
 T}
 T{
-.I read, write, stream \- read, write, or stream file
 
+.IR read (8)
 T}
 T{
-.I seek \- change file offset
 
+.IR seek (8)
 T}
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
 
+.IR stat (8)
 T}
 T{
-.I readdir \- read directory and sort files
-in Chapter 15
+
+.IR readdir (15)
 T}
 .TE
 .PP

@@ -17,9 +17,9 @@ The UTF encoding of the Unicode Standard is backward compatible with ASCII.
 Inferno programs handle ASCII text, as well as uninterpreted byte streams, without special arrangement.
 However, programs that perform semantic processing on characters must convert from UTF to Unicode in order to work properly with non\-ASCII input.
 Normally, all necessary conversions are done by the Limbo compiler and execution environment, but sometimes more is necessary, such as when a program receives UTF input one byte at a time.
-See 
-.I byte2char, char2byte \- convert between bytes and characters
-in Chapter 8 for routines to handle such processing.
+See
+.IR byte2char (8)
+for routines to handle such processing.
 .PP
 A Unicode character 
 .I x
@@ -46,5 +46,5 @@ When there are multiple ways to encode a value, for example rune 0, the shortest
 In the inverse mapping, any sequence except those described above is incorrect and is converted to the Unicode value of hexadecimal 0080.
 .PP
 .SH SEE ALSO
-.I byte2char, char2byte \- convert between bytes and characters
-in Chapter 8
+
+.IR byte2char (8)

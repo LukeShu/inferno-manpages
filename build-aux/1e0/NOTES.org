@@ -22,6 +22,6 @@
 
 TODO:
  - Better handling of <h3> and <h4> (`roff -man` only has 2 levels: .SH and .SS)
- - Rewrite <a> elements
+ - Handle #fragments in <a> elements
  - Proof-read 0intro pages for markup weirdness
  - fix table and figure numbers

@@ -139,9 +139,9 @@ The standard format for octal numbers (
 ) is not recognized.
 .PP
 .SH NOTES
-See 
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8 for interpretation of permissions on Windows\-hosted systems.
+See
+.IR stat (8)
+for interpretation of permissions on Windows\-hosted systems.
 .PP
 .SH SEE ALSO
 .PP
@@ -149,12 +149,12 @@ in Chapter 8 for interpretation of permissions on Windows\-hosted systems.
 tab(@);
 l.
 T{
-.I ls \- list contents of directory
 
+.IR ls (5)
 T}
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8
+
+.IR stat (8)
 T}
 .TE
 .PP

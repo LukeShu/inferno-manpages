@@ -200,7 +200,9 @@ The following diagrams show how authentication is accomplished in Inferno with t
 .PP
 STS: Step 1
 .PP
-Figure 9\-1 represents two users, User 0 and User 1, who have already received certificates from the same CA.
+
+.IR 0intro (9)
+represents two users, User 0 and User 1, who have already received certificates from the same CA.
 In order to authenticate each other, they follow the STS protocol.
 First, one user sends the other their public key and certificate along with a computation based on the Diffie\-Hellman parameters contained in their certificate.
 These parameters will be used to create a shared secret key between User 0 and User 1.
@@ -218,7 +220,9 @@ These parameters will be used to create a shared secret key between User 0 and U
  \[rs]______/                        \[rs]______/    
 .EE
 .PP
-In Figure 9\-2, User 1 returns a computation based on the same Diffie\-Hellman parameters along with User 1\[aq]s public key and certificate.
+In
+.IR 0intro (9)
+, User 1 returns a computation based on the same Diffie\-Hellman parameters along with User 1\[aq]s public key and certificate.
 With each other\[aq]s public key and certificate, along with the CA\[aq]s public key that each has, User 0 and User 1 can verify that each has the other\[aq]s public key.
 All they need now is to provide each other with a signature that can be verified with the other\[aq]s public key to prove that they are indeed communicating with each other and not some third party.
 .PP
@@ -241,7 +245,9 @@ sign(User 1\[aq]s public key, alpha**r1(mod p), alpha**r0(modp))
 .PP
 STS: Steps 3 and 4
 .PP
-In Figure 9\-3, each user signs information known to both of them that they can verify.
+In
+.IR 0intro (9)
+, each user signs information known to both of them that they can verify.
 The computations using the Diffie\-Hellman parameters in this protocol enable User 0 and User 1 to compute a secret value that is known only to them.
 This value can be used as a shared secret key to encrypt later communications.
 The ability to derive the same key from the computations they passed back and forth such that no one else listening in on this protocol could determine the key, is a property of the Diffie\-Hellman exchange.
@@ -308,7 +314,9 @@ Implementing security in Inferno involves a number of different components.
 Application programs load modules to access security functions; commands are used to set up servers for security purposes, and daemons are initialized to listen for security\-related communications.
 .PP
 .SS MODULES
-Table 9\-1 summarize the security modules covered in this chapter.
+
+.IR 0intro (9)
+summarize the security modules covered in this chapter.
 The keyring module is defined by 
 .I keyring.m
 .
@@ -560,7 +568,9 @@ T}
 .TE
 .PP
 .SS COMMANDS
-Table 9\-2 summarizes the commands that are used for security with servers and set\-top boxes:
+
+.IR 0intro (9)
+summarizes the commands that are used for security with servers and set\-top boxes:
 .PP
 .PD 0
 .P
@@ -609,7 +619,9 @@ T}
 .TE
 .PP
 .SS DAEMONS
-Table 9\-3 summarizes the daemons that run on a server:
+
+.IR 0intro (9)
+summarizes the daemons that run on a server:
 .PP
 .PD 0
 .P
@@ -685,10 +697,10 @@ The
 adt contains an individual user\[aq]s private and public key, the signer\[aq]s certificate and the signer\[aq]s public key, and the Diffie\-Hellman parameters.
 
 .I Authinfo
-is normally created during login or registration (See 
-.I login, getauthinfo \- get an Authinfo adt from a certificate authority
-and 
-.I register \- command to register set\-top\-box identity with signer
+is normally created during login or registration (See
+.IR login (9)
+and
+.IR register (9)
 ).
 .PP
 .SS IPINT
@@ -705,9 +717,9 @@ an array of bytes (in which the first byte is the highest order byte of the inte
 .I ssl
 device (
 .I #D
-) (see 
-.I ssl \- secure sockets layer device
-in Chapter 2)
+) (see
+.IR ssl (2)
+)
 .IP \[bu] 2
 a MIME base 64 format that allows an 
 .I IPint

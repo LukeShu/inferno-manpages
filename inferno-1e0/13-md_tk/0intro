@@ -476,9 +476,9 @@ This section lists all of the commands documented in the Tk 4.0 man pages, givin
 .P
 .PD
 -insertontime that are not implemented in Limbo/Tk.
-See 
-Options Not Supported in Limbo Tk
-.I .
+See
+.IR 0intro (13)
+&.
 
 .PP
    *   *   *   *   *

@@ -23,8 +23,8 @@ The
 .I Font
 type defines the appearance of characters drawn with the 
 .I Image.text
-primitive (see 
-.I Image \- pictures and drawing
+primitive (see
+.IR image (11)
 ).
 
 .I Fonts
@@ -32,9 +32,9 @@ are usually read from files and are selected based on attributes such as their s
 .PP
 Fonts are built from a series of subfonts that define contiguous portions of the Unicode character space, such as the ASCII or the Greek alphabet.
 Font files are textual descriptions of the allocation of characters in the various regions of the Unicode space.
-See 
-.I font, subfont \- external format for character fonts and subfonts
-in Appendix A for the format.
+See
+.IR font (A)
+for the format.
 Subfonts are not visible from Limbo.
 .PP
 A default font, named *
@@ -136,5 +136,5 @@ T}
 .TE
 .PP
 .SH SEE ALSO
-.I font, subfont \- external format for character fonts and subfonts
-in Appendix A
+
+.IR font (A)

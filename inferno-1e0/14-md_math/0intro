@@ -16,16 +16,16 @@ The Limbo Math modules area as follows:
 tab(@);
 l.
 T{
-.I elem \- elementary functions of applied mathematics
 
+.IR elem (14)
 T}
 T{
-.I fp \- floating point operations
 
+.IR fp (14)
 T}
 T{
-.I linalg \- linear algebra primitives
 
+.IR linalg (14)
 T}
 .TE
 .PP
@@ -65,9 +65,9 @@ Negation, \-x, changes the sign of x, as opposed to computing 0.
 .I x=0
 .
 .PP
-Subexpression elimination and other forms of code motion may be done by the compiler, but not across calls to the mode and status functions described in 
-.I fp \- floating point operations
-.
+Subexpression elimination and other forms of code motion may be done by the compiler, but not across calls to the mode and status functions described in
+.IR fp (14)
+&.
 Removal of parentheses or factoring is not performed by the compiler.
 The evaluation order of 
 .I a+b+c

@@ -27,9 +27,9 @@ function spawns a thread to continually read the pointer device specified by
 .I file
 and sends a 
 .I Pointer
-adt (see 
-.I pointer \- state of a pointer device such as a mouse
-in Chapter 11) over the channel specified by 
+adt (see
+.IR pointer (11)
+) over the channel specified by 
 .I posn
 .
 If 
@@ -72,12 +72,12 @@ function.
 tab(@);
 l.
 T{
-.I pointer \- state of a pointer device such as a mouse
-in Chapter 11
+
+.IR pointer (11)
 T}
 T{
-.I draw \- graphics device
-in Chapter 2
+
+.IR 0intro (2)
 T}
 .TE
 .PP

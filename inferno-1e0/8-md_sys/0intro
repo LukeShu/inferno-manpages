@@ -13,76 +13,76 @@ The Limbo system modules are as follows:
 tab(@);
 l.
 T{
-.I bind, mount, unmount \- change file name space
 
+.IR bind (8)
 T}
 T{
-.I byte2char, char2byte \- convert between bytes and characters
 
+.IR byte2char (8)
 T}
 T{
-.I chdir \- change working directory
 
+.IR chdir (8)
 T}
 T{
-.I dial, announce, export, listen \- make network connections
 
+.IR dial (8)
 T}
 T{
-.I dirread \- read directory
 
+.IR dirread (8)
 T}
 T{
-.I dup \- duplicate an open file descriptor
 
+.IR dup (8)
 T}
 T{
-.I file2chan \- create file connected to Limbo channel
 
+.IR file2chan (8)
 T}
 T{
-.I millisec \- millisecond timer
 
+.IR millisec (8)
 T}
 T{
-.I open, create \- open/create a file for reading or writing
 
+.IR open (8)
 T}
 T{
-.I pctl \- process control
 
+.IR pctl (8)
 T}
 T{
-.I print, fprint, sprint \- print formatted output
 
+.IR print (8)
 T}
 T{
-.I read, write, stream \- read, write, or stream file
 
+.IR read (8)
 T}
 T{
-.I remove \- remove a file
 
+.IR remove (8)
 T}
 T{
-.I seek \- change file offset
 
+.IR seek (8)
 T}
 T{
-.I sleep \- delay execution
 
+.IR sleep (8)
 T}
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
 
+.IR stat (8)
 T}
 T{
-.I tokenize \- split string into words
 
+.IR tokenize (8)
 T}
 T{
-.I utfbytes \- compute the Unicode length of a UTF byte sequence
 
+.IR utfbytes (8)
 T}
 .TE
 .PP
@@ -257,14 +257,14 @@ The set of processes that shares that table is called a
 .I file descriptor group
 .
 Files opened by one process in the group may be read from and written to other processes in the group.
-(See 
-.I pctl \- process control
+(See
+.IR pctl (8)
 ).
 .PP
 Directories and files
 .PP
-Directories may be opened and read much like regular files (see 
-.I dirread \- read directory
+Directories may be opened and read much like regular files (see
+.IR dirread (8)
 ).
 They contain an integral number of records, called 
 .I directory
@@ -286,10 +286,10 @@ New files are made with
 .I create
 and deleted with 
 .I remove
-(see 
-.I open, create \- open/create a file for reading or writing
-and 
-.I remove \- remove a file
+(see
+.IR open (8)
+and
+.IR remove (8)
 ).
 As with regular files, attributes of directories can be manipulated by 
 .I wstat
@@ -305,9 +305,9 @@ Guaranteed synchronous writes are not available.
 File locking from underlying file systems is not supported by Inferno.
 Processes can coordinate their file operations by other mechanisms.
 .PP
-Atomicity of I/O is guaranteed for I/O with byte counts smaller than the Styx message size; see 
-.I read, write \- transfer data from and to a file
-in Chapter 3.
+Atomicity of I/O is guaranteed for I/O with byte counts smaller than the Styx message size; see
+.IR read (3)
+&.
 .PP
 .SS PROCESS EXECUTION AND CONTROL
 A Limbo 
@@ -328,9 +328,9 @@ Since they are scheduled independently, a creator and a spawned thread should sy
 Processes are also organized into 
 .I process
 .I groups
-that represent the set of threads that a single kill request terminates (see 
-.I prog \- interface to running programs
-in Chapter 2).
+that represent the set of threads that a single kill request terminates (see
+.IR 0intro (2)
+).
 .PP
 A newly spawned thread inherits the following attributes:
 .IP \[bu] 2
@@ -363,11 +363,11 @@ Inferno maintains user identifier (
 ) strings for each process.
 These values are also attributes of files and directories.
 A comparison of process and file identities take place when a process attempts to open or create a file.
-(See 
-.I stat, fstat, fwstat, wstat \- get and put file status
-and 
-.I stat, wstat \- inquire or change file attributes
-in Chapter 3.)
+(See
+.IR stat (8)
+and
+.IR stat (3)
+&.)
 .PP
 When a pathname crosses from one server to another, the process identities are mapped by each server receiving a file request.
 .PP

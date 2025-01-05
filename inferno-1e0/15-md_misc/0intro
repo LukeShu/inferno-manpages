@@ -13,72 +13,72 @@ The remaining Limbo modules are as follows:
 tab(@);
 l.
 T{
-.I bufio \- buffered input/output module
 
+.IR bufio (15)
 T}
 T{
-.I daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions
 
+.IR daytime (15)
 T}
 T{
-.I devpointer \- I/O interface for the pointer device
 
+.IR devpointer (15)
 T}
 T{
-.I filepat: expand, match \- file pattern matching
 
+.IR filepat (15)
 T}
 T{
-.I imagefile \- processing external image file formats
 
+.IR imagefile (15)
 T}
 T{
-.I ir \- infrared remote control
 
+.IR ir (15)
 T}
 T{
-.I mpeg \- interface to the mpeg device driver
 
+.IR mpeg (15)
 T}
 T{
-.I newns \- build a new name space from a description file
 
+.IR newns (15)
 T}
 T{
-.I pipe: fds, files \- get read/write file pair for a pipe
 
+.IR pipe (15)
 T}
 T{
-.I readdir \- read directory and sort files
 
+.IR readdir (15)
 T}
 T{
-.I regex \- regular expression recognizer
 
+.IR regex (15)
 T}
 T{
-.I sh \- command interface
 
+.IR sh (15)
 T}
 T{
-.I srv \- miscellaneous services from the host operating system
 
+.IR srv (15)
 T}
 T{
-.I string: append, drop, in, prefix, splitl, splitr, splitstrl, splitstrr, take, toint, tolower, toupper \- string operations
 
+.IR string (15)
 T}
 T{
-.I volume \- volume control for an infrared interface
 
+.IR volume (15)
 T}
 T{
-.I wmlib \- window manager toolkit
 
+.IR wmlib (15)
 T}
 T{
-.I workdir \- discover the name of the current working directory
 
+.IR workdir (15)
 T}
 .TE
 .PP

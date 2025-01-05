@@ -49,9 +49,9 @@ T{
 T}@T{
 Include the 
 .I qid
-(see 
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8) of each file.
+(see
+.IR stat (8)
+) of each file.
 T}
 .TE
 .PP
@@ -257,9 +257,9 @@ The sorting options correspond to the
 options of the 
 .I readdir
 module.
-See 
-.I readdir \- read directory and sort files
-in Chapter 15.
+See
+.IR readdir (15)
+&.
 .PP
 .SH SEE ALSO
 .PP
@@ -267,16 +267,16 @@ in Chapter 15.
 tab(@);
 l.
 T{
-.I stat, fstat, fwstat, wstat \- get and put file status
-in Chapter 8
+
+.IR stat (8)
 T}
 T{
-.I Inferno Devices
-in Chapter 2
+
+.IR 0intro (2)
 T}
 T{
-.I stat, wstat \- inquire or change file attributes
-in Chapter 3
+
+.IR stat (3)
 T}
 .TE
 .PP

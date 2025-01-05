@@ -57,9 +57,9 @@ is non\-zero then
 .I auth
 attempts to write the id of the party at the other end of the connection into 
 .I /dev/user
-(see 
-.I cons \- console device
-in Chapter 2).
+(see
+.IR cons (2)
+).
 No error is generated if this does not succeed.
 If the authentication is not successful and 
 .I setid
