@@ -6,27 +6,13 @@
 
 set -euE -o pipefail
 
-# Usage ./html2man outfile.man outfile.names <infile.phtml
+# Usage: ./html2man 'NAME(CHAPTER)' <infile.phtml >outfile.man
 main() {
-	out_roff=$1
-	out_names=$2
-	case "$out_roff" in
-		*/devices*) chapter=2;;
-		*/proto*)   chapter=3;;
-		*/cmd_env*) chapter=4;;
-		*/cmd*)     chapter=5;;
-		*/daemons*) chapter=6;;
-		*/md-*)     chapter=7;;
-		*/md_sys*)  chapter=8;;
-		*/md_sec*)  chapter=9;;
-		*/md_draw*) chapter=11;;
-		*/md_pref*) chapter=12;;
-		*/md_tk*)   chapter=13;;
-		*/md_math*) chapter=14;;
-		*/md_mis*)  chapter=15;;
-		*/formats*) chapter=A;;
-	esac
+	name=$1
 
+	# head
+	sed -E -e 's/(.*)\((.*)\)/.TH \U\1 \U\2/' <<<"$name"
+	# body
 	{
 		# The main conversion.
 		pandoc --from=html --to=man --wrap=preserve
@@ -40,29 +26,8 @@ main() {
 		    -e 's/\\f\[R\]\s*/\n/g' \
 		    -e 's/^\\\s*//'
 	} | {
-		# Extract names.
-		roff="$(cat)"
-		if [[ $out_roff == *0intro* ]]; then
-			names=(0intro)
-		else
-			readarray -d $'\n' -t names < <(
-				grep -A1 '\.SH NAME' <<<"$roff" |
-					sed 1d |
-					sed -e 's/\s*\\-.*//' -e 's/[:,]\s*/\n/g' |
-					tr [A-Z] [a-z])
-		fi
-		IFS=,
-		case "${names[*]}" in # kludges
-			'ipint adt') names=(ipint);;
-			'login,getauthinfo') names=(login);;
-		esac
-
-		# Write output.
-		{
-			echo ".TH ${names[0]^^} ${chapter}"
-			printf '%s\n' "$roff"
-		} >"$out_roff"
-		printf '%s\n' "${names[@]}" >"$out_names"
+		# Trim trailing newlines.
+		printf '%s\n' "$(cat)"
 	}
 }
 

@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# build-aux/1e0/html2names - Get manpage names for a given HTML fragment
+#
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+set -euE -o pipefail
+
+# Usage: ./html2names infile.phtml >outfile.names
+main() {
+	in_phtml=$1
+
+	case "$in_phtml" in
+		*/devices*) chapter=2;;
+		*/proto*)   chapter=3;;
+		*/cmd_env*) chapter=4;;
+		*/cmd*)     chapter=5;;
+		*/daemons*) chapter=6;;
+		*/md-*)     chapter=7;;
+		*/md_sys*)  chapter=8;;
+		*/md_sec*)  chapter=9;;
+		*/md_draw*) chapter=11;;
+		*/md_pref*) chapter=12;;
+		*/md_tk*)   chapter=13;;
+		*/md_math*) chapter=14;;
+		*/md_mis*)  chapter=15;;
+		*/formats*) chapter=A;;
+	esac
+
+	if [[ $in_phtml == *0intro* ]]; then
+		names=(0intro)
+	else
+		readarray -d $'\n' -t names < <(
+			<"$in_phtml" \
+				pandoc --from=html --to=man --wrap=preserve |
+				grep -A1 '\.SH Name' |
+				sed 1d |
+				sed -e 's/\s*\\-.*//' -e 's/[:,]\s*/\n/g' |
+				tr [A-Z] [a-z])
+	fi
+	IFS=,
+	case "${names[*]}" in # kludges
+		'ipint adt') names=(ipint);;
+		'login,getauthinfo') names=(login);;
+	esac
+
+	printf "%s(${chapter})\n" "${names[@]}"
+}
+
+ main "$@"

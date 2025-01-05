@@ -33,16 +33,15 @@ main() {
 	mkdir "${chapter_dir[@]/#/"${dst_dir}/"}"
 
 	for roff_file in "${roff_files[@]}"; do
-		read _ _ chapter <"$roff_file"
 		base=''
-		while read -r name; do
+		while read -r name chapter; do
 			if [[ -z "$base" ]]; then
 				cp -T -- "$roff_file" "${dst_dir}/${chapter_dir[$chapter]}/$name"
 				base=$name
 			else
 				ln -sT -- "$base" "${dst_dir}/${chapter_dir[$chapter]}/$name"
 			fi
-		done < "${roff_file%.man}.names"
+		done < <(sed -E -e 's/(.*)\((.*)\)/\1 \2/' <"${roff_file%.man}.names")
 	done
 }
 

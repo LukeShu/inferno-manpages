@@ -147,8 +147,11 @@ $(tmp_dir)/%.phtml: $(tmp_dir)/%.htm $(bin_dir)/htmlstrip $(bin_dir)/htmlclean $
 
 # Populate $(tmp_dir): Turn those into manpages ################################
 
-$(tmp_dir)/%.man $(tmp_dir)/%.names: $(tmp_dir)/%.phtml $(bin_dir)/html2man
-	<$< $(bin_dir)/html2man $(tmp_dir)/$*.man $(tmp_dir)/$*.names
+$(tmp_dir)/%.names: $(tmp_dir)/%.phtml $(bin_dir)/html2names
+	$(bin_dir)/html2names $< >$@
+
+$(tmp_dir)/%.man: $(tmp_dir)/%.phtml $(tmp_dir)/%.names $(bin_dir)/html2man
+	<$< $(bin_dir)/html2man "$$(head -n1 $(filter %.names,$^))" >$@
 
 # Populate $(out_dir): Copy those manpages into place ##########################
 
