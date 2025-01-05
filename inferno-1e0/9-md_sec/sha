@@ -1,4 +1,4 @@
-.TH VERIFY 9
+.TH VERIFY 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 verify \- command to authenticate receiver of blinded certificate

@@ -1,4 +1,4 @@
-.TH CLONE 3
+.TH CLONE 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 clone \- duplicate a fid

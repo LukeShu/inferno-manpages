@@ -1,4 +1,4 @@
-.TH HTTPD 6
+.TH HTTPD 6 "" "" "Inferno Daemons"
 .PP
 .SH NAME
 httpd, echo, stats \- HTTP server

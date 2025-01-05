@@ -1,4 +1,4 @@
-.TH VIRGILD 6
+.TH VIRGILD 6 "" "" "Inferno Daemons"
 .PP
 .SH NAME
 virgild \- connection service for remote clients

@@ -1,4 +1,4 @@
-.TH WORKDIR 15
+.TH WORKDIR 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 workdir \- discover the name of the current working directory

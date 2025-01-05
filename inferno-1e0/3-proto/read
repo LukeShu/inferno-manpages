@@ -1,4 +1,4 @@
-.TH READ 3
+.TH READ 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 read, write \- transfer data from and to a file

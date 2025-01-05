@@ -1,4 +1,4 @@
-.TH RECTANGLE 11
+.TH RECTANGLE 11 "" "" "Limbo Draw Module"
 .PP
 .SH NAME
 rectangle \- rectangular portion of the plane

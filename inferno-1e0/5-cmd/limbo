@@ -1,4 +1,4 @@
-.TH LIMBO 5
+.TH LIMBO 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 limbo \- Limbo compiler

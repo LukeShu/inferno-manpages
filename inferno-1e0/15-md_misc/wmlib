@@ -1,4 +1,4 @@
-.TH WMLIB 15
+.TH WMLIB 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 wmlib \- window manager toolkit

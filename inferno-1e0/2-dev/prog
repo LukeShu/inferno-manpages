@@ -1,4 +1,4 @@
-.TH PROG 2
+.TH PROG 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 prog \- interface to running programs

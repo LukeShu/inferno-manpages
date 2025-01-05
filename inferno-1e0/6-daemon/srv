@@ -1,4 +1,4 @@
-.TH SRV 6
+.TH SRV 6 "" "" "Inferno Daemons"
 .PP
 .SH NAME
 srv \- start server daemons

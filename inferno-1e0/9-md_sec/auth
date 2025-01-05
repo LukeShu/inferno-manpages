@@ -1,4 +1,4 @@
-.TH AUTH 9
+.TH AUTH 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 auth, readauthinfo, writeauthinfo \- authenticate a connection

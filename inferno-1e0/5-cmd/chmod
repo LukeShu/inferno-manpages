@@ -1,4 +1,4 @@
-.TH CHMOD 5
+.TH CHMOD 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 chmod \- change file mode (permissions)

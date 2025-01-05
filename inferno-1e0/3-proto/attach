@@ -1,4 +1,4 @@
-.TH ATTACH 3
+.TH ATTACH 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 attach, nop \- messages to initiate activity

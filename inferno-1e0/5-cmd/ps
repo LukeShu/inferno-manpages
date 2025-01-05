@@ -1,4 +1,4 @@
-.TH PS 5
+.TH PS 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 ps \- thread status

@@ -1,4 +1,4 @@
-.TH NETSTAT 5
+.TH NETSTAT 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 netstat \- summarize network connections

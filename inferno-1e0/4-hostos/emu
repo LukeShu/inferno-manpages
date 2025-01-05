@@ -1,4 +1,4 @@
-.TH EMU 4
+.TH EMU 4 "" "" "Inferno Host O/S Utilities"
 .PP
 .SH NAME
 emu \- Inferno emulator

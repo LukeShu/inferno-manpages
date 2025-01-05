@@ -1,4 +1,4 @@
-.TH DATE 5
+.TH DATE 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 date \- print the date

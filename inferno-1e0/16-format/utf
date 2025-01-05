@@ -1,4 +1,4 @@
-.TH UTF A
+.TH UTF A "" "" "Inferno Format Specifications"
 .PP
 .SH NAME
 UTF, Unicode, ASCII \- character set and format

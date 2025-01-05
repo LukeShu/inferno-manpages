@@ -1,4 +1,4 @@
-.TH READDIR 15
+.TH READDIR 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 readdir \- read directory and sort files

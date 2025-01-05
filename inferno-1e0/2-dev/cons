@@ -1,4 +1,4 @@
-.TH CONS 2
+.TH CONS 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 cons \- console device

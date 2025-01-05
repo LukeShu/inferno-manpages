@@ -1,4 +1,4 @@
-.TH FP 14
+.TH FP 14 "" "" "Limbo Math Module"
 .PP
 .SH NAME
 fp \- floating point operations

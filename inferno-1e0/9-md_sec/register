@@ -1,4 +1,4 @@
-.TH REGISTER 9
+.TH REGISTER 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 register \- command to register set\-top\-box identity with signer

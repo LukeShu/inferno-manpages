@@ -1,4 +1,4 @@
-.TH SCREEN 11
+.TH SCREEN 11 "" "" "Limbo Draw Module"
 .PP
 .SH NAME
 screen \- type to define the abstract data structures for the windows on a display

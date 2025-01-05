@@ -1,4 +1,4 @@
-.TH SIGNER 9
+.TH SIGNER 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 signer, countersigner \- daemons for set\-top box authentication

@@ -1,4 +1,4 @@
-.TH LINALG 14
+.TH LINALG 14 "" "" "Limbo Math Module"
 .PP
 .SH NAME
 linalg \- linear algebra primitives

@@ -1,4 +1,4 @@
-.TH EXAMPLE 11
+.TH EXAMPLE 11 "" "" "Limbo Draw Module"
 .PP
 .SH NAME
 Example \- simple program to illustrate image primitives

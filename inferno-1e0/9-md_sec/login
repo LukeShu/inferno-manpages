@@ -1,4 +1,4 @@
-.TH LOGIN 9
+.TH LOGIN 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 login, getauthinfo \- get an Authinfo adt from a certificate authority

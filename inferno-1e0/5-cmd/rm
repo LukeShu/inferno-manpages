@@ -1,4 +1,4 @@
-.TH RM 5
+.TH RM 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 rm \- remove file(s)

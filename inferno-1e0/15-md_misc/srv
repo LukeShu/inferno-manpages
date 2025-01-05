@@ -1,4 +1,4 @@
-.TH SRV 15
+.TH SRV 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 srv \- miscellaneous services from the host operating system

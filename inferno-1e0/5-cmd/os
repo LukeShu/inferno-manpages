@@ -1,4 +1,4 @@
-.TH OS 5
+.TH OS 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 os \- interface OS commands (hosted Inferno only)

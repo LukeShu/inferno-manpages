@@ -1,4 +1,4 @@
-.TH DEVPOINTER 15
+.TH DEVPOINTER 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 devpointer \- I/O interface for the pointer device

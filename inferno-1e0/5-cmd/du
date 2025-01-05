@@ -1,4 +1,4 @@
-.TH DU 5
+.TH DU 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 du \- disk usage

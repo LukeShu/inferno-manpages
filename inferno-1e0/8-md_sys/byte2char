@@ -1,4 +1,4 @@
-.TH BYTE2CHAR 8
+.TH BYTE2CHAR 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 byte2char, char2byte \- convert between bytes and characters

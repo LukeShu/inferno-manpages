@@ -6,12 +6,15 @@
 
 set -euE -o pipefail
 
-# Usage: ./html2man 'NAME(CHAPTER)' <infile.phtml >outfile.man
+# Usage: ./html2man PAGE_NAME CHAPTER_NUM CHAPTER_NAME <infile.phtml >outfile.man
 main() {
-	name=$1
+	page_name=$1
+	chapter_num=$2
+	chapter_name=$3
 
 	# head
-	sed -E -e 's/(.*)\((.*)\)/.TH \U\1 \U\2/' <<<"$name"
+	echo ".TH ${page_name^^} ${chapter_num^^} \"\" \"\" \"${chapter_name}\""
+
 	# body
 	{
 		# The main conversion.

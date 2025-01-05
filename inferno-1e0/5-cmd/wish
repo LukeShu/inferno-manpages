@@ -1,4 +1,4 @@
-.TH WISH 5
+.TH WISH 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 wish \- interface to the Tk graphics toolkit

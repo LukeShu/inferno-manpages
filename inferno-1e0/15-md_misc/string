@@ -1,4 +1,4 @@
-.TH STRING 15
+.TH STRING 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 string: append, drop, in, prefix, splitl, splitr, splitstrl, splitstrr, take, toint, tolower, toupper \- string operations

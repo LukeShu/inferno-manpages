@@ -1,4 +1,4 @@
-.TH DRAW 2
+.TH DRAW 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 draw \- graphics device

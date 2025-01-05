@@ -1,4 +1,4 @@
-.TH GREP 5
+.TH GREP 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 grep \- search file(s) for a pattern

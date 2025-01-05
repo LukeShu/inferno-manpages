@@ -1,4 +1,4 @@
-.TH DAYTIME 15
+.TH DAYTIME 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 daytime: text, filet, gmt, local, now, time, tm2epoch \- time conversions

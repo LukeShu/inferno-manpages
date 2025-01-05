@@ -1,4 +1,4 @@
-.TH TKLIB 13
+.TH TKLIB 13 "" "" "Limbo/Tk - Graphic Interface Module"
 .PP
 .SH NAME
 tklib: tkquote, is_err, tkcmds, dialog, getstring, notice, mktabs, tabsctl \- Tk user interface functions

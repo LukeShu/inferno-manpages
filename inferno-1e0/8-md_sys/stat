@@ -1,4 +1,4 @@
-.TH STAT 8
+.TH STAT 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 stat, fstat, fwstat, wstat \- get and put file status

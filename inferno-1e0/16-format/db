@@ -1,4 +1,4 @@
-.TH DB A
+.TH DB A "" "" "Inferno Format Specifications"
 .PP
 .SH NAME
 db \- connection service database

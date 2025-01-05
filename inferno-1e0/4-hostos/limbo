@@ -1,4 +1,4 @@
-.TH LIMBO 4
+.TH LIMBO 4 "" "" "Inferno Host O/S Utilities"
 .PP
 .SH NAME
 limbo \- Limbo compiler

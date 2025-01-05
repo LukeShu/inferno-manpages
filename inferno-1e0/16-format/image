@@ -1,4 +1,4 @@
-.TH IMAGE A
+.TH IMAGE A "" "" "Inferno Format Specifications"
 .PP
 .SH NAME
 image \- external format for images

@@ -1,4 +1,4 @@
-.TH MANUFACTURE 9
+.TH MANUFACTURE 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 manufacture \- command to emulate set\-top\-box\-id in ROM

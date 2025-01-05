@@ -1,4 +1,4 @@
-.TH GETAUTHINFO 9
+.TH GETAUTHINFO 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 getauthinfo \- command to create/obtain a certificate for authentication

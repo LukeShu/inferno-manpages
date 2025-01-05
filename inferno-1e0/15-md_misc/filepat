@@ -1,4 +1,4 @@
-.TH FILEPAT 15
+.TH FILEPAT 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 filepat: expand, match \- file pattern matching

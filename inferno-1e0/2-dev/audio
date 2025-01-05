@@ -1,4 +1,4 @@
-.TH AUDIO 2
+.TH AUDIO 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 audio \- interface to audio devices

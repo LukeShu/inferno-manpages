@@ -1,4 +1,4 @@
-.TH FONT 11
+.TH FONT 11 "" "" "Limbo Draw Module"
 .PP
 .SH NAME
 font \- character images for Unicode text

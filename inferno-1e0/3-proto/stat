@@ -1,4 +1,4 @@
-.TH STAT 3
+.TH STAT 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 stat, wstat \- inquire or change file attributes

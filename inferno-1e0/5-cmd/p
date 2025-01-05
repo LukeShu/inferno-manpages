@@ -1,4 +1,4 @@
-.TH P 5
+.TH P 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 p \- paginate

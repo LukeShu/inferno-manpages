@@ -1,4 +1,4 @@
-.TH NSBUILD 5
+.TH NSBUILD 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 nsbuild \- build Inferno name space

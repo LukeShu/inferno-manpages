@@ -1,4 +1,4 @@
-.TH DISPLAY 11
+.TH DISPLAY 11 "" "" "Limbo Draw Module"
 .PP
 .SH NAME
 display \- connection to draw device

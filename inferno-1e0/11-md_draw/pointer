@@ -1,4 +1,4 @@
-.TH POINTER 11
+.TH POINTER 11 "" "" "Limbo Draw Module"
 .PP
 .SH NAME
 pointer \- state of a pointer device such as a mouse

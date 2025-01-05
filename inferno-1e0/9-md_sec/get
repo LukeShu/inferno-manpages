@@ -1,4 +1,4 @@
-.TH GET 9
+.TH GET 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 get, put \- read and write password entries in the password file

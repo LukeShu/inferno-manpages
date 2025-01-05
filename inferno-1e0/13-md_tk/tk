@@ -1,4 +1,4 @@
-.TH TK 13
+.TH TK 13 "" "" "Limbo/Tk - Graphic Interface Module"
 .PP
 .SH NAME
 Tk \-graphics toolkit

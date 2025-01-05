@@ -1,4 +1,4 @@
-.TH CHANGELOGIN 9
+.TH CHANGELOGIN 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 changelogin \- command to create/update the password file

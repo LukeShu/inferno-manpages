@@ -1,4 +1,4 @@
-.TH BIND 5
+.TH BIND 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 bind, mount, unmount \- change name space

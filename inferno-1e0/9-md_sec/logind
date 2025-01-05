@@ -1,4 +1,4 @@
-.TH LOGIND 9
+.TH LOGIND 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 logind \- login daemon

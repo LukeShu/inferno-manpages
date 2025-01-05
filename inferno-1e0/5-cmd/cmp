@@ -1,4 +1,4 @@
-.TH CMP 5
+.TH CMP 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 cmp \- compare files

@@ -1,4 +1,4 @@
-.TH CAT 5
+.TH CAT 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 cat \- concatenate files

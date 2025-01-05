@@ -1,4 +1,4 @@
-.TH TIME 5
+.TH TIME 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 time \- time command execution

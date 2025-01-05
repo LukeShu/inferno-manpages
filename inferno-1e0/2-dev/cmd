@@ -1,4 +1,4 @@
-.TH CMD 2
+.TH CMD 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 cmd \- interface to host operating system commands

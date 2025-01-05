@@ -1,4 +1,4 @@
-.TH ERROR 3
+.TH ERROR 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 error \- return an error

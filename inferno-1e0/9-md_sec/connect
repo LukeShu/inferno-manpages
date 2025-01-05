@@ -1,4 +1,4 @@
-.TH CONNECT 9
+.TH CONNECT 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 connect, secret \- interface to the Secure Sockets Layer device

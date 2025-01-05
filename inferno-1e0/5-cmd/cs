@@ -1,4 +1,4 @@
-.TH CS 5
+.TH CS 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 cs \- start connection server daemon

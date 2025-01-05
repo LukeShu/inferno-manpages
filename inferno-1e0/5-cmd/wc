@@ -1,4 +1,4 @@
-.TH WC 5
+.TH WC 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 wc \- word (and other things) counter

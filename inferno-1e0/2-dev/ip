@@ -1,4 +1,4 @@
-.TH IP 2
+.TH IP 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 ip \- TCP, UDP network protocols over IP

@@ -1,4 +1,4 @@
-.TH GENSK 9
+.TH GENSK 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 genSK, genSKfromPK, sktopk, dhparams \- generate keys

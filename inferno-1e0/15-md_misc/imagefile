@@ -1,4 +1,4 @@
-.TH IMAGEFILE 15
+.TH IMAGEFILE 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 imagefile \- processing external image file formats

@@ -1,4 +1,4 @@
-.TH MKDIR 5
+.TH MKDIR 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 mkdir \- make a directory

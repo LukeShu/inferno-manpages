@@ -1,4 +1,4 @@
-.TH CS 6
+.TH CS 6 "" "" "Inferno Daemons"
 .PP
 .SH NAME
 cs \- connection server daemon

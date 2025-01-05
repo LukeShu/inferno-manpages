@@ -1,4 +1,4 @@
-.TH MATHCALC 5
+.TH MATHCALC 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 mathcalc \- interface to a TclLib calculator module

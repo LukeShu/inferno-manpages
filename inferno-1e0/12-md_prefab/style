@@ -1,4 +1,4 @@
-.TH STYLE 12
+.TH STYLE 12 "" "" "Limbo Prefab Module"
 .PP
 .SH NAME
 style \- fonts and colors for ITV toolkit

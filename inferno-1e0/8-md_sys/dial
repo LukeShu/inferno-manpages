@@ -1,4 +1,4 @@
-.TH DIAL 8
+.TH DIAL 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 dial, announce, export, listen \- make network connections

@@ -1,4 +1,4 @@
-.TH SLEEP 8
+.TH SLEEP 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 sleep \- delay execution

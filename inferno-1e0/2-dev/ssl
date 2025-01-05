@@ -1,4 +1,4 @@
-.TH SSL 2
+.TH SSL 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 ssl \- secure sockets layer device

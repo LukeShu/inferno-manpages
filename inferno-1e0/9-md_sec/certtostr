@@ -1,4 +1,4 @@
-.TH CERTTOSTR 9
+.TH CERTTOSTR 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 certtostr, pktostr, sktostr, strtocert, strtopk, strtosk \-encryption key conversion functions

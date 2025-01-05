@@ -1,4 +1,4 @@
-.TH BUFIO 15
+.TH BUFIO 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 bufio \- buffered input/output module

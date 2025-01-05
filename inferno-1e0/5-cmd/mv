@@ -1,4 +1,4 @@
-.TH MV 5
+.TH MV 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 mv \- rename/move files

@@ -1,4 +1,4 @@
-.TH FILE2CHAN 8
+.TH FILE2CHAN 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 file2chan \- create file connected to Limbo channel

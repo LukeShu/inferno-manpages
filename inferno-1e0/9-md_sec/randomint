@@ -1,4 +1,4 @@
-.TH RANDOMINT 9
+.TH RANDOMINT 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 randomint, randombuf \- interface to random number device

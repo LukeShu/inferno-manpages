@@ -1,4 +1,4 @@
-.TH CP 5
+.TH CP 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 cp \- copy files

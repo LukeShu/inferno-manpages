@@ -1,4 +1,4 @@
-.TH GETSTRING 9
+.TH GETSTRING 9 "" "" "Inferno Security Modules and Utilities"
 .PP
 .SH NAME
 getstring, putstring, getbytearray, putbytearray, puterror\- delimited I/O

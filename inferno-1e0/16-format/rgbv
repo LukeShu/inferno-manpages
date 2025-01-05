@@ -1,4 +1,4 @@
-.TH RGBV A
+.TH RGBV A "" "" "Inferno Format Specifications"
 .PP
 .SH NAME
 rgbv \- color map

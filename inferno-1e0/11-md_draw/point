@@ -1,4 +1,4 @@
-.TH POINT 11
+.TH POINT 11 "" "" "Limbo Draw Module"
 .PP
 .SH NAME
 point \- coordinate position

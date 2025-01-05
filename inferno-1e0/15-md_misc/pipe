@@ -1,4 +1,4 @@
-.TH PIPE 15
+.TH PIPE 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 pipe: fds, files \- get read/write file pair for a pipe

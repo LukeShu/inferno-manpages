@@ -1,4 +1,4 @@
-.TH BIND 8
+.TH BIND 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 bind, mount, unmount \- change file name space

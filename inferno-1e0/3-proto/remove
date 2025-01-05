@@ -1,4 +1,4 @@
-.TH REMOVE 3
+.TH REMOVE 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 remove \- remove a file from a server

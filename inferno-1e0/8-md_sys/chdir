@@ -1,4 +1,4 @@
-.TH CHDIR 8
+.TH CHDIR 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 chdir \- change working directory

@@ -1,4 +1,4 @@
-.TH ROOT 2
+.TH ROOT 2 "" "" "Inferno Devices"
 .PP
 .SH NAME
 root \- the root file system

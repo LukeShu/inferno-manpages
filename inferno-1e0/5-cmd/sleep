@@ -1,4 +1,4 @@
-.TH SLEEP 5
+.TH SLEEP 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 sleep \- suspend execution for an interval

@@ -1,4 +1,4 @@
-.TH DIFF 5
+.TH DIFF 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 diff \- differential file comparator

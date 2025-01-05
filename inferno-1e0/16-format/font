@@ -1,4 +1,4 @@
-.TH FONT A
+.TH FONT A "" "" "Inferno Format Specifications"
 .PP
 .SH NAME
 font, subfont \- external format for character fonts and subfonts

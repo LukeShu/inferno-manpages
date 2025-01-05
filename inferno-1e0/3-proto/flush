@@ -1,4 +1,4 @@
-.TH FLUSH 3
+.TH FLUSH 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 flush \- abort a message

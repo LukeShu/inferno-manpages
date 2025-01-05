@@ -1,4 +1,4 @@
-.TH PWD 5
+.TH PWD 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 pwd \- print working directory

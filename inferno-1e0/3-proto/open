@@ -1,4 +1,4 @@
-.TH OPEN 3
+.TH OPEN 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 open, create \- prepare a fid for I/O on a file

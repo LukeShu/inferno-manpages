@@ -1,4 +1,4 @@
-.TH LS 5
+.TH LS 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 ls \- list contents of directory

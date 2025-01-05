@@ -1,4 +1,4 @@
-.TH OPEN 8
+.TH OPEN 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 open, create \- open/create a file for reading or writing

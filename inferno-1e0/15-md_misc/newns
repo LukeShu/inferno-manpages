@@ -1,4 +1,4 @@
-.TH NEWNS 15
+.TH NEWNS 15 "" "" "Limbo Miscellaneous Modules"
 .PP
 .SH NAME
 newns \- build a new name space from a description file

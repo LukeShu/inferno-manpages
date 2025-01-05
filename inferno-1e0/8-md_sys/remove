@@ -1,4 +1,4 @@
-.TH REMOVE 8
+.TH REMOVE 8 "" "" "Limbo System Module"
 .PP
 .SH NAME
 remove \- remove a file

@@ -1,4 +1,4 @@
-.TH CLUNK 3
+.TH CLUNK 3 "" "" "Inferno Communications Protocol, Styx"
 .PP
 .SH NAME
 clunk \- forget about a fid

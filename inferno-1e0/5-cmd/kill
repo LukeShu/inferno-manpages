@@ -1,4 +1,4 @@
-.TH KILL 5
+.TH KILL 5 "" "" "Inferno Command Line Utilities"
 .PP
 .SH NAME
 kill \- terminate process(es)
