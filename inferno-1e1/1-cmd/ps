@@ -1,0 +1,53 @@
+.TH PS 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+ps \- process status
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind \[aq]#p\[aq] /prog
+ps
+.EE
+.PP
+.SH DESCRIPTION
+The ps command prints to standard output information about all current processes.
+The information provided is a formatted version of that obtained from the status file for each process.
+.PP
+.SH CAVEAT
+This command requires a populated 
+.I /prog
+directory; therefore, there must be a prior binding of the system\[aq]s 
+.I #p
+driver to that directory.
+.PP
+.SH FILES
+/prog/
+.I pid
+/status
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I kill
+
+T}@T{
+Process termination
+T}
+T{
+.I prog
+
+T}@T{
+Description of status file output.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

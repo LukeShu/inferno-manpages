@@ -1,0 +1,154 @@
+.TH IP 4 "" "" "Inferno Reference "
+.PP
+.SH NAME
+ip \- TCP, UDP network protocols over IP
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind \-a \[aq]#I\[aq] /net
+/net/tcp/clone
+/net/tcp/n
+/net/tcp/n/data
+/net/tcp/n/ctl
+/net/tcp/n/local
+/net/tcp/n/remote
+/net/tcp/n/status
+/net/tcp/n/listen
+&...
+.EE
+.PP
+.SH DESCRIPTION
+The IP device provides the interface for protocols that run over IP.
+TCP and UDP provide the standard internet protocols for reliable stream and unreliable datagram communication.
+.PP
+Each of the protocols is served by the IP device, which represents each connection by a set of device files.
+The top level directory of each protocol contains a clone file and subdirectories numbered from 0 to the number of connections configured for this protocol.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+clone
+T}@T{
+Opening the clone file reserves a connection.
+The file descriptor returned from the 
+.I open
+will point to the control file, ctl, of the newly allocated connection.
+T}
+T{
+ctl
+T}@T{
+Reading the ctl file returns a text string representing the number of the connection.
+Connections may be used either to listen for incoming calls or to initiate calls to other machines.
+.PP
+A connection is controlled by writing text strings to the associated ctl file.
+T}
+T{
+data
+T}@T{
+After a connection has been established data may be read from and written to the data file.
+For the datagram service UDP, a read of less than the length of a datagram will cause the entire datagram to be consumed.
+Each write to the data file will send a single datagram on the network.
+The TCP protocol provides a stream connection that does not preserve read/write boundaries.
+.PP
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Prior to sending data, remote and local addresses must be set for the connection.
+For outgoing calls the local port number will be allocated randomly if none is set.
+Addresses are set by writing control messages to the ctl file of the connection.
+The connection is not established until the data file is opened.
+For TCP, the process will block until the remote host has acknowledged the connection.
+UDP opens always succeed.
+.PP
+The following control messages are supported:
+.PP
+.SS \[DQ]CONNECT IPADDRESS! PORT [!R]\[DQ]
+Set the remote IP address and port number for the connection.
+If the r flag is supplied and no local address has been specified the system will allocate a restricted port number (less than 1024) for the connection to allow communication with Unix machines\[aq] login and exec services.
+.PP
+.SS \[DQ]HANGUP\[DQ]
+Terminate the connection.
+.PP
+.SS \[DQ]ANNOUNCE X\[DQ]
+
+.I X
+is a decimal port number or *.
+Set the local port number to 
+.I X
+and accept calls to 
+.I X
+.
+If 
+.I X
+is *, accept calls for any port that no process has explicitly announced.
+The local IP address cannot be set.
+The announce attempt fails if the connection is already announced or connected.
+.PP
+.SS \[DQ]BIND X\[DQ]
+
+.I X
+is a decimal port number or *.
+Set the local port number to 
+.I X
+.
+This exists to support emulation of BSD sockets and is not used otherwise.
+.PP
+.SS \[DQ]HEADER\[DQ] (UDP ONLY)
+Skip headers on reads and writes.
+.PP
+Port numbers must be in the range 1 to 32767.
+If a local port has not been announced prior to a connect a local port number will be allocated automatically.
+Local ports are allocated from 5000 up.
+.PP
+Several files report the status of a connection.
+.PP
+.TS
+tab(@);
+l l.
+T{
+remote
+T}@T{
+The remote file provides the IP address and port number for the remote side of the connection.
+T}
+T{
+local
+T}@T{
+The local files contain the IP address and port number for the local side of the connection.
+T}
+T{
+status
+T}@T{
+The status file contains protocol\-dependent information to help debug network connections.
+T}
+T{
+listen
+T}@T{
+A process may accept incoming connections by opening the listen file.
+The open will block until a new connection request arrives.
+Then open will return an open file descriptor that points to the control file of the newly accepted connection.
+This procedure will accept all calls for the given protocol.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+In general it should not be necessary to use the file system interface to the networks.
+The dial, announce, and listen functions in the sys module perform the necessary I/O to establish and manipulate network connections.
+.PP
+See Also
+.PP
+.I dial

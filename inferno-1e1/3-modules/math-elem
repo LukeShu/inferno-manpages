@@ -1,0 +1,248 @@
+.TH MATH-ELEM 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+elem \- elementary functions of applied mathematics
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]math.m\[dq];
+math:= load Math Math\->PATH;
+cbrt, sqrt    : fn(x: real)   : real;
+pow           : fn(x, y: real): real;
+pow10         : fn(p: int)    : real;
+hypot         : fn(x, y: real): real;
+exp, expm1, log, log10, log1p: fn(x: real): real;
+ cos,  cosh,  sin,  sinh,  tan,  tanh: fn(x: real): real;
+acos, acosh, asin, asinh, atan, atanh: fn(x: real): real;
+atan2         : fn(y, x: real): real;
+lgamma        : fn(x: real)   :(int, real);
+erf, erfc     : fn(x: real)   : real;
+j0, j1, y0, y1: fn(x: real)   : real;
+jn, yn        : fn(n: int, x: real): real;
+.EE
+.PP
+.SH DESCRIPTION
+These routines implement the basic elementary functions of applied mathematics.
+.PP
+.TS
+tab(@);
+l l.
+T{
+sqrt (
+.I x
+)
+T}@T{
+Computes the square root of 
+.I x
+.
+T}
+T{
+cbrt (
+.I x
+)
+T}@T{
+Computes the cube root.
+T}
+T{
+pow (
+.I x
+, 
+.I y
+)
+T}@T{
+Computes 
+.I x
+raised to the exponent 
+.I y
+.
+T}
+T{
+pow10 (
+.I p
+)
+T}@T{
+Raises 10 to the integer power 
+.I n
+.
+T}
+T{
+hypot (
+.I x
+, 
+.I y
+)
+T}@T{
+Computes sqrt(
+.I x
+*
+.I x
++
+.I y
+*
+.I y
+).
+T}
+T{
+exp (
+.I x
+)
+T}@T{
+Returns the exponential function of 
+.I x
+.
+T}
+T{
+expm1 (
+.I x
+)
+T}@T{
+Equivalent to exp(
+.I x
+)\-1.
+T}
+T{
+log (
+.I x
+)
+T}@T{
+Returns the natural logarithm of 
+.I x
+.
+T}
+T{
+log10 (
+.I x
+)
+T}@T{
+Returns the logarithm base 10.
+T}
+T{
+log1p (
+.I x
+)
+T}@T{
+Returns the logarithm of 1+
+.I x
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The trigonometric functions use radians.
+The ranges of the inverse functions are:
+.PP
+.TS
+tab(@);
+l l.
+T{
+acos
+T}@T{
+[0,π]
+T}
+T{
+asin
+T}@T{
+[\-π/2,π/2]
+T}
+T{
+atan
+T}@T{
+[\-π/2,π/2]
+T}
+T{
+atan2 (
+.I y
+, 
+.I x
+) 
+.I =
+.I arctan
+(
+.I y
+/
+.I x
+)
+T}@T{
+[\-π,π]
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l l.
+T{
+lgamma (
+.I x
+)
+T}@T{
+The gamma function.
+The tuple returned, (
+.I s
+, 
+.I lg
+) encodes the gamma function by Γ(
+.I x
+) = 
+.I s
+*exp(
+.I lg
+).
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The hyperbolic trigonometric functions sinh etc.
+behave as expected.
+.PP
+.TS
+tab(@);
+l l.
+T{
+erf (
+.I x
+)
+T}@T{
+The error function.
+T}
+T{
+erfc (
+.I x
+)
+T}@T{
+Equivalent to 1 \- erf(
+.I x
+).
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The Bessel functions are computed by j0, j1, jn, y0, y1, and yn.
+.PP
+.SH SEE ALSO
+.I Limbo Math Modules

@@ -1,0 +1,70 @@
+.TH CMP 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+cmp \- compare files
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+cmp [\-Ll] file1 file2 [offset1] [offset2]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I cmp
+command byte\-wise compares the contents of files 
+.I file1
+and 
+.I file2
+starting at offsets 
+.I offset1
+and 
+.I offset2
+(default 0).
+.PP
+If there are no differences, the command produces no output.
+If a difference is detected, a message is generated to standard output reporting the location of the first different character in the format shown below:
+.IP
+.EX
+   file1 file2 differ: char xxx 
+.EE
+.PP
+where xxx is in decimal format.
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+-L
+T}@T{
+Add the line number to the difference message:
+.IP
+.EX
+file1 file2 differ: char xxx line yy
+.EE
+where 
+.I yy
+is in decimal format.
+T}
+T{
+-l
+T}@T{
+Starting at the first difference detected, print a line for each subsequent byte.
+.PP
+Each line consists of the byte number (decimal) and the corresponding byte values (hexadecimal) from each file.
+.PP
+If one file is shorter, there is an additional line stating on which file the EOF was encountered.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH NOTE
+Though the output line speaks of char differences, the comparison is, in fact, byte\-oriented.

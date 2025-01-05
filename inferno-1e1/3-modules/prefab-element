@@ -1,0 +1,469 @@
+.TH PREFAB-ELEMENT 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+element \- menu and display elements for ITV toolkit
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+include \[dq]prefab.m\[dq];
+prefab:= load Prefab Prefab\->PATH;
+
+# types of Elements
+EIcon:      con 0;
+EText:      con 1;
+ETitle:     con 2;
+EHorizontal:con 3;
+EVertical:  con 4;
+ESeparator: con 5;
+
+# first arg to Element.adjust: size of elements
+Adjpack:   con 10;   # leave alone, pack tightly
+Adjequal:  con 11;   # make equal
+Adjfill:   con 12;   # make equal, filling available space
+
+# second arg: position of element within space
+Adjleft:   con 20;
+Adjup:     con 20;
+Adjcenter: con 21;
+Adjright:  con 22;
+Adjdown:   con 22;
+
+Layout: adt
+{
+ font:   ref Draw\->Font;
+ color:  ref Draw\->Image;
+ text:   string;
+ icon:   ref Draw\->Image;
+ mask:   ref Draw\->Image;
+ tag:    string;
+};
+
+Element: adt
+{
+ kind:   int;
+ r:      Draw\->Rect;
+ environ:ref Environ; 
+ tag:    string; 
+       
+ 
+ # different fields defined for different kinds of Elements
+ kids:   cyclic list of ref Element; # children of elists
+ str:   string;          # text in an EText element
+ mask:  ref Draw\->Image; # part of Eicon, ESeparator
+ image:  ref Draw\->Image;# part of Eicon, ESeparator, EText, Etitle
+ font:  ref Draw\->Font;  # part of EText, Etitle
+ 
+ icon:   fn(env: ref Environ,
+                  r: Draw\->Rect, icon, mask: ref Draw\->Image)
+                                          :ref Element;
+ text:   fn(env: ref Environ, text: string,
+                r:  Draw\->Rect, kind: int):ref Element;
+ layout: fn(env: ref Environ, lay: list of Layout,
+                r:  Draw\->Rect, kind: int):ref Element;
+ elist:  fn(env: ref Environ, elem: ref Element, kind: int)
+                                          :ref Element;
+ separator:fn(env:ref Environ, r: Draw\->Rect,
+              icon, mask: ref Draw\->Image):ref Element;
+ append:     fn(elist:self ref Element, elem:   ref Element): int;
+ adjust:    fn(elem:self ref Element, equal: int, dir: int);
+ clip:     fn(elem:self ref Element, r: Draw\->Rect);
+ scroll:   fn(elem:self ref Element, d: Draw\->Point);
+ translate:fn(elem:self ref Element, d: Draw\->Point);
+ show:       fn(elist:self ref Element, elem: ref Element): int;
+};
+.EE
+.PP
+.SH DESCRIPTION
+Elements are the building blocks of the ITV toolkit.
+They represent and display text and pictures that can be grouped in arbitrary two\-dimensional menus to be walked by an infrared remote control.
+Elements are packaged within Compounds for display.
+(see 
+.I compound
+).
+.PP
+.TS
+tab(@);
+l l.
+T{
+environ
+T}@T{
+This specifies the element\[aq]s environment.
+T}
+T{
+image
+T}@T{
+If the element needs an Image object (see kind below), this member specifies it.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l l l.
+T{
+kind
+T}@T{
+The Prefab module defines six Element varieties, each labeled by a defined constant in the kind member.
+T}@T{
+T}
+T{
+T}@T{
+EIcon
+T}@T{
+An image.
+T}
+T{
+T}@T{
+EHorizontal
+T}@T{
+A horizontal list of elements.
+T}
+T{
+T}@T{
+ESeparator
+T}@T{
+An Image object, like an EIcon, but intended to fill space in a list, rather than to serve as an element of the list.
+Separators are ignored when selecting or highlighting list elements.
+T}
+T{
+T}@T{
+EText
+T}@T{
+A single line of text.
+Text for this element will be drawn with Style.textfont and Style.textcolor.
+T}
+T{
+T}@T{
+ETitle
+T}@T{
+A single line of text, usually giving the title of a Compound object.
+Text for this element will be drawn with Style.titlefont and Style.titlecolor.
+T}
+T{
+T}@T{
+EVertical
+T}@T{
+A vertical list of elements.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+mask
+T}@T{
+When an element contains an Image object, the Image.draw function will be used to display it on the screen.
+The mask image is used as an argument to Image.draw.
+See 
+.I Limbo Draw Modules
+.
+T}
+T{
+r
+T}@T{
+All Elements are rectangular, occupying the position on the display specified by r.min.
+The size of the element also depends on r.
+During creation, if the rectangle is degenerate (has zero size), the element takes its size from the sizes of its components: the image size for icons, text width for strings, etc.
+Otherwise, the element\[aq]s size matches the rectangle.
+T}
+T{
+tag
+T}@T{
+The tag of an element serves two purposes: it allows an element to be labeled with arbitrary invisible text, and it provides a mechanism to control which elements of a list may be selected.
+(See Compound.tagselect in 
+.I prefab\-compound
+).
+The tag field of an element may be modified freely after the element is created.
+T}
+T{
+icon
+.PP
+(
+.I env
+, 
+.I r
+, 
+.I icon
+, 
+.I mask
+)
+T}@T{
+Build one EIcon element to be drawn with the 
+.I icon
+and 
+.I mask
+.
+The rectangle, 
+.I r
+, gives the element\[aq]s position and size.
+T}
+T{
+text
+.PP
+(
+.I env
+, 
+.I text
+, 
+.I r
+, 
+.I kind
+)
+T}@T{
+Build a textual element or a list of textual elements.
+The 
+.I kind
+parameter may be EText or ETitle, determining the style of the drawn 
+.I text
+.
+The resulting Element object may be a single element or a EVertical list of the appropriate kind, if the text occupies more than one line.
+The text is folded as necessary to accommodate the available horizontal space; newlines in the text cause line breaks.
+The width of the text is determined by 
+.I r
+, but if 
+.I r
+has no width, it will be set by the text itself.
+The height of the Element is also determined by 
+.I r
+.
+If the height of 
+.I r
+is zero, the Element will be made as tall as necessary.
+If 
+.I r
+is not tall enough, the rest of the text may be made visible by calls to Element.scroll.
+Thus one may choose a specific size or let the 
+.I text
+determine the size by setting 
+.I r
+suitably.
+T}
+T{
+layout
+.PP
+
+.I (env, lay, r, kind
+)
+T}@T{
+Like Element.text, but builds a structure using the contents of the list lay of Layout adts.
+The Layout adt allows construction of a more general form of textual display by providing fine control over the font and color in which to display text and the inclusion of images as textual elements.
+It also allows setting of the tag for each component of the resulting element or list of elements.
+If the Layout has a non\- nil image field, it is taken as a description of a picture to be incorporated in the text as an EIcon element (and the text field is ignored); otherwise the text field specifies the text to be drawn in the indicated font and color.
+As with Element.text, Element.layout does all the geometry management, text line breaking and folding, etc.
+T}
+T{
+elist (
+.I env
+, 
+.I elem
+, 
+.I kind
+)
+T}@T{
+Start a list of Element objects.
+The 
+.I kind
+may be Prefab\->EHorizontal or Prefab\->EVertical, specifying the orientation of the list.
+Parameter 
+.I elem
+will be the first element of the list.
+It may be nil, which creates an empty list of the requested orientation.
+Subsequent Element.append calls build the list.
+T}
+T{
+separator
+.PP
+(
+.I env
+, 
+.I r
+, 
+.I icon
+, 
+.I mask
+)
+T}@T{
+Build one ESeparator element to be drawn with the 
+.I icon
+and 
+.I mask
+.
+The rectangle, 
+.I r
+, gives the element\[aq]s position and size.
+T}
+T{
+
+.I elist
+.append (
+.I elem
+)
+T}@T{
+Append one Element, 
+.I elem
+, to an existing list, 
+.I elist
+.
+The new element will appear after those already there, either to the right for EHorizontal or below for EVertical lists.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS ELEM.ADJUST (SPACING, DIR)
+Format the list so its elements abut.
+The list\-building functions such as append attempt to build a sensible geometry.
+Alternatively, one can build a list using degenerate geometry and then let adjust compute the geometry for the whole list.
+For example, one could place all the elements at (0, 0) and then call adjust to decide where the elements belong.
+.PP
+.TS
+tab(@);
+l l l.
+T{
+
+.I spacing
+
+T}@T{
+specifies how the elements fit together
+T}@T{
+T}
+T{
+T}@T{
+Adjequal
+T}@T{
+Makes them all equal sized in the dimension of the list, but only as big as the largest element.
+For example, if the element is a horizontal list, all elements will be as wide as the widest item.
+If the list is too big for the allocated space, only some will be visible.
+T}
+T{
+T}@T{
+Adjfill
+T}@T{
+Makes them all equal sized in the dimension of the list, expanding the elements to fit the space of the list\[aq]s Element.r.
+If the list is too big for the allocated space, only some will be visible.
+T}
+T{
+T}@T{
+Adjpack
+T}@T{
+Packs elements as tightly as possible, using the \[aq]natural\[aq] size of each element and setting their rectangles against one another.
+T}
+T{
+
+.I dir
+
+T}@T{
+controls how each element is placed in its allotted space
+T}@T{
+T}
+T{
+T}@T{
+Adjcenter
+T}@T{
+Place each element in the middle of its space.
+T}
+T{
+T}@T{
+Adjdown
+T}@T{
+In a vertical list, move each element to the bottom.
+T}
+T{
+T}@T{
+Adjleft
+T}@T{
+In a horizontal list, move each element to the left.
+T}
+T{
+T}@T{
+Adjright
+T}@T{
+In a horizontal list, move each element to the right.
+T}
+T{
+T}@T{
+Adjup
+T}@T{
+In a vertical list, move each element to the top.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS ELEM.CLIP(R)
+The drawing model for Element objects is that they occupy some space in the plane, which may be larger or smaller than the space occupied by its constituent text, icons, sub\-elements, etc.
+The clip function sets the rectangle of elem to 
+.I r
+, without changing its internal geometry.
+Any space made newly visible by this will be filled in by the list\[aq]s Style.elemcolor.
+For example, if 
+.I e
+is an icon element just large enough to display its image, 
+.I e
+.clip(
+.I e
+.r.inset(\-2)) will make a two\-pixel\-wide border around the icon when it is drawn.
+As another example, lists are scrolled by leaving their clip rectangle intact while translating the list elements\[aq] coordinates.
+.PP
+.SS ELEM.SCROLL(D)
+Argument 
+.I d
+is a Point, representing a vector; 
+.I elem
+is an Element to be scrolled.
+The scroll function leaves the element\[aq]s r alone and translates all the constituent pieces of the list by 
+.I d
+, causing a different portion of 
+.I elem
+to be visible in its rectangle.
+.PP
+.SS ELEM.TRANSLATE(D)
+Like 
+.I elem
+.scroll(
+.I d
+), but moves r too, thus translating the entire Element rather than just the visible part within a fixed rectangle.
+.PP
+.SS ELIST.SHOW(ELEM)
+The show function does nothing if 
+.I elem
+is not a list.
+If it is a list, the list is scrolled so 
+.I elem
+, which must be a member of the list, is visible through 
+.I elist
+.r.
+.PP
+The geometry of elements and the membership of lists may be modified only through the provided functions; the Limbo\-visible structure is (intended to be) read\-only.
+Tags, text, and images may be modified freely by the application, but at the moment there is no way to recalculate the geometry if the components of an textual or image icon change size.
+.PP
+Element objects are never drawn explicitly, nor are they drawn after any Element operation.
+They are made visible only by calls to Compound.draw, described in 
+.I compound
+.

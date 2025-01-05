@@ -1,0 +1,47 @@
+.TH 0INTRO 2 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Environmental Utilities
+.PP
+These environmental utilities are run from the host operating system and not from Inferno.
+They are as follows:.
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I asm
+
+T}@T{
+Dis assembler
+T}
+T{
+.I emu
+
+T}@T{
+Inferno emulator
+T}
+T{
+.I limbo
+
+T}@T{
+Limbo compiler
+T}
+T{
+mk
+T}@T{
+Maintain (make) related files.
+See the chapter on 
+.I Using Mk
+in the 
+.I Inferno Build Guide
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

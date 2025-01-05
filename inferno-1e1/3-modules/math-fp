@@ -1,0 +1,413 @@
+.TH MATH-FP 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+fp \- floating point operations
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]math.m\[dq];
+math:= load Math Math\->PATH;
+
+Infinity, NaN, MachEps, Pi, Degree         : real;
+INVAL, ZDIV, OVFL, UNFL, INEX              : int;
+RND_NR, RND_NINF, RND_PINF, RND_Z, RND_MASK: int;
+
+getFPcontrol, getFPstatus: fn()            : int;
+FPcontrol, FPstatus: fn(r, mask: int)      : int;
+ilogb              : fn(x: real)           : int;
+scalbn             : fn(x: real, n: int)   : real;
+copysign           : fn(x, s: real)        : real;
+finite, isnan      : fn(x: real)           : int;
+nextafter          : fn(x, y: real)        : real;
+
+fdim, fmin, fmax   : fn(x, y: real)        : real;
+fabs               : fn(x: real)           : real;
+ceil, floor        : fn(x: real)           : real;
+remainder          : fn(x, p: real)        : real;
+fmod               : fn(x, y: real)        : real;
+modf               : fn(x: real)           :(int, real);
+rint               : fn(x: real)           : real;
+.EE
+.PP
+.SH DESCRIPTION
+These constants and functions provide control over rounding modes, exceptions, and other properties of floating point arithmetic.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+Infinity and NaN
+T}@T{
+Infinity and NaN are constants containing the positive infinity and quiet not\-a\-number values of the IEEE binary floating point standard, double precision.
+T}
+T{
+MachEps
+T}@T{
+The constant MachEps is 2^\-52^, the smallest 
+.I e
+such that 1+
+.I e
+is not equal to 1.
+T}
+T{
+Pi
+T}@T{
+Pi is the nearest machine number to the infinitely precise value.
+T}
+T{
+Degree
+T}@T{
+Degree is Pi/180.
+T}
+T{
+FPcontrol (
+.I r, mask
+) and
+.PP
+FPstatus (
+.I r, mask
+)
+T}@T{
+Each thread has a floating point control word (governing rounding mode and whether a particular floating point exception causes a trap) and a floating point status word (storing accumulated exception flags).
+The functions FPcontrol and status copy bits to the control or status word, in positions specified by 
+.I mask
+, returning the previous values of the bits specified in the mask.
+T}
+T{
+getFPcontrol ( ) and getFPstatus ( )
+T}@T{
+The functions getFPcontrol and getFPstatus return the words unchanged.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Constants for non\-overlapping single\-bit masks are provided for use in arguments or return values.
+They stand for the five IEEE exceptions:
+.PP
+.TS
+tab(@);
+l l l.
+T{
+INVAL
+T}@T{
+invalid operation
+T}@T{
+0/0, 0+NaN, Infinity\-Infinity, or sqrt(\-1)
+T}
+T{
+ZDIV
+T}@T{
+division by zero
+T}@T{
+1/0
+T}
+T{
+OVFL
+T}@T{
+overflow
+T}@T{
+1.8e308
+T}
+T{
+UNFL
+T}@T{
+underflow
+T}@T{
+1.1e\-308
+T}
+T{
+INEX
+T}@T{
+inexact
+T}@T{
+&.3*.3
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+By default, INEX is quiet, OVFL, UNFL, and ZDIV are fatal, and rounding (details on rounding given shortly) is to nearest even.
+Limbo modules are entitled to assume this, and if they wish to use quiet underflow, overflow, or zero\-divide, they must either set and restore the control register or clearly document that their callers must do so.
+.PP
+Constants (distinct bit patterns) are defined for interfacing with the floating point control word.
+.PP
+.TS
+tab(@);
+l l.
+T{
+RND_NR
+T}@T{
+round to nearest even
+T}
+T{
+RND_NINF
+T}@T{
+round toward negative infinity
+T}
+T{
+RND_PINF
+T}@T{
+round toward infinity
+T}
+T{
+RND_Z
+T}@T{
+round toward zero
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Any of the above can be set or extracted from the floating point control word using RND_MASK.
+Several examples follow:
+.PP
+.TS
+tab(@);
+l l.
+T{
+FPcontrol(0, UNFL);
+T}@T{
+Make underflow silent.
+T}
+T{
+FPstatus(0, INEX);
+T}@T{
+Check and clear the inexact flag.
+T}
+T{
+FPcontrol (RND_PINF, RND_MASK);
+T}@T{
+Set directed rounding.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+ilogb (
+.I x
+)
+T}@T{
+The ilogb function returns the nearest integral logarithm base 2 of the absolute value of 
+.I x
+: 
+.I for
+positive finite x,
+.PP
+1 <= x*2^\-ilogb(^x^)^< 2, and ilogb(\-
+.I x
+) = ilogb(x).
+T}
+T{
+scalbn (
+.I x
+, 
+.I n
+)
+T}@T{
+The scalbn function returns a scaled power of two:
+.PP
+
+.I x
+*2^n^.
+T}
+T{
+copysign (
+.I x
+, 
+.I s
+)
+T}@T{
+The copysign function returns the magnitude of 
+.I x
+.I and
+the sign bit of 
+.I s
+.
+T}
+T{
+nextafter (
+.I x
+, 
+.I y
+)
+T}@T{
+The nextafter function returns the machine number nearest 
+.I x
+closer to 
+.I y
+.
+T}
+T{
+finite (
+.I x
+)
+T}@T{
+The finite function returns is 0 if 
+.I x
+is Nan or and Infinity, 1 otherwise.
+T}
+T{
+isnan (
+.I x
+)
+T}@T{
+The isnan function returns 1 if 
+.I x
+is Nan and 0 otherwise.
+T}
+T{
+fdim (
+.I x
+, 
+.I y
+)
+T}@T{
+The fdim function equals 
+.I x \- y
+if 
+.I x
+.I is
+greater than 
+.I y
+, otherwise it is 0.
+T}
+T{
+fmin (
+.I x
+, 
+.I y
+)
+T}@T{
+The minimum of 
+.I x
+and 
+.I y
+.
+T}
+T{
+fmax (
+.I x
+, 
+.I y
+)
+T}@T{
+The maximum of 
+.I x
+and 
+.I y
+.
+T}
+T{
+fabs (
+.I x
+)
+T}@T{
+The absolute value of 
+.I x
+.
+T}
+T{
+ceil (
+.I x
+)
+T}@T{
+The ceiling (round\-up) of 
+.I x
+.
+T}
+T{
+floor (
+.I x
+)
+T}@T{
+The floor (round\-down) of 
+.I x
+.
+T}
+T{
+fmod (
+.I x
+, 
+.I y
+)
+T}@T{
+The fmod function conforms to the C language standard.
+It returns the value 
+.I x
+\- 
+.I i
+*
+.I y
+for some 
+.I i
+such that the remainder has the sign of 
+.I x
+and magnitude less than the magnitude of 
+.I y
+.
+T}
+T{
+remainder (
+.I x
+, 
+.I y
+)
+T}@T{
+The remainder function conforms to the IEEE standard which gives a remainder of magnitude no more than half the magnitude of 
+.I y
+.
+T}
+T{
+modf (
+.I x
+)
+T}@T{
+The modf function breaks 
+.I x
+into integer and fractional parts returned in a tuple.
+T}
+T{
+rint (
+.I x
+)
+T}@T{
+The rint function rounds to an integer, following the rounding mode specified in the floating point control word.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I Limbo Math Modules

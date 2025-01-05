@@ -1,0 +1,199 @@
+.TH BIND 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+bind, mount, unmount \- change name space
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind       [option... ] new old
+mount          [option... ] addr old
+unmount        [new ] old
+.EE
+.PP
+.SH DESCRIPTION
+The bind and mount commands modify the file name space of the current process and other processes in the same name space group (see 
+.I pctl
+).
+For both calls, 
+.I old
+is the name of an existing file or directory in the current name space where the modification is to be made.
+.PP
+For bind, 
+.I new
+is the name of an existing file or directory in the current name space.
+After a successful bind, the file name 
+.I old
+is an alias for the object originally named by 
+.I new
+; if the modification doesn\[aq]t hide it, 
+.I new
+will also still refer to its original file.
+The evaluation of 
+.I new
+(see 
+.I File Name Expansion
+in 
+.I Limbo System Modules
+) happens at the time of the bind, not when the binding is later used.
+.PP
+Both 
+.I old
+and 
+.I new
+must be of the same type: either both directories or both files.
+.PP
+The 
+.I new
+argument to 
+.I bind
+can also be a two character sequence (
+.I #c
+) representing a 
+.I kernel device driver
+(see 
+.I Limbo Modules \- Miscellaneous
+).
+For example, the following command binds the console driver to 
+.I /dev
+.
+.IP
+.EX
+   bind \[aq]#c\[aq] /dev 
+.EE
+.PP
+For mount, 
+.I addr
+is a network address for the server machine.
+This argument should conform to the conventions described in 
+.I dial
+.
+.PP
+The effects of bind and mount can be undone with the unmount command.
+If two arguments are given to unmount, the effect is to undo a bind or mount with the same arguments.
+If only one argument is given, everything bound to or mounted upon 
+.I old
+is unmounted.
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+l l.
+T{
+-r
+T}@T{
+(the default option for both 
+.I bind
+and 
+.I mount
+)
+T}
+T{
+T}@T{
+Replace the 
+.I old
+file by the new file.
+
+.I Henceforth,
+an evaluation of pathname 
+.I old
+will be translated to the new file.
+If they are directories (for mount, this condition is true by definition), 
+.I old
+becomes a 
+.I \[dq]union
+directory\[dq] consisting of one directory (the 
+.I new
+directory).
+T}
+T{
+-b
+T}@T{
+(both files must be directories.)
+T}
+T{
+T}@T{
+Add the 
+.I new
+directory to the beginning of the union directory represented by the 
+.I old
+directory.
+T}
+T{
+-a
+T}@T{
+(both files must be directories.)
+T}
+T{
+T}@T{
+Add the 
+.I new
+directory to the end of the union directory represented by the 
+.I old
+file.
+T}
+T{
+-c
+T}@T{
+This can be used in addition to any of the above to permit creation in a union directory.
+When a new file is created in a union directory, it is placed in the first element of the union that permits creation.
+T}
+T{
+-A
+T}@T{
+(for mount only)
+T}
+T{
+T}@T{
+Do not authenticate the connection to the server before proceeding with mount.
+Authentication occurs by default.
+T}
+T{
+-C 
+.I alg
+
+T}@T{
+(for mount only)
+T}
+T{
+T}@T{
+Specify the algorithm, 
+.I alg
+, used in authentication.
+See 
+.I ssl
+for the supported algorithms.
+The default value is \[dq]none\[dq].
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH CAVEAT
+The single quotes are required around the two character sequence representing a kernel device driver since 
+.I #
+is a special character (start\-of\-comment) to the Inferno shell.
+The single quotes are needed only when using the shell, not when programming in the Limbo language.
+.IP
+.EX
+   sys\->bind(\[dq]#c\[dq], \[dq]/dev/\[dq], flags);
+.EE
+.PP
+.SH SEE ALSO
+.I sh
+, 
+.I auth
+, 
+.I Limbo System Modules
+, 
+.I bind
+, 
+.I dial
+, and 
+.I Limbo Modules \- Miscellaneous

@@ -1,0 +1,74 @@
+.TH TIME 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+time \- time command execution
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+time cmd args..
+.EE
+.PP
+.SH DESCRIPTION
+The time command is a \[aq]front end\[aq] to the execution of the 
+.I cmd
+and arguments that appear on the command line.
+On completion of the subject program (
+.I cmd
+), time prints to standard error a line with the load, run, and total times (in seconds) for the subject.
+.PP
+The time command follows the same rules as the shell for converting 
+.I cmd
+to the pathname of an executable module.
+.PP
+The load time displayed is just the value for time to load 
+.I cmd
+.
+Any loads performed by 
+.I cmd
+are included in the reported run time.
+.PP
+The time command is designed to act on a single command, not a command pipeline.
+If statistics on a pipeline are needed, the pipeline should be encapsulated into a separate script for timing.
+For example,
+.IP
+.EX
+   echo \[aq]ls | grep sh\[aq] > pipeline;  time sh pipeline
+.EE
+.PP
+In the above example, the load value returned by time is for the loading of 
+.I sh
+, not the subsidiary commands of the pipeline.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I sh
+
+T}@T{
+Rules on converting 
+.I command field
+to module pathname
+T}
+T{
+.I millisec
+
+T}@T{
+Description of millisecond resolution timer.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH BUGS
+The 
+.I time
+command will interfere with the generation of end of file condition when used on a command reading a pipeline.

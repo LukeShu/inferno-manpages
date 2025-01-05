@@ -1,0 +1,70 @@
+.TH SYS-READ 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+read, write \- read or write file
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+read:   fn(fd: ref FD, buf: array of byte, nbytes: int): int;
+write:  fn(fd: ref FD, buf: array of byte, nbytes: int): int;
+stream: fn(src, dst: ref FD, bufsiz: int):               int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS READ (FD, BUF, NBYTES)
+The read function reads 
+.I nbytes
+bytes of data from the current offset in the file associated with 
+.I fd
+into array 
+.I buf
+.
+.PP
+The file offset is advanced by the number of bytes read so that subsequent reads will obtain the next data from the file.
+.PP
+It is not guaranteed that all 
+.I nbytes
+bytes will be read.
+For example, if the file refers to the console, at most one line will be returned.
+In any event, the number of bytes read is returned as the functional value of read.
+A return value of 0 is conventionally interpreted as end of file.
+.PP
+.SS WRITE (FD, BUF, NBYTES)
+The write function writes 
+.I nbytes
+bytes of data from array 
+.I buf
+to the file associated with 
+.I fd
+at the current file offset.
+.PP
+The offset is advanced by the number of bytes written so that subsequent writes will deposit data after the previously written data.
+.PP
+The number of bytes actually written is returned by write.
+It should be regarded as an error if this is not the same as requested.
+.PP
+.SS STREAM (SRC, DST, BUFSIZ)
+The stream function continually reads data from 
+.I src
+, using a buffer of 
+.I bufsiz
+bytes
+.I ,
+and writes the data to 
+.I dst
+.
+It copies data until a read fails (returning zero bytes or an error) or a write fails (returning a count that does not match the request).
+The stream function returns the number of bytes actually copied.
+The implementation may be more efficient than a read / write loop in the application, but is otherwise equivalent to calling read and write directly.
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+, 
+.I dup
+, 
+.I open
+, and 
+.I bufio

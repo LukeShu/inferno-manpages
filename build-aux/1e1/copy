@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# build-aux/1e1/copy - Copy manpages into place
+#
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+set -euE -o pipefail
+
+declare -A chapter_dir=(
+	[1]=1-cmd
+	[2]=2-hostos
+	[3]=3-modules
+	[4]=4-dev
+	[5]=5-proto
+	[6]=6-format
+	[7]=7-daemons
+)
+
+# Usage: ./copy $dst_dir *.man
+main() {
+	dst_dir=$1
+	roff_files=("${@:2}")
+
+	rm -rf -- "${chapter_dir[@]/#/"${dst_dir}/"}"
+	mkdir "${chapter_dir[@]/#/"${dst_dir}/"}"
+
+	for roff_file in "${roff_files[@]}"; do
+		base=''
+		while read -r name chapter; do
+			if [[ -z "$base" ]]; then
+				cp -T -- "$roff_file" "${dst_dir}/${chapter_dir[$chapter]}/$name"
+				base=$name
+			else
+				ln -sT -- "$base" "${dst_dir}/${chapter_dir[$chapter]}/$name"
+			fi
+		done < <(sed -E -e 's/(.*)\((.*)\)/\1 \2/' <"${roff_file%.man}.names")
+	done
+}
+
+main "$@"

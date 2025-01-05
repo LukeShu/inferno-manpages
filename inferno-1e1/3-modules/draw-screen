@@ -1,0 +1,82 @@
+.TH DRAW-SCREEN 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Screen \- type to define the abstract data structures for the windows on a display, or subwindows within a window
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+Screen: adt
+{
+ id:        int;
+ image:     ref Image;
+ fill:      ref Image;
+ allocate: fn(image, fill: ref Image, public: int):  ref Screen;
+ newwindow:fn(screen: self ref Screen, r: Rect, color:int)
+                                                 :  ref Image;
+ top:        fn(screen: self ref Screen, wins: array of ref Image);
+};
+.EE
+.PP
+.SH DESCRIPTION
+A Screen is the abstract data structure representing a set of windows visible on a particular Image such as the display or a parent window.
+.PP
+.TS
+tab(@);
+l l.
+T{
+id
+T}@T{
+When a Screen object is allocated (see allocate below), the system assigns it a unique integer, id.
+It may be declared \[aq]public\[aq] and accessible to arbitrary processes and machines with access to the screen\[aq]s Display.
+The id value may be used as an argument to Display.publicscreen; see 
+.I draw\-display
+.
+T}
+T{
+fill
+T}@T{
+When windows are deleted from a screen, the system uses the fill image to repaint the screen\[aq]s base image.
+T}
+T{
+image
+T}@T{
+The image upon which the windows appear.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS ALLOCATE (IMAGE, FILL, PUBLIC)
+The allocate function makes a new Screen object.
+The 
+.I image
+argument provides the base image on which the windows will be made.
+The 
+.I fill
+argument provides the Screen.fill image.
+Allocate does not affect the contents of 
+.I image
+; it may be necessary after allocation to paint the base image with fill.
+.PP
+Using a non\-zero 
+.I public
+argument allocates a public screen; zero requests a private screen.
+Public screens may be attached by any process on any machine with access to the Display upon which the screen is allocated, enabling remote processes to create windows on the screen.
+Knowing only the id field of the original Screen, the remote process can call the Display.publicscreen function to acquire a handle to the screen.
+The image and fill fields of a Screen obtained this way are nil, but they are not needed for ordinary window management.
+.PP
+.SS SCREEN.NEWWINDOW (R)
+The newwindow function allocates a window on the display at the specified rectangle; the return value is an Image that may be used like any other.
+.PP
+.SS SCREEN.TOP (WINS)
+The top function organizes a group of windows on a screen.
+Given wins, an array of window images, it places the wins[0] element at the top, wins[1] behind that, and so on, with the last element of wins in front of the all the windows on the screen not in wins.
+Images in the array must be on the specified screen (nil elements are ignored).

@@ -1,0 +1,163 @@
+.TH OPEN 5 "" "" "Inferno Reference "
+.PP
+.SH NAME
+open, create \- prepare a fid for I/O on an existing or new file
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+Topen   tag [2]  fid [2]  mode [1]
+Ropen   tag [2]  fid [2]  qid [8]
+Tcreate tag [2]  fid [2]  name [28] perm [4] mode [1]
+Rcreate tag [2]  fid [2]  qid [8]
+.EE
+.PP
+.SH DESCRIPTION
+.SS THE OPEN TRANSACTION
+The open request asks the file server to check permissions and prepare a fid for I/O with subsequent read and write messages.
+.PP
+The 
+.I mode
+field expresses the type of I/O requested and is checked against the permissions for the file.
+Additional options can also be requested.
+The allowed values are shown below.
+If other bits are set in 
+.I mode
+they will be ignored.
+.PP
+.TS
+tab(@);
+l l.
+T{
+OREAD
+T}@T{
+Read access.
+T}
+T{
+OWRITE
+T}@T{
+Write access.
+T}
+T{
+ORDWR
+T}@T{
+Read and write access.
+T}
+T{
+OEXEC
+T}@T{
+Execute access.
+T}
+T{
+OTRUNC (16r10)
+T}@T{
+The file is to be truncated when opened.
+This option requires write permission on the file.
+T}
+T{
+ORCLOSE (16r40)
+T}@T{
+The file is to be removed when the fid is clunked.
+This option requires write permission in the file\[aq]s directory.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+It is illegal to write a directory, truncate it, or attempt to remove it on close.
+.PP
+All these permissions are checked at the time of the open request; any subsequent changes to the permissions of files do not affect the ability to read, write, or remove an open file.
+.PP
+It is an error if the fid is already the product of a successful open or create message.
+.PP
+.SS THE CREATE TRANSACTION
+The create request asks the file server to create a new file with the 
+.I name
+supplied, in the directory (
+.I dir
+) represented by 
+.I fid
+.
+This request and requires write permission in the directory.
+The owner of the file is the implied user id of the request and the group of the file is the same as 
+.I dir
+.
+.PP
+The permissions of the newly created file depend on the permissions of the enclosing directory (dir.perm) and the 
+.I perm
+value of the request.
+.PP
+For non\-directories, the formula is
+.IP
+.EX
+   (perm&(\[ti]8r777|8r111)) | (dir.perm&perm&8r666) 
+.EE
+.PP
+For directories, the formula is
+.IP
+.EX
+   (perm&\[ti]8r777) | (dir.perm&perm&8r777)
+.EE
+.PP
+This means, for example, that if the create allows read permission to others, but the containing directory does not, then the created file will not allow others to read the file.
+.PP
+Finally, the newly created file is opened according to 
+.I mode
+, and 
+.I fid
+will represent the newly opened file.
+The 
+.I mode
+is not checked against the permissions in 
+.I perm
+.
+.PP
+The 
+.I qid
+for the new file is returned with the create reply message.
+.PP
+Directories are created by setting the CHDIR bit (16r80000000) in the 
+.I perm
+.
+.PP
+The names \[dq].\[dq] and \[dq]..\[dq] are special.
+It is illegal to create files with these names.
+.PP
+It is an error if the fid is already the product of a successful open or create message.
+.PP
+An attempt to create a file in a directory where the given 
+.I name
+already exists will be rejected.
+The create system call (see 
+.I open
+) uses open with truncation.
+.PP
+The algorithm used by the create system call is:
+.PP
+Walk to the directory to contain the file.
+If that fails, return an error.
+.PP
+walk to the specified file.
+If the walk succeeds, send a request to open (with the truncate option) the file and return the result, successful or not.
+.PP
+If the walk fails, send a create message.
+If that fails, it may be because the file was created by another process after the previous walk failed, so (once) try the walk and open (with the truncate option) again.
+.PP
+For the behavior of create on a union directory, see 
+.I bind
+.
+.PP
+.SH ENTRY POINTS
+The open and create calls both generate open messages; only create generates a create message.
+.PP
+.SH SEE ALSO
+.I bind
+, 
+.I open
+, and 
+.I stat

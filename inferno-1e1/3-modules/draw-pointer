@@ -1,0 +1,45 @@
+.TH DRAW-POINTER 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Pointer \- state of a pointer device such as a mouse
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+Pointer: adt
+{
+  buttons: int;
+  xy:    Point;
+};
+.EE
+.PP
+.SH DESCRIPTION
+.PP
+.TS
+tab(@);
+l l.
+T{
+buttons
+T}@T{
+Each button on the device corresponds to a bit in buttons; zero bits indicate released (or non\-existent), and one bits indicate pressed.
+The bits, from least to most significant positions, represent the buttons from left to right.
+T}
+T{
+xy
+T}@T{
+The pointer\[aq]s screen coordinates.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The pointer\[aq]s position and button state is passed through a channel in the Context, as described in 
+.I context
+.

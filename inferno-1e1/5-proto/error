@@ -1,0 +1,17 @@
+.TH ERROR 5 "" "" "Inferno Reference "
+.PP
+.SH NAME
+error \- return an error
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+Rerror tag [2] ename [64]
+.EE
+.PP
+.SH DESCRIPTION
+The Rerror request return an error string, of length 64 (ERRLEN in <lib9.h>), describing the failure of a transaction.
+It replaces the corresponding reply message that would accompany a successful call; its tag is that of the request.
+.PP
+There is no Terror in Inferno.
+Rerror is the only case in this protocol of a response message type without a corresponding request type.

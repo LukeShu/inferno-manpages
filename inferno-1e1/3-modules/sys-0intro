@@ -1,0 +1,348 @@
+.TH SYS-0INTRO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Limbo System Modules
+.PP
+The Limbo system modules are as follows:
+.PP
+.SH SYSTEM MODULES
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I bind
+
+.PP
+mount,
+.PP
+unmount
+T}@T{
+change file name space
+T}
+T{
+.I byte2char
+
+.PP
+char2byte
+T}@T{
+convert between bytes and characters
+.PP
+T}
+T{
+.I chdir
+
+T}@T{
+change working directory
+T}
+T{
+.I dial
+
+.PP
+announce,
+.PP
+export, listen
+T}@T{
+make network connections
+T}
+T{
+.I dirread
+
+T}@T{
+read directory
+T}
+T{
+.I dup
+
+T}@T{
+duplicate an open file descriptor
+T}
+T{
+.I file2chan
+
+T}@T{
+create file connected to Limbo channel
+T}
+T{
+.I millisec
+
+T}@T{
+millisecond timer
+T}
+T{
+.I open
+
+.PP
+create
+T}@T{
+open/create a file for reading or writing
+T}
+T{
+.I pctl
+
+T}@T{
+process control
+T}
+T{
+.I print
+
+T}@T{
+print formatted output
+T}
+T{
+fprint, sprint
+T}@T{
+T}
+T{
+.I read
+
+.PP
+write
+T}@T{
+read or write file
+T}
+T{
+.I remove
+
+T}@T{
+remove a file
+T}
+T{
+.I seek
+
+T}@T{
+change file offset
+T}
+T{
+.I sleep
+
+T}@T{
+delay execution
+T}
+T{
+.I stat
+
+.PP
+fstat, fwstat,
+.PP
+stat, wstat
+T}@T{
+get and put file status
+T}
+T{
+.I tokenize
+
+T}@T{
+split string into words
+T}
+T{
+.I utfbytes
+
+T}@T{
+compute the Unicode length of a UTF byte sequence
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+.EE
+.PP
+.SH DESCRIPTION
+.SS FILE NAME SPACE
+Files are collected into a hierarchical organization called a 
+.I file
+.I tree
+starting in a 
+.I directory
+called the 
+.I root.
+.I Filenames
+, also called 
+.I paths
+, consist of a number of / \-separated 
+.I \[dq]path
+elements with the slashes corresponding to directories.
+A path element must contain only printable characters (those outside ASCII and Latin\-1 control space).
+A path element cannot contain a space, slash, or #.
+The path element \[dq]..\[dq] refers to the parent directory of the directory containing that element.
+.PP
+When a process presents a file name to Inferno, it is 
+.I evaluated
+by the following algorithm.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+1.
+T}@T{
+Start with a directory that depends on the first character of the path:
+.PP
+/ means the root of the main hierarchy,
+.PP
+# means the separate root of a kernel device\[aq]s file tree (see Section 3),
+.PP
+and anything else means the process\[aq]s current working directory.
+T}
+T{
+2.
+T}@T{
+For each path element, look up the element in the directory, advance to that directory, do a possible translation (see below).
+T}
+T{
+3.
+T}@T{
+Repeat.
+The last step may yield a directory or regular file.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The collection of files reachable from the root is called the 
+.I name space
+of a process.
+.PP
+A program can use bind or mount (see 
+.I 
+bind
+.I ) to say that whenever a certain (specified) file is reached during an evaluation, that evaluation continues instead from some other (specified) file.
+These same calls create 
+union directories
+.I , which are concatenations of ordinary directories that are searched sequentially until the desired element is found.
+
+.PP
+The result of evaluating \[dq]..\[dq] in a union directory is undefined.
+.PP
+Using bind and mount to do name space adjustment affects only the current name space group (see below, and 
+.I pctl
+).
+.PP
+Certain conventions about the layout of the name space must be preserved.
+.PP
+.SS FILE I/O
+Files are opened for input or output by open or create (see 
+.I open
+).
+These calls return a reference to an object of type FD (file descriptor) that identifies the file to subsequent I/O calls, notably read and write (see 
+.I read
+).
+The FD contains an integer file descriptor, but the FD type is passed to Limbo I/O routines.
+When the last reference to an FD disappears, the file is descriptor is released by the garbage collector.
+.PP
+Integer file descriptor values range from 0 to 
+.I n
+where the upper bound depends on the underlying operating system.
+The system allocates the numbers by selecting the lowest unused descriptor.
+They may be reassigned using dup (see 
+.I dup
+).
+Integer file descriptor values are indices into a kernel\-resident 
+.I file descriptor table
+, which is inherited from the parent when a process is created by a Limbo spawn operation.
+A set of processes, called a 
+.I file descriptor group
+, shares that table, so files opened by one process may be read and written by other processes in the group.
+(See 
+.I pctl
+).
+.PP
+By convention, file descriptor 0 is the standard input, 1 is the standard output, and 2 is the standard error output.
+The operating system is unaware of these conventions.
+It is possible to close file 0, or even to replace it by a file open only for writing, but programs written according to the normal convention will be confused by such chicanery.
+.PP
+Files are normally read or written in sequential order.
+The I/O position in the file is called the 
+.I file
+.I offset
+and may be set arbitrarily using the seek system call (see 
+.I seek
+).
+.PP
+Directories may be opened and read much like regular files (see 
+.I dirread
+).
+They contain an integral number of records, called 
+.I directory
+.I entries
+.
+Each entry is a machine\-independent representation of the information about an existing file in the directory, including the name, ownership, permission, access dates, and so on.
+.PP
+The entry corresponding to an arbitrary file can be retrieved by stat or fstat (see 
+.I stat
+); wstat and fwstat write back entries, thus changing the properties of a file.
+.PP
+New files are made with create and deleted with remove (see 
+.I open
+and 
+.I remove
+).
+.PP
+Directories are manipulated by create, remove, wstat, and fwstat; they may not directly be written.
+.PP
+Inferno provides no guarantee of consistency should several processes access a file concurrently.
+Guaranteed synchronous writes are not available.
+.PP
+Atomicity is guaranteed for I/O with byte counts smaller than the Styx message size; see 
+.I read
+.
+.PP
+.SS PROCESS EXECUTION AND CONTROL
+A Limbo 
+.I process
+, also called a 
+.I thread
+, is the basic unit of computation for Limbo application programming in the Inferno system.
+.PP
+A newly spawned thread shares the same 
+.I address
+.I space
+as that of its creator thread.
+That is, the set of global variables that is in scope to one is in scope to the other.
+A change made by one can be detected by the other.
+Since they are scheduled independently, they should synchronize their actions to share this data meaningfully.
+.PP
+The newly created thread also shares the same set of open file descriptors and the current working directory.
+.PP
+Processes are also organized into 
+.I process
+.I groups
+that typically represent the set of threads of a single application and can be terminated by a single kill request; see 
+.I prog
+.
+.PP
+It is possible for a thread to acquire a new, independent name space and set of file descriptors.
+See 
+.I 
+pctl
+.I .
+
+.PP
+.SS USER/GROUP IDENTITY
+Inferno maintains user identifier (uid) and group identifier (gid) strings for each process.
+These values are also attributes of files and directories.
+See 
+.I stat
+and 
+.I stat
+.
+A comparison of process and file identities take place when a process attempts to open or create a file.
+.PP
+When a pathname crosses from one server to another the process identities are mapped by each server receiving a file request.
+.PP
+The uid and gid strings are assigned to the thread that is created when a user logs into Inferno and cannot be changed.

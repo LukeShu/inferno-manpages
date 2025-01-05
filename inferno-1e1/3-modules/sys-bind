@@ -1,0 +1,148 @@
+.TH SYS-BIND 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+bind, mount, unmount \- change file name space
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+bind: fn(name, old: string, flag: int): int;
+mount:fn(fd: ref FD; old: string, flag: int, aname: string):
+       int;
+unmount: fn(name, old: string): int;
+.EE
+.PP
+.SH DESCRIPTION
+The bind, mount and unmount commands modify the file name space of the current process and its name space group.
+For both calls, 
+.I old
+is the name of an existing file or directory in the current name space where the modification is to be made.
+The name 
+.I old
+is evaluated as described in 
+.I File Name Expansion
+of 
+.I Limbo System Modules
+except that no translation of the final path element is done.
+.PP
+.SS BIND (NAME, OLD, FLAG)
+For bind, name 
+.I is
+the name of another (or possibly the same) existing file or directory in the current name space.
+After a successful bind call, the file name old 
+.I is
+an alias for the object originally named by 
+.I name
+; if the modification doesn\[aq]t hide it, 
+.I name
+will also still refer to its original file.
+The evaluation of 
+.I name
+happens at the time of the bind, not when the binding is later used.
+.PP
+.SS MOUNT (FD, OLD, FLAG, ANAME)
+The 
+.I fd
+argument to mount is a file descriptor of an open pipe or network connection to a file server ready to receive Styx messages.
+The old 
+.I file
+must be a directory.
+After a successful mount the file tree served 
+.I (see
+below) by 
+.I fd
+will be visible with its root directory having name 
+.I old
+.
+.PP
+With mount, the file descriptor 
+.I fd
+must be open for reading and writing and connected to a file server.
+.PP
+After the mount, the file tree starting at 
+.I old
+is served by a kernel 
+.I mnt
+device.
+That device will turn operations in the tree into messages on 
+.I fd
+.
+.PP
+The string 
+.I aname
+selects among different file trees on the server; the empty (or nil) string chooses the default tree.
+.PP
+For both commands, the 
+.I flag
+controls details of the modification made to the name space.
+In the following, 
+.I new
+refers to the file as defined by 
+.I name
+or the root directory served by 
+.I fd
+.
+Either both 
+.I old
+and new files must be directories, or both must not be directories.
+The 
+.I flag
+parameter can be one of:
+.PP
+.SS SYS\->MREPL
+Replace the old 
+.I file
+by the new one.
+Henceforth, an evaluation of old 
+.I will
+be translated to the new file.
+If they are directories (for mount, this condition is true by definition), old 
+.I becomes
+a 
+.I \[dq]union
+directory\[dq] consisting of one directory (the new file).
+.PP
+.SS SYS\->MBEFORE
+Both the 
+.I old
+and 
+.I new
+files must be directories.
+Add the constituent files of the new directory to the union directory at 
+.I old
+so its contents appear first in the union.
+After a Sys\->MBEFORE bind or mount, the new directory will be searched first when evaluating file names in the union directory.
+.PP
+.SS SYS\->MAFTER
+Like Sys\->MBEFORE but the new directory goes at the end of the union.
+.PP
+In addition, there is a Sys\->MCREATE flag that can be OR\[aq]ed with any of the above.
+When a create call (see 
+.I open
+) attempts to create in a union directory, and the file does not exist, the elements of the union are searched in order until one is found with Sys\->MCREATE set.
+The file is created in that directory; if that attempt fails, the create fails.
+.PP
+.SS UNMOUNT (NAME, OLD)
+The effects of bind and mount can be undone by unmount.
+If 
+.I name
+is nil, everything bound to or mounted upon 
+.I old
+is unbound or unmounted.
+If 
+.I name
+is not nil, it is evaluated as described above for bind, and the effect of binding or mounting that particular result on 
+.I old
+is undone.
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+
+.PP
+.SH DIAGNOSTICS
+The return value is a positive integer (a unique sequence number) for success, \-1 for failure.
+.PP
+.SH CAVEAT
+The mount command will not return until it has successfully attached to the file server, so the thread doing a mount cannot be the one serving.

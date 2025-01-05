@@ -1,0 +1,302 @@
+.TH KEYRING-0INTRO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Limbo Keyring Modules
+.PP
+The Keyring module relates to security and encryption related functions.
+The modules are as follows:
+.PP
+.SH KEYRING MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I auth
+
+T}@T{
+authenticate a connection
+T}
+T{
+readauthinfo
+T}@T{
+T}
+T{
+writeauthinfo
+T}@T{
+T}
+T{
+.I certtostr
+
+T}@T{
+encryption key conversion functions
+T}
+T{
+pktostr, sktostr,
+T}@T{
+T}
+T{
+strtocert, strtopk, strtosk
+T}@T{
+T}
+T{
+.I gensk
+
+T}@T{
+generate keys
+T}
+T{
+genSKfromPK, sktopk,
+T}@T{
+T}
+T{
+dhparams
+T}@T{
+T}
+T{
+.I getstring
+
+T}@T{
+delimited I/O
+T}
+T{
+putstring, getbytearray,
+T}@T{
+T}
+T{
+putbytearray, puterror
+T}@T{
+T}
+T{
+.I ipint
+
+T}@T{
+infinite precision integer utility functions
+T}
+T{
+.I login
+
+T}@T{
+get an Authinfo adt from a certificate authority
+T}
+T{
+getauthinfo
+T}@T{
+T}
+T{
+.I sign
+
+T}@T{
+cryptographic digests and digital signatures
+T}
+T{
+sha, md5, sign, verify
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]keyring.m\[dq]
+keyring:= load Keyring Keyring\->PATH;
+SigAlg: adt
+{
+  name:  string;
+};
+PK: adt
+{
+  sa:    ref SigAlg;
+  owner: string;
+};
+SK: adt
+{
+  sa:     ref SigAlg;
+  owner:  string;
+};
+Certificate: adt
+{
+  sa:     ref SigAlg;
+  ha:     string;
+  signer: string;
+  exp:    int;
+};
+DigestState: adt
+{
+  x:      int;
+};
+Authinfo: adt
+{
+  mysk:  ref SK;
+  mypk:  ref PK;
+  cert:  ref Certificate;
+  spk:   ref PK;
+  alpha: ref IPint;
+  p:     ref IPint;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The Keyring module contains the types and functions that are necessary to provide secure communications in Inferno.
+The functions:
+.IP \[bu] 2
+Perform infinite precision modular arithmetic (see 
+.I ipint
+).
+.IP \[bu] 2
+Compute cryptographically secure digests (see 
+.I sign
+).
+.IP \[bu] 2
+Generate public/private key pairs and transform them to and from text format (see 
+.I gensk
+).
+.IP \[bu] 2
+Create and verify cryptographic signatures using the public keys (see 
+.I auth
+).
+.IP \[bu] 2
+Authenticate the parties on a connection (see 
+.I auth
+).
+.IP \[bu] 2
+Read and write files containing the information needed to authenticate the parties on a connection.
+.IP \[bu] 2
+Send Limbo byte arrays and strings across a connection
+.PP
+.SS HIGH PRECISION ARITHMETIC
+The IPint adt provides certain cryptographic functions so that various popular public key algorithms can be implemented directly in Limbo.
+The current implementation limits the maximum integer to 2^3192^\-1.
+.PP
+An IPint can be converted into two external formats: an array of bytes (in which the first byte is the highest order byte of the integer) that is useful when communicating with the kernel\[aq]s internal ssl device (#D) (see 
+.I ssl
+); and a MIME base 64 format that allows an IPint to be stored in files or transmitted across networks in text form.
+.PP
+.SS PUBLIC KEY CRYPTOGRAPHY
+Inferno relies on public key cryptography for digital signatures.
+Each Inferno user can generate a pair of matched keys, one public and one private.
+The private key is used to digitally sign data, the public one to verify the signature.
+Public key algorithms have been chosen to make it difficult to spoof a signature or guess the private key.
+.PP
+For public keys algorithms to work, there must be a way to distribute the public keys.
+That is, in order to verify that X signed something, we have to know X\[aq]s public key.
+To simplify the problem, a trust hierarchy is set up that requires users to know only the public keys of the certifying authorities (CA) contained in the SIGNER variable.
+After generating a public key, one can have the concatenation of one\[aq]s name, a key expiration date, and a key signed by the certifying authority.
+This information, together with the name of the SIGNER and the signature, is called a 
+.I certificate
+.
+.PP
+At the beginning of a conversation, the parties exchange certificates.
+They then use the SIGNER\[aq]s public key to verify each other\[aq]s public keys.
+The CA\[aq]s public key, a system\-wide Diffie\-Hellman base and modulus, one\[aq]s private key, one\[aq]s public key and certificate are kept in an abstract data type called Keyring\->Authinfo.
+An Authinfo adt is read from a file using the Keyring\->readauthinfo function or written to a file using Keyring\->writeauthinfo function.
+See 
+.I auth
+.
+.PP
+Authinfo adts are normally created during login and registration.
+.PP
+.SS AUTHENTICATION
+Two parties conversing on a network connection authenticate each other\[aq]s identity using the keyring\->auth function.
+See 
+.I auth
+.
+Keyring\->auth uses the Keyring\->Authinfo information to perform a Station\-to\-Station (STS) authentication protocol.
+STS authenticates a party\[aq]s identity to the other and establishes a random bit string known only to the two parties.
+This bit string is used as a key either to encrypt or to authenticate subsequent messages sent between the two parties.
+.PP
+.SS SECURE COMMUNICATIONS
+After exchanging secrets, communicating parties can encode the conversation to guarantee varying levels of security:
+.IP \[bu] 2
+none
+.IP \[bu] 2
+messages cannot be forged
+.IP \[bu] 2
+messages cannot be intercepted
+.RS 2
+.PP
+Encoding uses the same line formats as defined by the Secure Sockets Layer.
+See 
+.I ssl\-
+Limbo Modules
+.I .
+
+.RE
+.PP
+.SS LOGIN AND REGISTRATION
+The Inferno authentication procedure requires that both parties have a Keyring\->Authinfo adt containing a locally generated public/private key pair, the public key of a commonly trusted CA, and a signed certificate from the CA binding the party\[aq]s identity to his/her public key.
+This Authinfo adt is normally kept in a file.
+However, at some point it has to be generated and conveyed securely between the user\[aq]s machine and the CA.
+There are two ways to do this, the login and registration procedures.
+.PP
+Both login and registration require an out\-of\-band channel between the CA and the user.
+.PP
+The login procedures are used by typed commands and by programs using the Tk GUI.
+The login procedure is based on the CA and the user having established a common secret or password.
+This is done off line either by mail or telephone.
+This secret is then used to provide a secure path between CA and user machine to transfer the certificate and CA public key.
+See 
+.I Limbo Math Modules
+.
+.PP
+The registration procedure is built into the Mux interface and is intended for the set top box environment.
+When the set top box is first turned on, it creates a public/private key pair and dials the service provider\[aq]s CA to get a key signed.
+The CA returns its public key and a signed certificate, blinded by a random bit string known only to the CA.
+A hash of the information is then displayed on the user screen.
+The user must then telephone the CA and compare this hashed foot print with the one at the CA.
+If they match and the user proves that he is a customer, the CA makes the blinding string publicly known.
+.PP
+.SS DATA TYPES
+.PP
+.TS
+tab(@);
+l l.
+T{
+SigAlg
+T}@T{
+The SigAlg adt contains a single string that specifies the algorithm used for digital signatures.
+The allowable values are MD5 and SHA, which specify which one\-way hash function is used to produce a digital signature, or message digest.
+In general, a one\-way hash function converts an arbitrary length message to a unique fixed\-length message digest.
+MD5 produces a 128\-bit; SHA produces a 160\-bit hash.
+T}
+T{
+PK and SK
+T}@T{
+The PK adt contains the data necessary to construct a public key; the SK adt contains the data necessary to construct a secret key.
+Both keys are built from the combination of a specified signature algorithm and a string representing the name of owner of the key.
+T}
+T{
+Certificate
+T}@T{
+The Certificate adt contains a digital signature with the certification of the trusted authority (CA).
+T}
+T{
+DigestState
+T}@T{
+The DigestState adt contains the state of partially completed hash functions during processing.
+T}
+T{
+Authinfo
+T}@T{
+The Authinfo adt contains an individual user\[aq]s private and public key, the signer\[aq]s certificate and the signer\[aq]s public key, and the Diffie\-Hellman parameters.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+B. Schneier, 
+.I Applied Cryptography
+, 1996, J. Wiley & Sons, Inc.

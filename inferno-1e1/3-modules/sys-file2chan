@@ -1,0 +1,268 @@
+.TH SYS-FILE2CHAN 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+file2chan \- create file connected to Limbo channel
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+Rread: type chan of (array of byte, string);
+Rwrite: type chan of (int,      string);
+FileIO: adt
+{
+    read:  chan of (int, int,      int, Rread);
+    write: chan of (int, array of byte, int, Rwrite);
+};
+file2chan: fn(dir, file: string, flags: int): ref FileIO;
+.EE
+.PP
+.SH DESCRIPTION
+The file2chan function provides an interface for creating a Limbo channel and an associated entry (
+.I file
+) in the file name space.
+A 
+.I client
+communicates with the server using open, read and write.
+The system transforms the client\[aq]s file operations into tuples that are delivered to the server on the channel associated with 
+.I file
+.
+When the server responds, the client\[aq]s file operations complete.
+.PP
+Although the interface is couched in 
+.I file
+semantics, the goal need not be the creation a server to replicate the duties of existing file systems (e.g., persistent storage of data).
+The server can be designed to provide new services.
+.PP
+.SS FILE2CHAN (DIR, FILE, FLAGS)
+The file2chan function returns a FileIO type holding two channels used by the system to deliver Tread and Twrite Styx messages to the server.
+See 
+.I Limbo Modules
+.
+The arguments are:
+.PP
+.TS
+tab(@);
+l l.
+T{
+dir
+T}@T{
+The existing directory where the 
+.I file
+is to be created.
+T}
+T{
+file
+T}@T{
+The 
+.I file
+created by file2chan.
+It is held in a directory, containing just that one file, unioned in 
+.I dir
+.
+T}
+T{
+flags
+T}@T{
+The 
+.I flags
+argument specifies how that union is created; see 
+.I 
+bind
+.I  
+.I  for a description of the flags.
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS READS
+When the client invokes the read system call on the file, the server receives a tuple, (
+.I offset
+, 
+.I count
+, 
+.I fid
+, 
+.I rc
+), on the read channel of returned ref FileIO.
+The server should interpret that as a request as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+offset
+T}@T{
+The offset from the beginning of the file.
+T}
+T{
+count
+T}@T{
+The size of the data request.
+T}
+T{
+fid
+T}@T{
+An unique identifier for managing multiplexed requests on 
+.I file
+.
+T}
+T{
+rc
+T}@T{
+The channel for delivery of the requested data.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+To allow the client to complete its read request successfully, the server should respond by sending into 
+.I rc
+a tuple, (
+.I data
+, nil), where 
+.I data
+satisfies the client\[aq]s request.
+.PP
+To create an unsuccessful read request for the client, the server should response on 
+.I rc
+with a tuple, (nil, 
+.I errmsg
+), where 
+.I errmsg
+is a string describing the error condition.
+The 
+.I errmsg
+string becomes the system error for the client (See 
+.I print
+).
+.PP
+The client blocks in its read system call until the server sends its reply.
+.PP
+.SS WRITES
+When the client does a write system call on the file, the server receives a tuple, (
+.I offset
+, 
+.I data
+, 
+.I fid
+, 
+.I wc
+), on the write channel of the returned ref FileIO.
+That request should be interpreted as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+offset
+T}@T{
+The offset from the beginning of the file where the 
+.I data
+should be written.
+T}
+T{
+data
+T}@T{
+The data to be written into the file.
+T}
+T{
+fid
+T}@T{
+An unique identifier for managing multiplexed requests on 
+.I file
+.
+T}
+T{
+wc
+T}@T{
+A channel for delivery of a write\-response message.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The server should respond with a tuple (
+.I count
+, 
+.I string
+) on 
+.I wc,
+the 
+.I 
+channel received in the tuple from the write channel.
+To indicate a successful write operation to the client the server\[aq]s response should be (
+.I count
+, nil), where 
+.I count
+is the number of bytes (i.e., len 
+.I data
+) received from the client.
+.PP
+To make the client\[aq]s write request fail, the server\[aq]s response should be (0, 
+.I errmsg
+), where 
+.I errmsg
+describes the problem.
+The 
+.I errmsg
+string becomes the system error for the client (See 
+.I print
+).
+.PP
+The client blocks in its write system call until the server sends its reply.
+.PP
+.SS CLOSES
+When file is closed for reading (writing), the server will receive a read (write) message with a nil 
+.I rc
+(
+.I wc
+).
+The server can use these events to determine when to stop processing for a given 
+.I fid
+.
+.PP
+.SS FID\[AQ]S
+The 
+.I fid
+received by the server can be used to manage the multiplexing of multiple active clients sharing a single file.
+See 
+.I Limbo Modules
+for details.
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+, 
+.I bind
+, 
+.I open
+, 
+.I read
+, 
+.I print
+, and 
+.I 
+Limbo Modules
+.I 
+
+.PP
+.SH CAVEAT
+The read and write system calls for the file will not return until the server sends it reply on the appropriate channel; consequently, the process doing the read or write should not be the one serving, lest it deadlock.

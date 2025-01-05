@@ -1,0 +1,503 @@
+.TH 0INTRO 5 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Inferno File Protocol, Styx
+.PP
+The following utilities are used in the Inferno file protocol:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I attach
+
+.PP
+nop
+T}@T{
+messages to initiate activity
+T}
+T{
+.I clone
+
+T}@T{
+duplicate a fid
+T}
+T{
+.I clunk
+
+T}@T{
+forget about a fid
+T}
+T{
+.I error
+
+T}@T{
+return an error
+T}
+T{
+.I flush
+
+T}@T{
+abort a message
+T}
+T{
+.I open
+
+.PP
+create
+T}@T{
+prepare a fid for I/O on an existing or new file
+T}
+T{
+.I read
+
+.PP
+write
+T}@T{
+transfer data from and to a file
+T}
+T{
+.I remove
+
+T}@T{
+remove a file from a server
+T}
+T{
+.I stat
+
+.PP
+wstat
+T}@T{
+inquire or change file attributes
+T}
+T{
+.I styx
+
+.PP
+call, convs2m, convd2m,
+.PP
+convm2s, convm2d,
+.PP
+fcallconv, dirconv,
+.PP
+dirmodeconv
+T}@T{
+C interface to Inferno file protocol
+T}
+T{
+.I walk
+
+T}@T{
+descend a directory hierarchy
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+#include <lib9.h>
+#include <styx.h>
+.EE
+.PP
+.SH DESCRIPTION
+An Inferno 
+.I server
+is an agent that provides one or more hierarchical file systems, file trees, that may be accessed by Inferno processes.
+A server responds to requests by 
+.I clients
+to navigate the hierarchy, and to create, remove, read, and write files.
+The prototypical server is a separate machine that stores large numbers of user files on permanent media.
+Another possibility for a server is to synthesize files on demand, perhaps based on information on data structures inside the kernel.
+For example, the 
+.I prog
+.I device
+is a part of the Inferno kernel that does this.
+User programs can also act as servers by using the 
+.I sys\-file2chan
+interface.
+.PP
+A 
+.I connection
+to a server is a bidirectional communication path from the client to the server.
+There may be a single client or multiple clients sharing the same connection.
+A server\[aq]s file tree is attached to a process group\[aq]s name space by bin and mount and calls.
+See 
+.I bind
+and 
+.I Limbo System Modules
+.
+Processes in the group are then clients of the servers.
+Their system calls operating on the server\[aq]s files are translated into requests and transmitted over the connection to the appropriate server.
+The server\[aq]s response completes the request.
+.PP
+The Inferno File Protocol, 
+.I Styx
+, is used for messages between 
+.I clients
+and 
+.I servers
+.
+A client transmits 
+.I requests
+.I (
+T\-messages) to a server, which subsequently returns 
+.I replies
+.I (
+R\-messages) to the client.
+The combined acts of transmitting (receiving) a request of a particular type (e.g., 
+.I read
+, 
+.I write
+, 
+.I stat
+) and receiving (transmitting) its reply is called a 
+.I transaction
+of that type.
+.PP
+Most programs do not see the Styx protocol directly.
+Most programs make calls to library routines that access files.
+Their requests are translated by the mount driver, 
+.I mnt
+, into Styx messages.
+Client application programs need not explicitly manage details of 
+.I fids
+, 
+.I tags
+, etc.
+described below.
+.PP
+.SS MESSAGE FORMAT
+Each message consists of a sequence of bytes.
+The first byte is the message type, one of the constants in the enumeration in the C include file <styx.h>.
+(See 
+.I styx
+).
+.PP
+The remaining bytes are parameters.
+Each parameter consists of a fixed number of bytes (except the 
+.I data
+fields of write requests or read replies).
+In the message descriptions below, the number of bytes in a field is given in brackets after the field name.
+The two\-, four\-, and eight\-byte fields may hold unsigned integers represented in little\-endian order (least significant byte first).
+Fields that contain names are 28\-byte strings (including a terminal NUL (zero) byte).
+.PP
+Other than the NUL terminator, all characters are legal in file names.
+Systems may choose to reduce the set of legal characters to reduce syntactic problems, for example to remove slashes from name components, but the protocol has no such restriction.
+Inferno names may contain any printable character (that is, any character outside hexadecimal 00\-1F and 80\-9F) except slash and blank.
+Messages are transported in byte form to allow machine independence.
+The 
+.I styx
+manual page describes C routines that convert to and from this form into a machine\-dependent C structure.
+.PP
+.SS MESSAGE TYPES
+.IP
+.EX
+Tnop     tag [2]
+Rnop     tag [2]
+Rerror   tag [2] ename [64]
+Tflush   tag [2] oldtag [2]
+Rflush   tag [2]
+Tattach  tag [2] fid [2] uid [28] aname [28]
+Rattach  tag [2] fid [2] qid [8]
+Tclone   tag [2] fid [2] newfid [2]
+Rclone   tag [2] fid [2]
+Twalk    tag [2] fid [2] name [28]
+Rwalk    tag [2] fid [2] qid [8]
+Topen    tag [2] fid [2] mode [1]
+Ropen    tag [2] fid [2] qid [8]
+Tcreate  tag [2] fid [2] name [28] perm [4] mode [1]
+Rcreate  tag [2] fid [2] qid [8]
+Tread    tag [2] fid [2] offset [8] count [2]
+Rread    tag [2] fid [2] count [2]  pad [1] data [count]
+Twrite    tag  [2]  fid [2]  offset [8] count [2] pad [1] data [count]
+Rwrite   tag [2] fid [2] count [2]
+Tclunk   tag [2] fid [2]
+Rclunk   tag [2] fid [2]
+Tremove  tag [2] fid [2]
+Rremove  tag [2] fid [2]
+Tstat    tag [2] fid [2]
+Rstat    tag [2] fid [2] stat [116]
+Twstat   tag [2] fid [2] stat [116]
+Rwstat   tag [2] fid [2]
+.EE
+.PP
+The numerical value for the type of an R\-message will be one greater than that of the corresponding T\-message.
+See 
+.I styx
+.
+However, when a request fails a Rerror type message is sent instead.
+The Rerror message has an 
+.I ename
+field which contains a string describing the reason for failure.
+.PP
+The nop message request has no obvious effect.
+Its main purpose is in debugging the connection between a client and a server.
+It is never required.
+.PP
+.SS FIDS
+Most T\-messages contain a 
+.I fid
+, a 16\-bit unsigned integer that the client uses to identify a current file on the server.
+Fids are like file descriptors in a user process, but they are not restricted to files open for I/O.
+They are also used when directories being examined, files are accessed by 
+.I stat
+calls, and so on.
+All files being manipulated by the operating system are identified by fids.
+Fids are chosen by the client.
+.PP
+All requests on a connection share the same fid space.
+When several clients share a connection, the agent managing the sharing must arrange that no two clients choose the same fid.
+.PP
+The first fid supplied (in an attach message) will be used by the server to refer to the root of the served file tree.
+The attach identifies the user to the server and may specify a particular file tree provided by the server (for those servers that supply more than one).
+.PP
+A walk message causes the server to change the current file associated with a fid to be a file in the directory that is the old current file.
+Usually, a client maintains a fid for the root, and navigates by 
+.I walk
+\[aq]s on a fid 
+.I clone
+\[aq]d from the root fid.
+.PP
+.SS MESSAGE TAGS
+Each T\-message has a 
+.I tag
+field, that chosen and used by the client to identify the message.
+The reply to the message will have the same tag.
+Clients must arrange that no two outstanding messages on the same connection have the same tag.
+An exception is the tag NOTAG, value 16rFFFF, meaning \[aq]no tag\[aq].
+The client can use the 
+.I NOTAG
+message, when establishing a connection, to override tag matching in messages.
+.PP
+A client can send multiple T\-messages without waiting for the corresponding R\-messages, as long as all outstanding T\-messages have different tags.
+The server may delay the response to a request on one fid and respond to later requests on other fids.
+For example, this may be necessary when the client reads from a file that the server synthesizes from external events such as keyboard input.
+.PP
+.SS QIDS
+Replies (R\-messages) to attach, walk, open, and create requests convey a 
+.I qid
+field back to the client.
+The qid represents the server\[aq]s unique identification for the file being accessed:
+.PP
+.PP
+   *   *   *   *   *
+.PP
+
+.B NOTE:
+
+.PP
+
+.I Two files on the same server hierarchy are the same if and only if their qids are the same.
+
+.PP
+   *   *   *   *   *
+.PP
+The client may have multiple fids pointing to a single file on a server and hence having a single qid.
+.PP
+The eight\-byte qid fields represent two four\-byte unsigned integers, first the qid 
+.I path
+then the qid 
+.I version
+.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+path
+T}@T{
+The path is an integer unique among all files in the hierarchy.
+If a file is deleted and recreated with the same name in the same directory, the old and new path components of the qids should be different.
+.PP
+Directories always have the CHDIR bit (16r80000000) set in their qid path.
+T}
+T{
+version
+T}@T{
+The version is a version number of the file.
+Typically, it is incremented every time the file is modified.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS FILE OPERATIONS
+An existing file can be 
+.I open
+\[aq]ed or a new file may be 
+.I create
+\[aq]d in the current directory.
+See 
+.I open
+.
+.PP
+I/O of a given number of bytes (limit 8192) at a given 
+.I offset
+on an open file is done by read and write.
+See 
+.I read
+.
+.PP
+A client should clunk any fid that is no longer needed.
+See 
+.I clunk
+.
+.PP
+The remove transaction deletes files.
+See 
+.I remove
+.
+.PP
+The stat transaction retrieves information about the file.
+The 
+.I stat
+field in the reply includes the file\[aq]s name, access permissions (read, write and execute for owner, group and others), access and modification times, and owner and group identifications (each 28\-byte strings).
+The wstat transaction allows some of a file\[aq]s properties to be changed.
+See 
+.I stat
+and 
+.I stat
+.
+.PP
+A request can be aborted with a Tflush request.
+When a server receives a Tflush, it should not reply to the message with tag 
+.I oldtag
+(unless it has already replied), and it should immediately send an Rflush.
+The client should ignore replies with tag 
+.I oldtag
+until it gets the Rflush, at which point 
+.I oldtag
+may be reused.
+See 
+.I flush
+.
+.PP
+.SS DIRECTORIES
+Directories are created by create with CHDIR set in the permissions argument (see 
+.I stat
+).
+The members of a directory can be found with 
+.I read
+.
+.PP
+All servers must support requests to walk from the current directory to the directory \[dq]..\[dq] (dot\-dot, meaning parent directory) although, by convention, directories contain no explicit entry for \[dq]..\[dq] or \[dq].\[dq] (dot, current directory).
+The parent of the root directory of a server\[aq]s tree is itself.
+.PP
+.SS ACCESS PERMISSIONS
+Each file server maintains a set of user and group names.
+Each user can be a member of any number of groups.
+.PP
+Every file request has an implicit user id (copied from the original attach) and an implicit set of groups (every group of which the user is a member).
+.PP
+Each file has an associated 
+.I owner
+and 
+.I group
+id and three sets of permissions: those of the owner, those of the group, and those of \[aq]other\[aq] users.
+.PP
+When the owner attempts to do something to a file, the owner, group, and other permissions are consulted, and if 
+.I any
+of them grant the requested permission, the operation is allowed.
+.PP
+For someone who is not the owner, but is a member of the file\[aq]s group, the group and other permissions are consulted.
+.PP
+For everyone else, only the \[aq]other\[aq] permissions are used.
+-\-\-Plan9\[aq]ism.
+.PP
+Each set of permissions says whether reading is allowed, whether writing is allowed, and whether executing is allowed.
+A walk in a directory is regarded as executing the directory, not reading it.
+.PP
+Permissions, and type are stored in the file 
+.I mode
+.
+A set bit indicates that the corresponding permission is granted.
+.PP
+.TS
+tab(@);
+l l.
+T{
+bit 31
+T}@T{
+If bit 31 is set, the file is a directory.
+T}
+T{
+bits 8, 7, and 6
+T}@T{
+Owner read/write/execute permissions.
+T}
+T{
+bits 5, 4, 3
+T}@T{
+Group read/write/execute permissions.
+T}
+T{
+bits 2, 1, and 0
+T}@T{
+Other read/write/execute permissions.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS HEADER FILES
+Header files are located as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+<lib9.h>
+T}@T{
+<
+.I inferno_root
+> <
+.I systarg
+> / <
+.I objtype
+> /include/lib9.h
+T}
+T{
+<styx.h>
+T}@T{
+/include/styx.h
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I styx
+, 
+.I Limbo Modules
+, 
+.I bind
+, 
+.I stat
+, 
+.I prog
+, 
+.I read
+, and 
+.I stat

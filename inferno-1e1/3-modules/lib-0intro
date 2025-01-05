@@ -1,0 +1,78 @@
+.TH LIB-0INTRO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Limbo Library Modules
+.PP
+The Limbo library modules are as follows:
+.PP
+.SH LIBRARY MODULES
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I daytime
+
+.PP
+text, filet, gmt, local,
+.PP
+now, time, tm2epoch
+T}@T{
+time conversions
+T}
+T{
+.I filepat
+
+.PP
+expand, match
+T}@T{
+file pattern matching
+T}
+T{
+.I newns
+
+T}@T{
+build a new name space from a description file
+T}
+T{
+.I pipe
+
+.PP
+fds, files
+T}@T{
+get read/write file pair for a pipe
+T}
+T{
+.I readdir
+
+T}@T{
+read directory and sort files
+T}
+T{
+.I string
+
+.PP
+append, drop, in, prefix,
+.PP
+splitl, splitr, splitstrl,
+.PP
+splitstrr, take, toint,
+.PP
+tolower, toupper
+T}@T{
+string operations
+T}
+T{
+.I workdir
+
+T}@T{
+discover the name of the current working directory
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

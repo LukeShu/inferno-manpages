@@ -1,0 +1,234 @@
+.TH CMD 4 "" "" "Inferno Reference "
+.PP
+.SH NAME
+cmd \- interface to host operating system commands
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind \-a \[aq]#C\[aq] /
+
+/cmd/clone
+/cmd/n/ctl
+/cmd/n/data
+/cmd/n/status
+.EE
+.PP
+.SH DESCRIPTION
+The cmd device provides an interface to commands on the host operating system.
+By convention, this kernel device (#C) is bound (with the \-a option) to the root directory.
+After binding, the entry point to this facility, the file /cmd/clone, is available.
+Opening that file provides a handle for launching a command, managing the command\[aq]s I/O, and checking the command\[aq]s status.
+.PP
+.SS /CMD/CLONE
+Opening /cmd/clone creates (or allocates a currently unused) directory, 
+.I n (a
+decimal 
+.I 
+integer
+.I )
+, under /cmd.
+Directory 
+.I n
+contains 
+.I 
+files ctl, data, and status.
+The file descriptor returned from the open of clone provides access to the /cmd/n/ctl file selected by cmd for subsequent operations.
+.PP
+.SS /CMD/N/CTL
+Reading /cmd/
+.I n
+/ctl (via the file descriptor returned from opening /cmd/clone) provides 
+.I n
+, a value that can be used to construct filenames for the related files.
+Writes to /cmd/
+.I n
+/ctl must be of the format:
+.IP
+.EX
+   exec oscmd args...
+.EE
+.PP
+Prior to launching the command cmd prints at the console a line (128 bytes, maximum) of the format:
+.IP
+.EX
+   devcmd: \[aq]oscmd args...\[aq] pid pid
+.EE
+.PP
+
+.B 
+The string between the single quotes matches the command written to /cmd/
+.I n
+/ctl and 
+.I pid
+is the number (in decimal format) of the process running the emulator.
+Each field is separated by a single blank.
+.PP
+File offset is ignored for both reading and writing.
+.PP
+.SS /CMD/N/DATA
+Reading /cmd/
+.I n
+/data obtains the data that the command is writing to its standard output and standard error.
+.PP
+Writing to /cmd/
+.I n
+/data sends the data into the command\[aq]s standard input.
+.PP
+.SS /CMD/N/STATUS (READ\-ONLY)
+Writing is disallowed.
+.PP
+Reading /cmd/
+.I n
+/status provides a status line (maximum128 bytes) of the format:
+.IP
+.EX
+   cmd/n refcnt state cmd args...
+.EE
+.PP
+where each field separator is a single blank.
+The meaning of each field is:
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I n
+
+T}@T{
+The directory 
+.I n
+where status resides.
+T}
+T{
+
+.I refcnt
+
+T}@T{
+The number (decimal) of open file descriptors for /cmd/
+.I n
+/ctl.
+T}
+T{
+
+.I state
+
+T}@T{
+The status of the interface in directory /cmd/
+.I n
+.
+Details below.
+T}
+T{
+
+.I cmd [args]..
+.
+T}@T{
+The active command.
+Output only for state \[dq]Execute\[dq].
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+A cmd directory 
+.I n
+can be in the following states
+.PP
+.TS
+tab(@);
+l l.
+T{
+Open
+T}@T{
+Allocated for use but not yet running a command.
+T}
+T{
+Execute
+T}@T{
+Running a command
+T}
+T{
+Close
+T}@T{
+Command completed.
+Available for reallocation via /cmd/clone.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS DIRECTORY MANAGEMENT
+Once closed, a directory 
+.I n
+created by cmd persists and is reused by cmd in response to later openings of /cmd/clone.
+The cmd device only creates a new directory when all others (if any) are in use.
+.PP
+.SS COMMAND EXECUTION
+.SS UNIX\-HOSTED SYSTEMS
+The command is run via the /bin/sh program as follows
+.IP
+.EX
+   /bin/sh \-c \[aq]cmd args...\[aq]
+.EE
+.PP
+Emulator run by root:
+.PP
+If available, the emulator runs the command with a host user ID (
+.I uid
+) and host group ID (
+.I gid
+) corresponding to Inferno\[aq]s representation for the user\[aq]s identity.
+If not available, the emulator runs the command with 
+.I uidnobody
+and 
+.I gidnobody
+.
+.PP
+Emulator not run by root:
+.PP
+Commands are run on the host with the same host identity as the emulator
+.PP
+.SS WINDOWS\-HOSTED SYSTEMS
+The command must be a binary executable (not a command interpreter built\-in) in the emulator\[aq]s path.
+.PP
+The command is always run with the same host identity as the emulator.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I emu
+
+T}@T{
+Overview of the emulator
+T}
+T{
+
+.I os
+
+T}@T{
+Inferno command interface to the cmd device
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

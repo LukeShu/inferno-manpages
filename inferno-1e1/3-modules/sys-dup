@@ -1,0 +1,51 @@
+.TH SYS-DUP 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+dup \- duplicate an open file descriptor
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+dup:    fn(oldfd, newfd: int): int;
+fildes: fn(fd: int):           ref FD;
+.EE
+.PP
+.SH DESCRIPTION
+The Limbo programming language and its libraries manage I/O via references to instances of an abstract data type, FD, called a 
+.I file
+.I descriptor
+.
+This type holds an integer\-valued file descriptor, the form used by the operating system, in a structure that can be reference counted and garbage collected.
+There are occasions when a program must access the underlying integer file descriptor, such as arranging I/O re\-direction for the standard input and output for a new process.
+.PP
+.SS DUP (OLDFD, NEWFD)
+The dup function takes a valid integer file descriptor, 
+.I oldfd
+, referring to an open file, and returns a new integer file descriptor referring to the same file.
+If 
+.I newfd
+is in the range of legal file descriptors, dup will use that for the new file descriptor (closing any old file associated with 
+.I newfd
+); if 
+.I newfd
+is \-1 the system chooses the lowest available file descriptor.
+If a suitable file descriptor cannot be found, dup returns \-1.
+.PP
+.SS FILDES (FD)
+The fildes function uses the integer file descriptor 
+.I fd
+to create a new Limbo file descriptor, suitable for other Sys module functions.
+It returns nil if it cannot convert 
+.I fd
+.
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo System Modules
+.I  
+.I  and 
+open
+.I 

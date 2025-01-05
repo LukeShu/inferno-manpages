@@ -1,0 +1,91 @@
+.TH DRAW 4 "" "" "Inferno Reference "
+.PP
+.SH NAME
+draw \- graphics device
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind \[aq]#d\[aq] /dev
+/dev/drawnew
+/dev/drawn/ctl
+/dev/drawn/data
+/dev/drawn/refresh
+.EE
+.PP
+.SH DESCRIPTION
+The draw device serves a two\-level file system providing an interface to the graphics facilities of the system; the Limbo Draw module (see 
+.I Limbo Draw Modules
+) accesses the device to implement its functions.
+.PP
+Each client of the device connects by opening /dev/drawnew and reading back seven decimal numbers in the standard 12\-character format.
+The seven values are:
+.IP \[bu] 2
+The connection number, 
+.I n
+.
+.IP \[bu] 2
+The image id of the display image (always zero).
+.IP \[bu] 2
+The ldepth of the display image.
+.IP \[bu] 2
+Four values (min.x, min.y, max.x, and max.y) that define the display image.
+.RS 2
+.PP
+The client can then open the directory /dev/draw
+.I n
+/ (where 
+.I n
+is the connection number) to access the ctl, data, and refresh files associated with the connection.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+ctl
+T}@T{
+The ctl file accepts no messages; its only purpose is to return the initialization information.
+T}
+T{
+data
+T}@T{
+The data file accepts messages corresponding to procedures in the Draw module:
+.PP
+Allocate a window or image
+.PP
+Draw on the image.
+.PP
+Paint text
+.PP
+etc.
+.PP
+Some such messages generate data to be returned to the client.
+The client can recover it by reading the data file.
+The format of the messages to and from the data file will be supplied later.
+T}
+T{
+refresh (read\-only)
+T}@T{
+As windows owned by the client are uncovered, if they cannot be refreshed by the server (e.g., they have refresh functions associated with them), the client is notified by a message refresh file.
+reporting what needs to be repainted by the client.
+The message has five decimal integers formatted as in the ctl message:
+.PP
+The image id of the window.
+.PP
+Four decimal values (min.x, min.y, max.x, and max.y) that define the display image in need of refreshment.
+.PP
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+See Also
+.PP
+.I Limbo Draw Modules
+
+.RE

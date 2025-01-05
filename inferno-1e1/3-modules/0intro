@@ -1,0 +1,825 @@
+.TH 0INTRO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Limbo Modules
+.PP
+.SH INTRODUCTION TO LIMBO MODULES
+This section introduces the Limbo modules available to the programmer; see the corresponding manual pages for more information.
+Each module is declared with a single Limbo include file.
+Before calling a module\[aq]s functions, an application must load the module; the application uses the resulting handle as the module qualifier.
+The examples above illustrate the style.
+It will usually be necessary to qualify names with the appropriate module pointer or to import the types and functions.
+The manual pages assume the names are accessible in the current scope.
+.PP
+Although many modules are self\-contained, dependencies may exist.
+For example, the system module, Sys, provides basic services that some other modules require.
+.PP
+A number of minor functions are packaged as individual modules but share a single include file.
+For example, see /include/lib.m.
+.PP
+The manual pages describe in their synopsis sections how to include a module definition during compilation and load an implementation during execution.
+The synopsis sections also list the functions, abstract data types, and constants that are discussed in the following Description sections.
+Although the include files declare these components, the manual pages list them explicitly.
+In all cases, the enclosing module declaration is assumed so that unqualified identifiers can be used in the text without ambiguity.
+.PP
+Some modules are described in a single page, such as 
+.I regex
+.
+Larger modules are divided into several related pages, such as 
+.I Limbo Math Modules
+, 
+.I elem
+, 
+.I fp
+, and 
+.I 
+linalg.
+.I 
+
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+include \[dq]tk.m\[dq];
+tk:= load Tk Tk\->PATH;
+&... etc.
+Generically
+include \[dq]module.m\[dq];
+mod:= load Module Module \->PATH;
+.EE
+.PP
+.SS DRAW MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I context
+
+T}@T{
+graphics environment
+T}
+_
+T{
+.I display
+
+T}@T{
+connection to draw device
+T}
+T{
+.I font
+
+T}@T{
+character images for Unicode text
+T}
+T{
+.I image
+
+T}@T{
+pictures and drawing
+T}
+T{
+.I point
+
+T}@T{
+coordinate position
+T}
+T{
+.I pointer
+
+T}@T{
+state of a pointer device such as a mouse
+T}
+T{
+.I rectangle
+
+T}@T{
+rectangular portion of the plane
+T}
+T{
+.I screen
+
+T}@T{
+type to define the abstract data structures for the windows on a display, or subwindows within a window
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS KEYRING MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I auth
+
+T}@T{
+authenticate a connection
+T}
+T{
+readauthinfo
+T}@T{
+T}
+T{
+writeauthinfo
+T}@T{
+T}
+T{
+.I certtostr
+
+T}@T{
+encryption key conversion functions
+T}
+T{
+pktostr, sktostr,
+T}@T{
+T}
+T{
+strtocert, strtopk, strtosk
+T}@T{
+T}
+T{
+.I gensk
+
+T}@T{
+generate keys
+T}
+T{
+genSKfromPK, sktopk,
+T}@T{
+T}
+T{
+dhparams
+T}@T{
+T}
+T{
+.I getstring
+
+T}@T{
+delimited I/O
+T}
+T{
+putstring, getbytearray,
+T}@T{
+T}
+T{
+putbytearray, puterror
+T}@T{
+T}
+T{
+.I ipint
+
+T}@T{
+infinite precision integer utility functions
+T}
+T{
+.I login
+
+T}@T{
+get an Authinfo adt from a certificate authority
+T}
+T{
+getauthinfo
+T}@T{
+T}
+T{
+.I sign
+
+T}@T{
+cryptographic digests and digital signatures
+T}
+T{
+sha, md5, sign, verify
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS LIBRARY MODULES
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I daytime
+
+.PP
+text, filet, gmt, local,
+.PP
+now, time, tm2epoch
+T}@T{
+time conversions
+T}
+T{
+.I filepat
+
+.PP
+expand, match
+T}@T{
+file pattern matching
+T}
+T{
+.I newns
+
+T}@T{
+build a new name space from a description file
+T}
+T{
+.I pipe
+
+.PP
+fds, files
+T}@T{
+get read/write file pair for a pipe
+T}
+T{
+.I readdir
+
+T}@T{
+read directory and sort files
+T}
+T{
+.I string
+
+.PP
+append, drop, in, prefix,
+.PP
+splitl, splitr, splitstrl,
+.PP
+splitstrr, take, toint,
+.PP
+tolower, toupper
+T}@T{
+string operations
+T}
+T{
+.I workdir
+
+T}@T{
+discover the name of the current working directory
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS MATH MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I elem
+
+T}@T{
+elementary functions of applied mathematics
+T}
+T{
+.I fp
+
+T}@T{
+floating point operations
+T}
+T{
+.I linalg
+
+T}@T{
+linear algebra primitives
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS PREFAB MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I compound
+
+T}@T{
+windows for ITV toolkit
+T}
+T{
+.I element
+
+T}@T{
+menu and display elements for ITV toolkit
+T}
+T{
+.I environ
+
+T}@T{
+environment for ITV toolkit to provide a graphics framework for a item collections
+T}
+T{
+.I style
+
+T}@T{
+fonts and colors for ITV toolkit
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS SYSTEM MODULES
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I bind
+
+.PP
+mount,
+.PP
+unmount
+T}@T{
+change file name space
+T}
+T{
+.I byte2char
+
+.PP
+char2byte
+T}@T{
+convert between bytes and characters
+.PP
+T}
+T{
+.I chdir
+
+T}@T{
+change working directory
+T}
+T{
+.I dial
+
+.PP
+announce,
+.PP
+export, listen
+T}@T{
+make network connections
+T}
+T{
+.I dirread
+
+T}@T{
+read directory
+T}
+T{
+.I dup
+
+T}@T{
+duplicate an open file descriptor
+T}
+T{
+.I file2chan
+
+T}@T{
+create file connected to Limbo channel
+T}
+T{
+.I millisec
+
+T}@T{
+millisecond timer
+T}
+T{
+.I open
+
+.PP
+create
+T}@T{
+open/create a file for reading or writing
+T}
+T{
+.I pctl
+
+T}@T{
+process control
+T}
+T{
+.I print
+
+T}@T{
+print formatted output
+T}
+T{
+fprint, sprint
+T}@T{
+T}
+T{
+.I read
+
+.PP
+write
+T}@T{
+read or write file
+T}
+T{
+.I remove
+
+T}@T{
+remove a file
+T}
+T{
+.I seek
+
+T}@T{
+change file offset
+T}
+T{
+.I sleep
+
+T}@T{
+delay execution
+T}
+T{
+.I stat
+
+.PP
+fstat, fwstat,
+.PP
+stat, wstat
+T}@T{
+get and put file status
+T}
+T{
+.I tokenize
+
+T}@T{
+split string into words
+T}
+T{
+.I utfbytes
+
+T}@T{
+compute the Unicode length of a UTF byte sequence
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS TOOLKIT MODULES
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I tk
+
+T}@T{
+graphics toolkit
+T}
+T{
+.I tklib
+
+.PP
+tkquote, is_err, tkcmds,
+.PP
+dialog, getstring,
+.PP
+notice, mktabs, tabsctl
+T}@T{
+Tk user interface functions
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS MISCELLANEOUS MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I bufio
+
+T}@T{
+buffered input/output module
+T}
+T{
+.I devpointer
+
+T}@T{
+I/O interface for the pointer device
+T}
+T{
+.I imagefile
+
+T}@T{
+processing external image file formats
+T}
+T{
+.I ir
+
+T}@T{
+infrared remote control
+T}
+T{
+.I login
+
+T}@T{
+introduction to the Login module
+T}
+T{
+.I mpeg
+
+T}@T{
+interface to the mpeg device driver
+T}
+T{
+.I regex
+
+T}@T{
+regular expression recognizer
+T}
+T{
+.I sh
+
+T}@T{
+command interface
+T}
+T{
+.I srv
+
+T}@T{
+miscellaneous services from the host operating system
+T}
+T{
+.I volume
+
+T}@T{
+volume control for an infrared interface
+T}
+T{
+.I wmlib
+
+T}@T{
+window manager toolkit
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Limbo Draw Modules
+.PP
+.SH DRAW MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I context
+
+T}@T{
+graphics environment
+T}
+_
+T{
+.I display
+
+T}@T{
+connection to draw device
+T}
+T{
+.I font
+
+T}@T{
+character images for Unicode text
+T}
+T{
+.I image
+
+T}@T{
+pictures and drawing
+T}
+T{
+.I point
+
+T}@T{
+coordinate position
+T}
+T{
+.I pointer
+
+T}@T{
+state of a pointer device such as a mouse
+T}
+T{
+.I rectangle
+
+T}@T{
+rectangular portion of the plane
+T}
+T{
+.I screen
+
+T}@T{
+type to define the abstract data structures for the windows on a display, or subwindows within a window
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:=  load Draw Draw\->PATH;
+.EE
+.PP
+.SH DESCRIPTION
+Inferno\[aq]s Draw module provides basic graphics facilities, defining drawing contexts, images, character fonts, and rectangular geometric operations.
+See 
+.I Limbo Prefab Modules
+and 
+.I tk
+for higher level operations, such as windows and menu handling.
+.PP
+.SS PIXELS
+Images are defined on a rectangular region of an integer plane with a picture element, or 
+.I pixel
+, at each grid point.
+Pixel values are integers with 0, 1, 2, 4, or 8 bits per pixel, and all pixels in a given image have the same size, or 
+.I depth
+.
+Some operations allow images with different depths to be combined, for example to do masking.
+.PP
+When an image is displayed, the value of each pixel determines the color of the display.
+For color displays, Inferno uses a fixed color map for each display depth (see 
+.I rgbv
+) and the application is responsible for mapping its desired colors to the values available.
+Facilities exist to convert from (red, green, blue) triplets to pixel values.
+.PP
+.SS TERMINOLOGY
+.PP
+.TS
+tab(@);
+l l.
+T{
+Point
+T}@T{
+The graphics plane is defined on an integer grid, with each (x, y) coordinate identifying the upper left corner of the corresponding pixel.
+The plane\[aq]s origin, (0, 0), resides at the upper left corner of the screen; x and y coordinates increase to the right and down.
+The abstract data type Point defines a coordinate position.
+T}
+T{
+Rect
+T}@T{
+The type Rect defines a rectangular region of the plane.
+It comprises two Points, min and max, and specifies the region defined by pixels with coordinates greater than or equal to min and strictly less than max, in both x and y.
+This 
+.I half\-open
+property allows rectangles that share an edge to have equal coordinates on the edge.
+T}
+T{
+Display
+T}@T{
+The type Display represents a physical display, corresponding to a single connection to a 
+.I draw
+device.
+Besides the image of the display itself, the Display type also stores references to off\-screen images, fonts, and so on.
+The contents of such images are stored in the display device, not in the client of the display, which affects how they are allocated and used.
+See 
+.I image
+.
+T}
+T{
+Screen
+T}@T{
+The Screen type is used to manage a set of windows on an image, typically but not necessarily that of a display.
+Screens and hence windows may be built recursively upon windows for subwindowing or even on off\-screen images.
+T}
+T{
+Image
+T}@T{
+The Image type provides basic operations on groups of pixels.
+Through a few simple operations, most importantly the draw image combination operator (see 
+.I image
+), the Image type provides the building blocks for Display, Screen, and Font.
+T}
+T{
+Font
+T}@T{
+A Font defines which character image to draw for each character code value.
+Although all character drawing operations ultimately use the draw primitive on the underlying images, Fonts provide convenient and efficient management of display text.
+Inferno uses the 16\-bit Unicode character encoding, so Fonts are managed hierarchically to control their size and to make common subsets such as ASCII or Greek efficient in practice.
+See 
+.I font
+, 
+.I utf
+, and 
+.I font
+.
+T}
+T{
+Context
+T}@T{
+A Context provides an interface to the system graphics and interactive devices.
+The system creates this context when it starts an application.
+T}
+T{
+Pointer
+T}@T{
+The Pointer type conveys information for pointing devices, such as mice or trackballs.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS MORE ABOUT IMAGES
+An image occupies a rectangle, Image.r, of the graphics plane.
+A second rectangle, Image.clipr, defines a clipping region for the image.
+Typically, the clipping rectangle is the same as the basic image, but they may differ.
+For example, the clipping region may be made smaller and centered on the basic image to define a protected border.
+.PP
+The pixel depth of an Image is stored as a logarithm called Image.ldepth; pixels with 1, 2, 4, and 8 bits correspond to ldepth values 0, 1, 2, and 3.
+In future, other image depths may be supported.
+.PP
+An image may be marked for replication: when set, the boolean Image.repl causes the image to behave as if replicated across the entire integer plane, thus tiling the destination graphics area with copies of the source image.
+When replication is turned on, the clipping rectangle limits the extent of the replication and may even usefully be disjoint from Image.r.
+See 
+.I image
+for examples.
+.PP
+The Image member functions provide facilities for drawing text and geometric objects, manipulating windows, and so on.
+.PP
+Objects of type Display, Font, Screen, and Image must be allocated by the member functions; if such objects are created with a regular Limbo definition, they will not behave properly and may generate run\-time errors.
+.PP
+There are no \[aq]free\[aq] routines for graphics objects.
+Instead Limbo\[aq]s garbage collection frees them automatically.
+In Limbo, one can eliminate references by assigning nil to reference variables, returning from functions whose local variables hold references, etc.
+.PP
+.SH RETURN VALUES
+Most drawing operations operate asynchronously, so they have no error return.
+Functions that allocate objects return nil for failure; in such cases the system error string may be interrogated (such as by the %r print format) for more information.
+.PP
+.SH SEE ALSO
+.I ir
+, 
+.I Limbo Prefab Modules
+, 
+.I tk
+, 
+.I font
+, and 
+.I image

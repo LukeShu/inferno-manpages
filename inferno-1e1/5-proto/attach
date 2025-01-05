@@ -1,0 +1,57 @@
+.TH ATTACH 5 "" "" "Inferno Reference "
+.PP
+.SH NAME
+attach and nop \- messages to initiate activity
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+Tnop    tag [2]
+Rnop    tag [2]
+Tattach tag [2] fid [2] uid [28] aname [28]
+Rattach tag [2] fid [2] qid [8]
+.EE
+.PP
+.SH DESCRIPTION
+.SS THE NOP TRANSACTION
+The nop request does nothing overt but may be used to synchronize the channel initially.
+.PP
+The tag should be notag (value 16rFFFF) for a nop message.
+.PP
+.SS THE ATTACH TRANSACTION
+The attach message serves as a fresh introduction from a user on the client machine to a server.
+The message identifies the user 
+.I (uid)
+and may select the file tree to access (
+.I aname
+).
+.PP
+As a result of the attach transaction, the client will have a connection to the root directory of the desired file tree, represented by 
+.I fid
+.
+An error is returned if 
+.I fid
+is already in use.
+The server\[aq]s idea of the root of the file tree is represented by the returned 
+.I qid
+.
+.PP
+.SH ENTRY POINTS
+An attach transaction will be generated for kernel devices (see 
+.I Inferno Devices
+) when a system call evaluates a file name beginning with #.
+A mount call (see 
+.I bind
+) generates an attach message to the remote file server.
+When the kernel boots, an attach is made to the root device, 
+.I root
+, and then an 
+.I attach
+is made to the requested file server machine.
+.PP
+.SH SEE ALSO
+.I bind
+, 
+.I Limbo Modules \- Miscellaneous
+, and 
+.I root

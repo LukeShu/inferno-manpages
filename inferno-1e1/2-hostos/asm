@@ -1,0 +1,42 @@
+.TH ASM 2 "" "" "Inferno Reference "
+.PP
+.SH NAME
+asm \- Dis assembler
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+asm [\-l] file
+.EE
+.PP
+.SH DESCRIPTION
+The asm command reads one Dis assembly language 
+.I file
+and translates it into instructions for the Dis virtual machine.
+The output is written to a file whose name is created by taking the last element of the input file, stripping any extension, and appending .dis.
+For example, the output file for abc would be abc.dis; the output file for dir/def.s, would be def.dis.
+.PP
+.SH OPTION
+The assembler has one option:
+.PP
+.TS
+tab(@);
+l l.
+T{
+-l
+T}@T{
+Generate a listing, showing the generated object code.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I emu
+and 
+.I limbo

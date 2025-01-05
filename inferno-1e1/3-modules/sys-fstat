@@ -1,0 +1,162 @@
+.TH SYS-FSTAT 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+fstat, fwstat, stat, wstat \- get and put file status
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+fstat:  fn(fd: ref FD)          : (int, Dir);
+fwstat: fn(fd: ref FD;  d: Dir) : int;
+stat:   fn(name: string)        : (int, Dir);
+wstat:  fn(name: string, d: Dir): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS STAT (NAME, D) AND FSTAT (FD, D)
+Given a file\[aq]s 
+.I name
+, or an open file descriptor 
+.I fd
+, these routines return information about the file into the Dir member of the returned tuple.
+The int member will be zero for success and \-1 for failure.
+.PP
+.SS WSTAT (NAME, D) AND FWSTAT (FD, D)
+The wstat and fwstat functions apply the file attributes of 
+.I d
+to the file.
+Only certain attributes can be modified.
+See section the section titled 
+.I Modifying File Attributes
+below.
+Both functions return zero for success and \-1 for failure.
+.PP
+.SS THE DIR ABSTRACT DATA TYPE
+File status is managed via the Dir abstract data type:
+.IP
+.EX
+Qid: adt 
+{   
+    path:  int;   
+    vers:  int; 
+}; 
+
+Dir: adt 
+{   
+    name:  string;   
+    uid:  string;   
+    gid:  string;   
+    qid:  Qid;   
+    mode:  int;   
+    atime: int;   
+    mtime: int;   
+    length: int;   
+    dtype: int;   
+    dev:  int; 
+};
+.EE
+.PP
+.SS FILE MODE BITS
+.PP
+.TS
+tab(@);
+l l.
+T{
+16r80000000
+T}@T{
+Directory.
+The Sys module defines this as Sys\->CHDIR.
+T}
+T{
+8r400
+T}@T{
+Read permission by owner.
+T}
+T{
+8r200
+T}@T{
+Write permission by owner.
+T}
+T{
+8r100
+T}@T{
+Execute permission (search on directory) by owner
+T}
+T{
+8r070
+T}@T{
+Read, write, execute (search) by group.
+T}
+T{
+8r007
+T}@T{
+Read, write, execute (search) by others.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS MODIFYING FILE ATTRIBUTES
+Only some of the fields may be changed by wstat calls.
+.PP
+.TS
+tab(@);
+l l.
+T{
+name
+T}@T{
+The name can be changed by anyone with write permission in the parent directory.
+T}
+T{
+mode and mtime
+T}@T{
+The mode and mtime can be changed by the owner or the group leader of the file\[aq]s current group.
+T}
+T{
+gid
+T}@T{
+The gid can be changed by the owner.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+, 
+.I dirread
+, 
+.I open
+, and 
+.I stat
+
+.PP
+.SH NOTES
+The following behaviors apply when Inferno is hosted on Windows\-based systems.
+.PP
+.SS FAT FILE SYSTEM (WIN95 AND WINDOWS\-NT)
+The values of uid and gid are Everyone.
+.PP
+Files and directories always have read and execute permission.
+They cannot be changed.
+Files without write permission cannot be removed.
+.PP
+.SS NTFS FILE SYSTEM (WINDOWS\-NT)
+Permissions for read, write, and execute operate as described above.
+.PP
+The uid attribute is supported.
+.PP
+The gid attribute is interpreted always to mean the special group InfernoGroup, even if the underlying Windows system maintains other groups for the file.
+Special group Everyone is used to represent \[aq]other\[aq] for permissions.

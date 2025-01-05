@@ -1,0 +1,82 @@
+.TH LIB-PIPE 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+pipe: fds, files \- get read/write file pair for a pipe
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]lib.m\[dq];
+pipe:= load Pipe Pipe\->PATH;
+fds:    fn(): (ref Sys\->FD, ref Sys\->FD);
+files:  fn(): (string, string);
+.EE
+.PP
+.SH DESCRIPTION
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+fds ( )
+T}@T{
+The fds opens a pair of files.
+One file is the read end of a simulation of a pipe for thread\-to\-thread communication and the other is the write end.
+The returns a tuple with the read and write file descriptors, respectively.
+.PP
+In case the pipe cannot be created, fds returns (nil, nil).
+T}
+T{
+files ( )
+T}@T{
+The files function returns a pair of file names to be opened.
+The first name is for the read end of a pipe and the second name is for the write end of a pipe.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+In case the pipe cannot be created, files returns (\[dq]\[dq], \[dq]\[dq]).
+.PP
+.SH NOTES
+The pipes are implemented via by creating channels and associated files (uniquely named) in the /chan directory.
+.PP
+.SH FILES
+/chan
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I file2chan
+
+T}@T{
+Creating file/channel associations
+T}
+T{
+.I open
+
+T}@T{
+Converting file name to ref FD
+T}
+T{
+.I read
+
+T}@T{
+Accessing a file via ref FD
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

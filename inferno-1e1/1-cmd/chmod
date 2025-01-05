@@ -1,0 +1,95 @@
+.TH CHMOD 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+chmod \- change file mode (permissions)
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+chmod mode file... 
+chmod [augo][+\-=][rwx]  file...
+.EE
+.PP
+.SH DESCRIPTION
+The mode of each named file is changed according to 
+.I mode,
+which may be an octal number or a symbolic change to the existing mode.
+A 
+.I mode
+is an octal number constructed from the OR of the following modes.
+.PP
+.TS
+tab(@);
+l l.
+T{
+0400
+T}@T{
+read by owner
+T}
+T{
+0200
+T}@T{
+write by owner
+T}
+T{
+0100
+T}@T{
+execute (search in directory) by owner
+T}
+T{
+0070
+T}@T{
+read, write, execute (search) by group
+T}
+T{
+0007
+T}@T{
+read, write, execute (search) by others
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+A symbolic 
+.I mode
+has the form:
+.PP
+[who] op permission
+.PP
+The 
+.I who
+part is a combination of the letters u (for user\[aq]s permissions), g (group) and o (other).
+The letter a stands for ugo.
+If 
+.I who
+is omitted, the default is a.
+.PP
+
+.I Op
+can be + to add 
+.I permission
+to the file\[aq]s mode, \- to take away 
+.I permission
+, and = to assign 
+.I permission
+absolutely (all other bits will be reset).
+.PP
+
+.I Permission
+is any combination of the letters r (read), w (write), and x (execute).
+.PP
+.SH SEE ALSO
+.I ls
+and 
+.I stat
+
+.PP
+.SH NOTES
+See 
+.I stat
+for interpretation of permissions on Windows\-hosted systems.

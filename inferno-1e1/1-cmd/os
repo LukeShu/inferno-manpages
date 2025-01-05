@@ -1,0 +1,22 @@
+.TH OS 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+os \- interface OS commands (non\-native Inferno only)
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind \-ia \[aq]#C\[aq] /
+os cmd... 
+.EE
+.PP
+.SH DESCRIPTION
+On hosted implementations of Inferno, the os command allows the user to issue commands to the underlying operating system.
+.PP
+Use of the os requires the previous binding of #C, the command device.
+.PP
+.SH FILES
+/cmd/clone
+.PP
+.SH SEE ALSO
+.I cmd

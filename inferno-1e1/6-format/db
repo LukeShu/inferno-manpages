@@ -1,0 +1,61 @@
+.TH DB 6 "" "" "Inferno Reference "
+.PP
+.SH NAME
+db \- connection service database
+.PP
+.SH SYNOPSIS
+/services/cs/db
+.PP
+.SH DESCRIPTION
+The connection service database file is read by the connection server daemon, cs, when it receives a request with a machine name of the form $
+.I service.
+
+.PP
+The file consists of a two column list (separated by tabs and/or blanks) of the form
+.PP
+$
+.I service
+.I hostname
+
+.PP
+Once the hostname for a given service is identified, the connection server converts the hostname into an internet address.
+.PP
+Blank lines and comments (lines beginning with #) are ignored.
+.PP
+A running connection server daemon notes the modification time of the database file before each use.
+If the file has changed, the daemon uses the latest definitions.
+.PP
+.SH EXAMPLE
+.IP
+.EX
+$MPEG          infernocpu
+$SIGNER         dante
+$FilesERVER         dante
+$MAILSERVER         dante
+.EE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I cs
+
+T}@T{
+Starting the connection server daemon
+T}
+T{
+.I cs
+
+T}@T{
+Description of connection server daemon
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

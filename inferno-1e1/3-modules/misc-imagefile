@@ -1,0 +1,79 @@
+.TH MISC-IMAGEFILE 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+imagefile \- processing external image file formats
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]imagefile.m\[dq];
+gifreader := load RImagefile RImagefile\->READGIFPATH;
+jpgreader := load RImagefile RImagefile\->READJPGPATH;
+imageremap:= load Imageremap Imageremap\->PATH;
+Rawimage: adt
+{
+  r        : Draw\->Rect;
+  cmap     : array of byte;
+  nchans   : int;
+  chans    : array of array of byte;
+  chandesc : int;
+  init     : fn(bufio: Bufio);
+  read     : fn(fd: ref Bufio\->Iobuf) : (ref Rawimage, string);
+};
+remap      : fn(i: ref RImagefile\->Rawimage,
+                d: ref Draw\->Display,
+                  errdiff: int)          : (ref Draw\->Image, string);
+.EE
+.PP
+.SH DESCRIPTION
+The Rawimage adt of module RImagefile defines an internal representation and routines for reading images such as GIF and JPEG files.
+To read a set of files of a given format, load the appropriate module, pass its init function an instance of a Bufio module, and pass read an Bufio\->Iobuf for each file.
+The read function returns a tuple: a ref Rawimage that holds the image and an error string.
+If the Rawimage is nil, the error string will report the reason.
+Files (particularly GIF files) are often incorrectly encoded but yield usable pictures, so even if a Rawimage is returned, the error string may still report problems.
+.PP
+The Rawimage is always defined as one or more bytes per pixel, with nchans channels of data stored in the array chans.
+The chandesc field, described below, specifies the contents of chans.
+The rectangle r describes the shape of the picture.
+.PP
+The Rawimage type can be converted to a regular Image (see 
+.I image
+) by calling module Imageremap \[aq]s function remap.
+The remap function is passed the Rawimage, a Display on which to create the image, and a flag that specifies whether to apply Floyd\-Steinberg error diffusion code to the result, for smoother rendering of colors at the cost of some noise in the image.
+.PP
+How to remap is defined by the RImagefile itself: the field chandesc specifies the type of the various chans of data:
+.PP
+The file readers set chandesc as appropriate for the format of the file.
+.PP
+.TS
+tab(@);
+l l.
+T{
+CRGB
+T}@T{
+3\-color RGB image with no color map;
+T}
+T{
+CY
+T}@T{
+monotone (luminance\-only, grey\-scale) image with no color map;
+T}
+T{
+CRGB1
+T}@T{
+single\-channel image with RGB color map in cmap.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+These functions are split into separate modules to give applications control over the memory they need to process images.
+.PP
+.SH NOTES
+The JPEG reader handles only the Baseline sequential format as defined by the JFIF 1.02 file exchange format.
+Functions to write these formats are unimplemented.

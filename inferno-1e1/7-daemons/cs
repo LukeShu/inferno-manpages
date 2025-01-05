@@ -1,0 +1,199 @@
+.TH CS 7 "" "" "Inferno Reference "
+.PP
+.SH NAME
+cs \- connection server daemon
+.PP
+.SH SYNOPSIS
+cs
+.PP
+.SH DESCRIPTION
+The connection server daemon, cs, is started by the cs command.
+The daemon monitors requests for interpretation of host names written by application programs to /net/cs, the interface file.
+After writing the request, the application reads that same file to obtain the response from the cs daemon.
+.PP
+The current implementation uses the hosting system\[aq]s facilities for name\-to\-address and other conversions.
+.PP
+.SS REQUEST FORMAT
+Requests must be strings in the form:
+.IP
+.EX
+   net!machine!service
+.EE
+.PP
+Each component of the request is required.
+.PP
+.TS
+tab(@);
+lw(23.1n) lw(23.1n) lw(23.1n).
+T{
+net
+T}@T{
+The 
+.I net
+component defines the network to be used (e.g., \[dq]tcp\[dq], \[dq]udp\[dq]).
+.PP
+The special value \[dq]net\[dq] can be supplied to request the most expedient network.
+Currently, \[dq]net\[dq] is synonymous with \[dq]tcp\[dq].
+T}@T{
+T}
+T{
+machine
+T}@T{
+The machine component can be any of the following
+T}@T{
+T}
+T{
+T}@T{
+numeric internet address
+T}@T{
+Used verbatim.
+T}
+T{
+T}@T{
+
+.I hostname
+
+T}@T{
+Converted to network address.
+T}
+T{
+T}@T{
+symbolic server name of the form $
+.I server
+
+T}@T{
+Converted to hostname by reference to the connection server database file /services/cs/db.
+.PP
+The hostname returned is then converted to an network address.
+T}
+T{
+T}@T{
+*
+T}@T{
+No machine name is converted.
+Other conversions (e.g., \[dq]net\[dq] and named services) are still done.
+T}
+T{
+
+.I service
+
+T}@T{
+A service name or port number.
+T}@T{
+T}
+T{
+T}@T{
+numeric port value
+T}@T{
+Used verbatim.
+T}
+T{
+T}@T{
+Service name
+T}@T{
+Converted to a port number.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS RESPONSE FORMAT
+The application can obtain the converted address by reading the /net/cs interface file.
+The response will consist of two fields of the form:
+.IP
+.EX
+   /net/net/clone         ipaddr!portno
+.EE
+.PP
+The first field is the name of the file to open to reserve a connection on Inferno\[aq]s IP device.
+The second field can be used to construct a \[dq]connect\[dq] message for the ctl file returned by the open of clone.
+.PP
+.SH NOTE
+The service name to port number conversion is controlled by a 
+.I <services
+> file.
+The location of that file is platform dependent:
+.PP
+.TS
+tab(@);
+l l.
+T{
+/etc/services
+T}@T{
+Unix\-hosted systems.
+T}
+T{
+Windows\[rs]services
+T}@T{
+Windows\-hosted systems
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH CAVEATS
+Applications that use a single file descriptor for both reading and writing should take care to reset the file offset to 0 between writing the request and reading the response.
+Otherwise, a truncated response will be read.
+Applications using buffered I/O should flush after resetting the offset.
+.PP
+Sometimes a hostname will resolve into several network addresses.
+The connection server provides all.
+Each read of /net/cs delivers one.
+The connection server caches this information until read; consequently, the application is obliged to read /net/cs in a loop until the end\-of\-file condition is reached.
+That means that all available addresses have been obtained and the daemon\[aq]s cache (for this request) is empty.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I cs
+
+T}@T{
+Starting the connection server daemon.
+T}
+T{
+.I seek
+
+T}@T{
+Managing file offset.
+T}
+T{
+.I srv
+
+T}@T{
+Interface to host\[aq]s functions for name\-to\-address and service\-to\-portnumber conversions
+T}
+T{
+.I ip
+
+T}@T{
+See description of clone file, ctl file, and \[dq]connect 
+.I iaddr
+\[dq] message for the IP device.
+T}
+T{
+.I Format Specifications
+
+T}@T{
+Description of connection server data base.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

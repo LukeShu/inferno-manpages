@@ -1,0 +1,26 @@
+.TH DATE 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+date \- print the date
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+date
+.EE
+.PP
+.SH DESCRIPTION
+Prints to standard output the date, in the format
+.PP
+Tue Aug 16 17:03:52 CDT 1977 Current time is obtained from reading /dev/time.
+The conversion from Greenwich Mean Time to local time depends on the contents of /locale/timezone.
+.PP
+.SH FILES
+/locale/timezone
+.PP
+/dev/time
+.PP
+.SH SEE ALSO
+.I daytime
+and 
+.I time

@@ -6,4 +6,5 @@
 all:
 	./build-aux/download
 	$(MAKE) -f build-aux/1e0/Makefile
+	$(MAKE) -f build-aux/1e1/Makefile
 .PHONY: all

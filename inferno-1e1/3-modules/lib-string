@@ -1,0 +1,203 @@
+.TH LIB-STRING 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+string: append, drop, in, prefix, splitl, splitr, splitstrl, splitstrr, take, toint, tolower, toupper \- string operations
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]lib.m\[dq];
+str:= load String String\->PATH;
+append:    fn(s: string, l: list of string): list of string;
+drop:      fn(s, cl: string)               : string;
+in:        fn(c: int, cl: string)          : int;
+prefix:    fn(pre, s: string)              : int;
+splitl:    fn(s, cl: string)               : (string, string);
+splitr:    fn(s, cl: string)               : (string, string);
+splitstrl: fn(s,  t: string)               : (string, string);
+splitstrr: fn(s,  t: string)               : (string, string);
+take:      fn(s, cl: string)               : string;
+toint:     fn(s: string, base: int)        : (int, string);
+tolower:   fn(s: string)                   : string;
+toupper:   fn(s: string)                   : string;
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I cl
+argument to some of these functions is a character class in which a minus sign (\-) between any two characters indicates a range and a circumflex (\[ha]) in the first position means 
+.I not
+in the class.
+Examples of strings that represent character classes are \[dq]a\-zA\-Z\[dq] and \[dq]\[ha]acg\-mr\[dq].
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+append (
+.I s
+, 
+.I l
+)
+T}@T{
+Appends string 
+.I s
+to the end of string list 
+.I l
+.
+T}
+T{
+drop (
+.I s
+, 
+.I cl
+)
+T}@T{
+Removes the maximal prefix of string 
+.I s
+that is in class 
+.I cl
+.
+T}
+T{
+in (
+.I c
+, 
+.I cl
+)
+.PP
+T}@T{
+Returns a 1 if 
+.I c
+is in class 
+.I cl
+and a 0 if it is not.
+.PP
+T}
+T{
+prefix (
+.I pre
+, 
+.I s
+)
+T}@T{
+Returns a 1 if string 
+.I pre
+is a prefix of string 
+.I s
+and a 0 if it is not.
+T}
+T{
+splitl (
+.I s
+, 
+.I cl
+)
+T}@T{
+Splits string 
+.I s
+just before the first character in class 
+.I cl
+.
+T}
+T{
+splitr (
+.I s
+, 
+.I cl
+)
+T}@T{
+Splits string 
+.I s
+just after the last character in class 
+.I cl
+.
+T}
+T{
+splitstrl (
+.I s
+, 
+.I t
+)
+T}@T{
+Splits string 
+.I s
+just after the initial segment of string 
+.I s
+which consists entirely of string 
+.I t
+.
+T}
+T{
+splitstrr (
+.I s
+, 
+.I t
+)
+T}@T{
+Splits string 
+.I s
+just before the last segment of string 
+.I s
+which consists entirely of string 
+.I t
+.
+T}
+T{
+take (
+.I s
+, 
+.I cl
+)
+T}@T{
+Returns the maximal prefix of string 
+.I s
+that is in class 
+.I cl
+.
+T}
+T{
+toint (
+.I s
+, 
+.I base
+)
+T}@T{
+Returns as an integer the value represented by the string 
+.I s
+.
+The string is scanned up to the first character inconsistent with 
+.I base
+.
+The first inconsistent character marks the beginning of the returned string.
+Leading white\-space characters are ignored.
+The 
+.I base
+can be any integer in the range 0 to 36, inclusive.
+T}
+T{
+tolower (
+.I s
+)
+T}@T{
+Converts all upper case letters in the string 
+.I s
+to lower case letters.
+T}
+T{
+toupper (
+.I s
+)
+T}@T{
+Converts all lower case letters in the string 
+.I s
+to upper case letters.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

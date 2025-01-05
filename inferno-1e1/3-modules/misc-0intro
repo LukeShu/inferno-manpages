@@ -1,0 +1,86 @@
+.TH MISC-0INTRO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Limbo Modules \- Miscellaneous
+.PP
+The remaining Limbo modules are as follows:
+.PP
+.SH MISCELLANEOUS MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I bufio
+
+T}@T{
+buffered input/output module
+T}
+T{
+.I devpointer
+
+T}@T{
+I/O interface for the pointer device
+T}
+T{
+.I imagefile
+
+T}@T{
+processing external image file formats
+T}
+T{
+.I ir
+
+T}@T{
+infrared remote control
+T}
+T{
+.I login
+
+T}@T{
+introduction to the Login module
+T}
+T{
+.I mpeg
+
+T}@T{
+interface to the mpeg device driver
+T}
+T{
+.I regex
+
+T}@T{
+regular expression recognizer
+T}
+T{
+.I sh
+
+T}@T{
+command interface
+T}
+T{
+.I srv
+
+T}@T{
+miscellaneous services from the host operating system
+T}
+T{
+.I volume
+
+T}@T{
+volume control for an infrared interface
+T}
+T{
+.I wmlib
+
+T}@T{
+window manager toolkit
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,33 @@
+.TH CAT 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+cat \- concatenate files
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+cat [\-] [file...]
+.EE
+.PP
+.SH DESCRIPTION
+The cat command reads each 
+.I file
+in sequence and writes it on the standard output.
+Thus
+.PP
+cat file
+.PP
+prints a file and
+.PP
+cat file1 file2 >file3
+.PP
+concatenates the first two files and places the result on the third.
+If no 
+.I file
+is given, or if minus (\-) is given as an argument cat reads from the standard input.
+.PP
+.SH CAVEAT
+Beware of cat a b >a and cat a b >b which destroy input files before reading them.
+.PP
+.SH SEE ALSO
+.I read

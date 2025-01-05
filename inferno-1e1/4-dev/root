@@ -1,0 +1,25 @@
+.TH ROOT 4 "" "" "Inferno Reference "
+.PP
+.SH NAME
+root \- the root file system
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+/
+/chan
+/dev
+/net
+/nvfs
+/prog
+/boot
+.EE
+.PP
+.SH DESCRIPTION
+Since the syntax #/ is illegal, this device can only be accessed directly by the kernel.
+.PP
+This device is set up by the kernel to be the root of the name space.
+The names in the one\-level tree are mostly just place\-holders, to allow a place for binding other files.
+The exception is /boot (not present in the emulation environment) which provides an executable Dis binary when read.
+Native kernels load /boot when initializing the system.
+Other files needed for bootstrap may also reside in this device.

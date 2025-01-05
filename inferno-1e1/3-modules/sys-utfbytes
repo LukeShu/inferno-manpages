@@ -1,0 +1,31 @@
+.TH SYS-UTFBYTES 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+utfbytes \- compute the Unicode length of a UTF byte sequence
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+utfbytes: fn(buf: array of byte, n: int): int;
+.EE
+.PP
+.SH DESCRIPTION
+The utfbytes function examines the 
+.I n
+\-byte UTF sequence in starting at 
+.I buf
+[0] and returns the length of the subsequence as the number of bytes, if any, that represent a single Unicode character.
+The end of the array may contain an incomplete UTF sequence without affecting the return value.
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+, 
+.I byte2char
+, and 
+.I utf
+
+.PP
+.SH CAVEAT
+A call to utfbytes can generate a bounds check error if the length argument is larger than the array itself.

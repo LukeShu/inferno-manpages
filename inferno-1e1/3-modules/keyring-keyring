@@ -1,0 +1,78 @@
+.TH KEYRING-KEYRING 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Keyring: sha, md5, sign, verify \- cryptographic digests and digital signatures
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]keyring.m\[dq];
+kr:= load Keyring Keyring\->PATH;
+sha:  fn(buf : array of byte,
+          nu : int,
+       digest: array of byte,
+        state: ref DigestState): ref DigestState;
+md5:  fn(buf : array of byte,
+          n  : int,
+       digest: array of byte,
+        state: ref DigestState): ref DigestState;
+sign:  fn(sk : ref SK,
+         exp : int,
+        state: ref DigestState,
+          ha : string)    : ref Certificate;
+verify:fn(pk : ref PK,
+         cert: ref Certificate,
+        state: ref DigestState): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS SHA (BUF, NU, DIGEST, STATE) AND MD5 (BUF, NU, DIGEST, STATE)
+Functions sha and md5 are cryptographically secure hash functions that produce output called a message digest.
+The interface allows sha and md5 functions to be called iteratively to perform a single digest on multiple buffers full of data.
+The 
+.I state
+is chained from one call to another in the DigestState adt.
+The first call returns a newly allocated DigestState which is then used in subsequent calls.
+When digest is non\-nil, the hash is completed and copied into the 
+.I digest
+byte array.
+.PP
+For example a program to read a file and hash it might contain the following inner loop:
+.IP
+.EX
+n  := sys\->read(fd, buf, len buf);   
+state:= kr\->sha(buf, n, nil, nil);   
+while((n = sys\->read(fd, buf, len buf)) > 0)
+      kr\->sha(buf, n, nil, state);   
+digest:= array[kr\->SHAdlen] of byte;   
+kr\->sha(buf, 0, digest, state); 
+.EE
+.PP
+.PP
+The sha function returns a 20\-byte hash (kr\->SHAdlen), md5 a 16\-byte one (kr\->MD5dlen).
+.PP
+.SS SIGN (SK, EXP, STATE, HA)
+The sign function is used to create a digital signature of a digest from the concatenation of a message, the name of the signer, and an expiration time.
+The 
+.I state
+parameter is the digest state after running sha or md5 over the message.
+The 
+.I ha
+parameter is a string defining the hash algorithm to use; it can be \[dq]sha\[dq] or \[dq]md5\[dq].
+The sign function extends the digest to cover signer\[aq]s name (taken from the private key, 
+.I sk
+) and the expiration time.
+It then returns a certificate containing the digital signature of the digest, signer name, hash algorithm and signature algorithm.
+If any parameters are invalid, sign returns the nil value.
+The signature algorithm is implied by the type of the private key.
+.PP
+.SS VERIFY (PK, CERT, STATE)
+The verify function uses a public key to verify a certificate.
+Once again, 
+.I state
+is the digest state after running sha or md5 over the message.
+.PP
+.SH SEE ALSO
+B. Schneier, 
+.I Applied Cryptography
+, 1996, J. Wiley & Sons, Inc.

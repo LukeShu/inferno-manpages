@@ -1,0 +1,50 @@
+.TH KILL 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+kill \- terminate process(es)
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+kill [\-g] pid
+kill [\-g] module
+.EE
+.PP
+.SH DESCRIPTION
+The kill command terminates the process (numeric argument) or module (non\-numeric argument) by sending a \[dq]kill\[dq] string to the corresponding ctl file.
+Processes running a named module are identified by their 
+.I status
+file.
+.PP
+.TS
+tab(@);
+l l.
+T{
+-g
+T}@T{
+This option specifies that the message be \[dq]killgrp\[dq], requesting that all processes in the process group (see 
+.I pctl
+) be terminated.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH FILES
+/prog/
+.I pid
+/ctl
+.PP
+/prog/
+.I pid
+/status
+.PP
+.SH SEE ALSO
+.I ps
+and 
+.I prog

@@ -1,0 +1,70 @@
+.TH MISC-MPEG 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+mpeg \- interface to the mpeg device driver
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq]; import Display, Image, Rect: Draw;
+include \[dq]mpeg.m\[dq];
+mpeg:= load Mpeg Mpeg\->PATH;
+Mpeg: module
+{
+  PATH:   con \[dq]/dis/lib/mpeg.dis\[dq];
+  play:     fn(d:       ref Display,
+               w:       ref Image,
+               dopaint: int,
+               r:       Rect,
+               file:    string,
+               notify:  chan of string)   : string;
+  ctl:      fn(msg: string)               : int;
+  keycolor: fn(d: ref Display)            : ref Image;
+};
+.EE
+.PP
+.SH DESCRIPTION
+This module has a primitive interface to the mpeg device driver.
+.PP
+.SS PLAY (D, W, DOPAINT, R, FILE, NOTIFY)
+The play function plays the specified MPEG file (
+.I file
+) in rectangle 
+.I r
+within window 
+.I w
+on display 
+.I d
+.
+The 
+.I dopaint
+flag specifies whether, before playing the movie, to paint the rectangle with the chroma key color of the device.
+.PP
+The 
+.I notify
+argument is a channel upon which to receive errors and status.
+If 
+.I notify
+is nil, 
+.I play
+runs synchronously, returning the empty string (\[dq]\[dq]) when the movie completes or a description of any error.
+If 
+.I notify
+is not nil, 
+.I play
+spawns an asynchronous process to play the movie and returns the empty string immediately; the process will return status on the 
+.I notify
+channel when the movie completes.
+.PP
+.SS CTL (MSG)
+The ctl function writes 
+.I msg
+, the string given as an argument, to the MPEG control interface /dev/mpegctl.
+.PP
+.SS KEYCOLOR(D)
+This function uses the Display specified by 
+.I d
+to create an Image an single\-pixel, replicated off screen Image of color Chroma (16r05).
+.PP
+.SH FILES
+/dev/mpeg /dev/mpegctl

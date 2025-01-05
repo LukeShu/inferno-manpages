@@ -1,0 +1,27 @@
+.TH NSBUILD 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+nsbuild \- build Inferno name space
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+nsbuild file
+.EE
+.PP
+.SH DESCRIPTION
+The nsbuild command builds a file name space for the calling process.
+It reads 
+.I file
+and interprets the name space commands found in that file.
+.PP
+The commands executed by nsbuild are described in 
+.I newns
+.
+.PP
+.SH SEE ALSO
+.I cd
+, 
+.I bind
+and 
+.I newns

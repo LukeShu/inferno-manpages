@@ -1,0 +1,52 @@
+.TH NETSTAT 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+netstat \- rename/move files
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind \[aq]#I\[aq] /net
+netstat
+.EE
+.PP
+.SH DESCRIPTION
+The netstat command prints information about TCP and UDP network connections.
+The information is obtained from the status file of each entry under the corresponding network directories, /dev/net/tcp and /dev/net/udp.
+The 
+.I clone
+files are omitted from this report.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+T}@T{
+/net/tcp/*
+T}
+T{
+T}@T{
+/net/udp/*
+T}
+T{
+T}@T{
+/prog/
+.I pid
+/status
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH CAVEAT
+This command requires a populated /net directory; therefore, there must be a prior binding of the system\[aq]s #I driver to that directory.
+.PP
+.SH SEE ALSO
+.I ip

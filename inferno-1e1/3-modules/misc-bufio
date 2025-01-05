@@ -1,0 +1,126 @@
+.TH MISC-BUFIO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+bufio \- buffered input/output module
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]bufio.m\[dq];
+Iobuf: import Bufio;
+bufio:= load Bufio Bufio\->PATH;
+OREAD:  con Sys\->OREAD;
+OWRITE: con Sys\->OWRITE;
+ORDWR:  con Sys\->ORDWR;
+EOF:    con \-1;
+ERROR:  con \-2;
+Iobuf: adt {
+    seek:  fn(b: self ref Iobuf, n, where: int)           : int;
+    read:  fn(b: self ref Iobuf, a: array of byte, n: int): int;
+    write: fn(b: self ref Iobuf, a: array of byte, n: int): int;
+    getb:  fn(b: self ref Iobuf)                          : int;
+    getc:  fn(b: self ref Iobuf)                          : int;
+    gets:  fn(b: self ref Iobuf, sep: int)             : string;
+    gett:  fn(b: self ref Iobuf, sep: string)          : string;
+    putb:  fn(b: self ref Iobuf, b: byte)                 : int;
+    putc:  fn(b: self ref Iobuf, c: int)                  : int;
+    puts:  fn(b: self ref Iobuf, s: string)               : int;
+    flush: fn(b: self ref Iobuf): int;
+    close: fn(b: self ref Iobuf);
+};
+open:   fn(name: string,  mode: int)                : ref Iobuf;
+create: fn(name: string,  mode, perm: int)          : ref Iobuf;
+fopen:  fn(fd: ref Sys\->FD, mode: int)              : ref Iobuf;
+flush:  fn();
+.EE
+.PP
+.SH DESCRIPTION
+The Bufio module provides an interface for buffered I/O.
+A buffer is an adt which is created with bufio\->open or bufio\->fopen.
+.PP
+.SS OPEN (FILENAME, MODE)
+The open function takes two parameters, a 
+.I filename
+and a 
+.I mode
+.
+The 
+.I mode
+must be one of OREAD, OWRITE, or ORDWR (defined to match the corresponding values in the Sys module).
+Both open and fopen return a ref Iobuf to be used in subsequent calls.
+.PP
+.SS FOPEN (FD, MODE)
+Buffered I/O on an already open file is made possible using fopen, which takes a file descriptor as its first argument and an open mode as its second argument.
+The mode of the file descriptor must be compatible with the mode passed to bufio\->fopen.
+.PP
+The Bufio module keeps an internal reference to files opened for writing so that they can be flushed before being garbage collected.
+Flushing all dirty files is done with an explicit call to bufio\->flush(), usually just before exiting the program.
+.PP
+.SS SEEK (N, WHERE), READ (A, N), AND WRITE (A, N)
+Each has the same parameters as its complement in Sys (see 
+.I seek
+and 
+.I read
+.
+.PP
+.SS GETB ( )
+Read a single byte from the buffered stream and return its value as an int.
+.PP
+.SS GETC ( )
+Read a single Unicode character, encoded in UTF (see 
+.I utf
+), and return its value as an int.
+.PP
+.SS GETS (SEPCHAR)
+Read a line, up to and including a character specified by 
+.I sepchar
+, typically a newline.
+If none is found, read to the end of the file.
+The returned string includes the terminating character.
+.PP
+.SS GETT (SEPSTR)
+Read characters until one of the characters in 
+.I sepstr
+.
+The returned string includes the separator.
+If none of the separator characters is found, read to the end of the file.
+.PP
+.SS PUTB (B), PUTC (C), AND PUTS (S)
+Each writes its argument, a byte, a character, or a string, respectively.
+Text is encoded in UTF.
+.PP
+.SS FLUSH ( )
+Write contents of the write buffer to the file.
+Meaningful only for files opened for writing; has no effect on files opened for reading.
+.PP
+.SS CLOSE ( )
+Flush remaining data in the buffer, if necessary, close the associated file, and discard buffers associated with the file.
+After close, no further function calls are allowed on the iobuf adt.
+.PP
+.SH DIAGNOSTICS
+Calls that return a ref type (open, fopen, gets, and gett) return nil when encountering end of file or errors.
+When an error occurs, the error string, printable with the %r format, will usually be set as a consequence of an error in the underlying Sys module.
+The other functions return Bufio\->EOF upon encountering end of file, and Bufio\->ERROR when encountering other errors.
+.PP
+.SH EXAMPLE
+The code fragment
+.IP
+.EX
+lc:= bufio\->open(\[dq]/net/tcp/0/local\[dq], bufio\->OREAD);     
+addr:= lc.gets(\[aq]\[rs]n\[aq]);     
+lc = nil; 
+.EE
+.PP
+.PP
+opens the file /net/tcp/0/local and reads a line (including the terminating newline character) from this file to initialize the string variable addr.
+The file is closed implicitly by discarding (assigning nil to) the only reference to its Iobuf.
+.PP
+.SH SEE ALSO
+.I Limbo Modules
+, 
+.I open
+, 
+.I read
+.I 
+and 
+.I seek

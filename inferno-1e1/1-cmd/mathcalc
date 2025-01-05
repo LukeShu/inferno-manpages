@@ -1,0 +1,18 @@
+.TH MATHCALC 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+mathcalc \- interface to a TclLib calculator module
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+mathcalc
+.EE
+.PP
+.SH DESCRIPTION
+The mathcalc command provides a command line interface to a TclLib calculator module.
+The user is prompted (calc%) for input from standard input.
+The user\[aq]s input is relayed to the calculator module and the results are displayed on standard output.
+.PP
+.SH SEE ALSO
+.I tklib

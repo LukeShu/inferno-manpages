@@ -1,0 +1,192 @@
+.TH MISC-WMLIB 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Wmlib \- window manager toolkit
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include     \[dq]wmlib.m\[dq];
+wmlib:= load Wmlib Wmlib\->PATH;
+Resize,
+Hide,
+Help,
+OK:          con 1 << iota;
+Appl:        con Resize | Hide;
+init:        fn();
+titlebar:    fn(t: ref Tk\->Toplevel, title:  string, buts: int)
+                                              : chan of string;
+titlectl:    fn(t: ref Tk\->Toplevel, request: string);
+taskbar:     fn(t: ref Tk\->Toplevel, name:    string): string;
+getfilename: fn(screen: ref Draw\->Screen,
+                parent: ref Tk\->Toplevel,
+                title, pat, dir: string)      
+                          : string;
+geom:        fn(t: ref Tk\->Toplevel)          : string;
+snarfput:    fn(buf: string);
+snarfget:    fn(): string;
+.EE
+.PP
+.SH DESCRIPTION
+The Wmlib module provides routines for making and updating windows controlled by 
+.I wm
+.
+.PP
+.SS INIT ( )
+The init function must be called once to initialize the internal state of wmlib.
+.PP
+.SS TITLEBAR (T, TITLE, BUTS)
+The titlebar function creates a collection of widgets, rooted at.Wm_t, which can be packed in the Toplevel 
+.I t
+to create a managed title bar.
+The title bar consists of a label, .Wm_t.title, and the buttons specified by the bit mask 
+.I buts
+.
+The .Wm_t.title label is initialized with the string 
+.I title
+, and can be reconfigured to change the title of the window.
+An exit button is always created in the title bar; the buttons defined by the constants Resize, Hide, Help, and OK are optional.
+Most applications should use the buttons defined by the constant Appl, which is Resize|Hide.
+.PP
+A channel is returned by titlebar by which the application is informed of Tk events (See 
+.I tk
+).
+Messages received on it should be processed by the application.
+The messages that may arrive on the returned channel are:
+.PP
+.TS
+tab(@);
+l l.
+T{
+[dq]exit\[dq]
+T}@T{
+The Exit button was activated.
+The window should be closed.
+T}
+T{
+[dq]ok\[dq]
+T}@T{
+The OK button was activated.
+The window should be closed.
+T}
+T{
+[dq]help\[dq]
+T}@T{
+The Help button was activated.
+T}
+T{
+[dq]task\[dq]
+T}@T{
+The Hide button was activated.
+The window can be \[aq]hidden\[aq] by sending a \[dq]task\[dq] request via the titlectl function.
+T}
+T{
+[dq]size\[dq]
+T}@T{
+The Resize button was pressed.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+In some cases the appropriate response is make the received message
+.PP
+the 
+.I request
+argument to the titlectl function.
+.PP
+.SS TITLECTL (T, REQUEST)
+The titlectl function performs a variety of operations according to the string passed in argument 
+.I request
+.
+The supported requests are:
+.PP
+.TS
+tab(@);
+l l.
+T{
+[dq]move\[dq] and \[dq]size\[dq]
+T}@T{
+The titlectl function communicates with wm to obtain new position (size) parameters and relays the new configuration to Tk.
+T}
+T{
+[dq]exit\[dq]
+T}@T{
+The titlectl function terminates the current process and all members of its process group.
+T}
+T{
+[dq]task\[dq]
+T}@T{
+The titlectl function unmaps the Toplevel, make an entry in the task bar, and suspend the current process.
+Later, selecting the task bar entry will remap the Toplevel and allow the process to resume.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS TASKBAR (T, NAME)
+The taskbar function changes the name displayed in the title bar and the window\[aq]s name when it is in the task bar.
+.PP
+.SS GETFILENAME (SCREEN, PARENT, TITLE, PAT, DIR)
+The getfilename function makes a dialog box for selecting a file.
+It is displayed on screen near 
+.I parent
+.
+The 
+.I dir
+argument gives the directory where the file search should begin.
+Only files that match pattern pat 
+.I are
+displayed.
+The rules for defining match patters are described on 
+.I lib\-filepat
+.
+.PP
+The returned string is the name of the selected file, or the empty string if no file was selected.
+.PP
+.SS GEOM (T)
+The geom function returns a string with the coordinates for a child window.
+.PP
+.SS SNARFGET ( ) AND SNARFPUT (BUF)
+The snarfget and snarfput functions retrieve and replace the contents of the window manager\[aq]s snarf buffer.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/chan/wm
+T}@T{
+Interface with wm for the titlectl function\[aq]s handling of \[dq]move\[dq] and \[dq]size\[dq] requests.
+T}
+T{
+/chan/snarf
+T}@T{
+Interface with wm for the snarfget and snarfput functions.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I context
+, 
+.I tk
+, and 
+.I tklib

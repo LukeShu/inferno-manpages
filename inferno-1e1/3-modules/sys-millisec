@@ -1,0 +1,29 @@
+.TH SYS-MILLISEC 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+millisec \- millisecond timer
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+millisec: fn(): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS MILLISEC ( )
+The millisec returns the value of an internal system clock, in milliseconds.
+.PP
+The actual resolution of the clock is a property of the underlying system and may be coarser than a millisecond.
+The epoch is arbitrary, so millisec is useful for measuring durations but not absolute time.
+If the system operates continuously, the millisecond counter overflows every couple of months; a reboot resets the epoch.
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo System Modules
+.I  
+.I  and 
+sleep
+.I 

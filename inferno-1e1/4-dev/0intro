@@ -1,0 +1,186 @@
+.TH 0INTRO 4 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Inferno Devices
+.PP
+The Inferno devices are as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I cons
+
+T}@T{
+console device
+T}
+T{
+.I cmd
+
+T}@T{
+interface to host operating system commands
+T}
+T{
+.I draw
+
+T}@T{
+graphics device
+T}
+T{
+.I ip
+
+T}@T{
+TCP, UDP network protocols over IP
+T}
+T{
+.I prog
+
+T}@T{
+interface to running programs
+T}
+T{
+.I root
+
+T}@T{
+the root file system
+T}
+T{
+.I ssl
+
+T}@T{
+secure sockets layer device
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH DESCRIPTION
+.SS PATHNAME RESOLUTION
+An Inferno 
+.I device
+implements a file tree for client processes.
+A file name beginning with a pound sign, such as #c, names the root of a file tree implemented by a particular 
+.I kernel
+device driver identified by the character after the pound sign.
+Such names are usually bound to conventional locations in the name space.
+For example, after
+.IP
+.EX
+   sys\->bind(\[dq]#c\[dq], \[dq]/dev\[dq], sys\->MREPL)
+.EE
+.PP
+an ls of /dev will list the files provided by the console device.
+.PP
+A kernel device driver is a 
+.I server
+in the sense of the Inferno File Protocol, Styx (see 
+.I Inferno File Protocol, Styx
+), but with the messages implemented by local rather than remote procedure calls.
+Also, several of the messages (
+.I Nop
+, 
+.I Flush
+, and 
+.I Error
+) have no subroutine equivalents.
+.PP
+When a system call is passed a file name beginning with # it looks at the next character, and if that is a valid 
+.I device
+.I character
+it performs an \[aq]attach\[aq] operation on the corresponding device to get a connection representing the root of that device\[aq]s file tree.
+See 
+.I attach
+.
+If there are any characters after the device character but before the next / or end of string, those characters are passed as parameter 
+.I aname
+to the attach.
+.PP
+Each kernel device has a conventional place at which to be bound to the name space.
+The synopsis sections of the following pages includes a shell 
+.I bind
+command to put the device in the conventional place.
+Most of these binds are done automatically by the system when it initializes.
+.PP
+.SS KERNEL DEVICE DRIVERS
+.PP
+.TS
+tab(@);
+l l.
+T{
+/
+T}@T{
+The root of the Inferno file system
+T}
+T{
+s
+T}@T{
+Host Services
+T}
+T{
+U
+T}@T{
+Host File System
+T}
+T{
+M
+T}@T{
+Mount
+T}
+T{
+c
+T}@T{
+Console
+T}
+T{
+D
+T}@T{
+Secure Sockets Layer
+T}
+T{
+d
+T}@T{
+Draw Interface
+T}
+T{
+C
+T}@T{
+Command Services
+T}
+T{
+p
+T}@T{
+Process File System
+T}
+T{
+I
+T}@T{
+Internet Interface
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS CONVENTION FOR NUMERIC DATA
+Unless otherwise noted, numeric data returned from status files, etc.
+is returned in the following standard 12\-character decimal format: right\-adjusted numerals with leading blanks to fill the field to 11 characters, followed by a blank.
+There is no trailing newline.
+.PP
+See Also
+.PP
+
+.I 
+Limbo Modules
+.I  
+.I  and 
+Inferno File Protocol, Styx
+.I 

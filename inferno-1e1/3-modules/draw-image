@@ -1,0 +1,627 @@
+.TH DRAW-IMAGE 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Image \- pictures and drawing
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+Image: adt
+{
+  r:       Rect;
+  clipr:   Rect;
+  ldepth:  int;
+  repl:    int;
+  draw:      fn(dst: self ref Image, r: Rect, src: ref Image,
+               mask: ref Image,
+               p:  Point);
+  gendraw:   fn(dst: self ref Image, r: Rect, src: ref Image,
+               p0:  Point,
+               mask: ref Image,
+               p1:  Point);
+  line:      fn(dst: self ref Image, p0, p1: Point,
+               end0, end1, thick: int,
+               src: ref Image,
+               sp:  Point);
+  poly:      fn(dst: self ref Image, p: array of Point,
+               end0, end1, thick: int,
+               src: ref Image,
+               sp:  Point);
+  bezspline: fn(dst: self ref Image, p: array of Point,
+               end0, end1, thick: int,
+               src: ref Image,
+               sp:  Point);
+  fillpoly:  fn(dst: self ref Image, p: array of Point,
+               wind: int,
+               src: ref Image,
+               wsp: Point);
+  fillbezspline: fn(dst: self ref Image, p: array of Point,
+               wind: int,
+               src: ref Image,
+               sp:  Point);
+  ellipse:   fn(dst: self ref Image, c: Point,
+               a, b, thick: int,
+               src: ref Image,
+               sp:  Point);
+  fillellipse:fn(dst: self ref Image, c: Point,
+               a, b: int,
+               src: ref Image,
+               sp:  Point);
+  arc:        fn(dst: self ref Image, c: Point,
+               a, b, thick: int,
+               src: ref Image,
+               sp:  Point, alpha, phi: int);
+fillarc:     fn(dst: self ref Image, c: Point,
+               a, b, thick: int,
+               src: ref Image,
+               sp:  Point, alpha, phi: int);
+
+  bezier:   fn(dst: self ref Image, a,b,c,d: Point, end0,
+               end1, thick: int,
+               src: ref Image,
+               sp:  Point);
+  fillbezier: fn(dst: self ref Image, a,b,c,d: Point,
+               wind: int,
+               src: ref Image,
+               sp:  Point);
+  arrow:      fn(a,b,c: int): int;
+  text:       fn(dst: self ref Image, p: Point,
+               src: ref Image,
+               sp:  Point,
+               font: ref Font, str: string): Point;
+   readpixels: fn(src: self ref Image, r: Rect, data: array of byte): 
+int;
+  writepixels:fn(dst: self ref Image, r: Rect, data: array of byte): 
+int;
+  top:       fn(win: self ref Image);
+  bottom:    fn(win: self ref Image);
+  flush:     fn(win: self ref Image, func: int);
+  origin:    fn(win: self ref Image, log, scr: Point): int;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The Image abstract data type defines rectangular pictures and the functions to draw on them; it is also the building block for higher level objects such as 
+.I windows
+and 
+.I fonts
+.
+In particular, a 
+.I window
+is represented as an Image; no special operators are needed to draw on a window.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+r
+T}@T{
+The coordinates of the rectangle in the plane for which the Image has defined pixel values.
+It should not be modified after the image is created.
+T}
+T{
+clipr
+T}@T{
+The clipping rectangle: operations that read or write the image will not access pixels outside clipr.
+Frequently, clipr is the same as Image.r, but it may differ.
+See the discussion of Image.repl.
+The clipping region may be modified dynamically.
+T}
+T{
+ldepth
+T}@T{
+The log base\-2 of the number of bits per pixel in the picture: 0 for one bit per pixel, 3 for eight bits per pixel, etc.
+The library supports Image.ldepth values 0, 1, 2, and 3 only.
+The value should not be modified after the image is created.
+T}
+T{
+repl
+T}@T{
+A boolean value specifying whether the image is tiled to cover the plane when used as a source for a drawing operation.
+If Image.repl is zero, operations are restricted to the intersection of Image.r and Image.clipr.
+If Image.repl is set, Image.r defines the tile to be replicated and Image.clipr defines the portion of the plane covered by the tiling.
+In other words, Image.r is replicated to cover Image.clipr; in such cases Image.r and Image.clipr are independent.
+T}
+T{
+T}@T{
+For example,
+.PP
+a replicated image with Image.r set to ((0,0),(1, 1)) and Image.clipr set to ((0,0),(100,100)), with the single pixel of Image.r set to blue, behaves identically to
+.PP
+an image with Image.r and Image.clipr both set to ((0,0), (100,100)) and all pixels set to blue.
+However, the first image requires far less memory.
+T}
+T{
+T}@T{
+The replication flag may be modified dynamically.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS DST.DRAW (R, SRC, MASK, P)
+The draw function is the standard drawing function.
+Only those pixels within the intersection of 
+.I dst
+.r and 
+.I dst
+.clipr will be affected; draw ignores 
+.I dst
+.repl.
+The operation behaves as follows:
+.PP
+.TS
+tab(@);
+l l.
+T{
+1
+T}@T{
+If repl is set in src or 
+.I mask
+, replicate their contents to fill their clip rectangles.
+T}
+T{
+2
+T}@T{
+Translate 
+.I src
+and 
+.I mask
+so 
+.I p
+is aligned with r.min
+T}
+T{
+3
+T}@T{
+Set 
+.I r
+.I to
+the intersection of 
+.I r
+and 
+.I dst
+.r.
+T}
+T{
+4
+T}@T{
+Intersect 
+.I r
+with 
+.I src
+.clipr.
+If 
+.I src
+.repl is false, also intersect 
+.I r
+with 
+.I src
+.r
+T}
+T{
+5
+T}@T{
+Intersect 
+.I r
+with 
+.I mask
+.clipr.
+If 
+.I mask
+.repl is false, also intersect 
+.I r
+with 
+.I mask
+.r.
+T}
+T{
+6
+T}@T{
+For each location in 
+.I r
+.I for
+which the 
+.I mask
+pixel is non\-zero, set the 
+.I dst
+pixel to be the value of the 
+.I src
+pixel.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The various ldepth values involved need not be identical.
+If the 
+.I src
+or 
+.I mask
+images are single replicated pixels, any ldepth is fine.
+Otherwise, if their ldepth is not the same as the destination, they must have ldepth value 0.
+These restrictions may weaken in later implementations.
+.PP
+.SS DST.GENDRAW (R, SRC, P0, MASK, P1)
+The gendraw function is similar to draw() except that it aligns the source and mask differently: 
+.I src
+is aligned so 
+.I p0
+corresponds to 
+.I r.
+min
+and 
+.I mask
+is aligned so 
+.I p1
+corresponds to 
+.I r.
+min
+.
+For most purposes with simple masks and source images, draw is sufficient, but gendraw is the general operator and the one the other drawing primitives are built on.
+.PP
+.SS DST.LINE (P0, P1, END0, END1, THICK, SRC, SP)
+The line function draws in 
+.I dst
+.I a
+line of width 1 + 2 × 
+.I t
+.I h
+.I i
+.I c
+.I k
+pixels joining points 
+.I p0
+and 
+.I p1
+.
+The line is drawn using pixels from the 
+.I src
+image aligned so 
+.I sp
+in the source corresponds to 
+.I p0
+in the destination.
+The line touches both 
+.I p0
+and 
+.I p1
+, and 
+.I end0
+and 
+.I end1
+specify how the ends of the line are drawn.
+.PP
+.TS
+tab(@);
+l l.
+T{
+Endsquare
+T}@T{
+terminates the line perpendicularly to the direction of the line; a thick line with Endsquare on both ends will be a rectangle.
+T}
+T{
+Enddisc
+T}@T{
+terminates the line by drawing a disc of diameter 1 + 2 × 
+.I t
+.I h
+.I i
+.I c
+.I k
+.I 
+centered on the end point.
+T}
+T{
+Endarrow
+T}@T{
+terminates the line with an arrowhead whose tip touches the endpoint.
+See 
+.I arrow
+.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The line function and the other geometrical operators are equivalent to calls to gendraw using a mask produced by the geometric procedure.
+.PP
+.SS DST.POLY (P, END0, END1, THICK, SRC, SP)
+The poly function draws a general polygon; it is equivalent to a series of calls to line joining adjacent points in the array of Points 
+.I p
+.
+The ends of the polygon are specified as in line; interior lines are terminated with Enddisc to make smooth joins.
+The source is aligned so 
+.I sp
+corresponds to 
+.I p
+[0].
+.PP
+.SS DST.BEZSPLINE (P, END0, END1, THICK, SRC, SP)
+The bezspline function is similar to poly (it takes the same arguments) but draws a quadratic B\-spline (despite its name) rather than a polygon.
+If the first and last points in 
+.I p
+are equal, the spline has periodic end conditions.
+.PP
+.SS DST.FILLPOLY (P, WIND, SRC, SP)
+The fillpoly function is like poly but fills in the polygon rather than outlining it.
+The right and bottom edges are left open so filled polygons can share edges without sharing pixels.
+The source is aligned so 
+.I sp
+corresponds to 
+.I p
+[0].
+The polygon is closed with a line if necessary.
+.PP
+The winding rule parameter wind resolves ambiguities about what to fill if the polygon is self\-intersecting.
+If wind is \[ti]0, a pixel is inside the polygon if the polygon\[aq]s winding number about the point is non\-zero.
+If wind is 1, a pixel is inside if the winding number is odd.
+Complementary values (0 or \[ti]1) cause outside pixels to be filled.
+The meaning of other values is undefined.
+.PP
+.SS DST.FILLBEZSPLINE (P, WIND, SRC, SP)
+The fillbezspline function is like fillpoly but fills the quadratic B\-spline rather than the polygon outlined by 
+.I p
+.
+The polygon is closed with a line if necessary.
+.PP
+.SS DST.ELLIPSE (C, A, B, THICK, SRC, SP)
+The ellipse function draws in 
+.I dst
+an ellipse centered on 
+.I c
+with horizontal and vertical semi\-axes 
+.I a
+and 
+.I b
+.
+The source is aligned so 
+.I sp
+in 
+.I src
+corresponds to 
+.I c
+in 
+.I dst
+.
+The ellipse is drawn with thickness 1 + 2 × 
+.I t
+.I h
+.I i
+.I c
+.I k
+.
+.PP
+.SS DST.FILLELLIPSE (C, A, B, SRC, SP)
+The fillellipse function is like ellipse but fills the ellipse rather than outlining it.
+.PP
+.SS DST.ARC (C, A, B, THICK, SRC, SP, ALPHA, PHI)
+Similar to the ellipse function but only the arc specified by the last two arguments is drawn.
+The arc starts 
+.I alpha
+(integer) degrees counterclockwise from the x\-axis and extends an additional phi 
+.I 
+(integer) degrees counterclockwise.
+.PP
+.SS DST.FILLARC (C, A, B, THICK, SRC, SP, ALPHA, PHI)
+The fillarc function is to the arc function as the fillellipse function is to the ellipse function.
+The fill functions fill rather than outline.
+.PP
+.SS DST.BEZIER (A, B, C, D, END0, END1, THICK, SRC, SP)
+Bezier draws the cubic Bezier curve defined by Points 
+.I a
+, 
+.I b
+, 
+.I c
+, and 
+.I d
+.
+The end styles are determined by 
+.I end0
+and 
+.I end1
+; the thickness of the curve is 1 + 2 × 
+.I t
+.I h
+.I i
+.I c
+.I k
+.
+The source is aligned so 
+.I sp
+in 
+.I src
+corresponds to 
+.I a
+in 
+.I dst
+.
+.PP
+.SS DST.FILLELLIPSE (C, A, B, SRC, SP)
+The fillellipse function is like ellipse but fills the ellipse rather than outlining it.
+.PP
+.SS ARROW (A, B, C)
+The arrow function describes general arrowheads; its result is passed as 
+.I end
+parameters to line, poly, etc.
+If all three parameters are zero, it produces the default arrowhead, otherwise, 
+.I a
+sets the distance long line from end of the regular line to tip, 
+.I b
+sets the distance along line from the barb to the tip, and 
+.I c
+sets the distance perpendicular to the line from edge of line to the tip of the barb, all in pixels.
+.PP
+.SS DST.TEXT (P, SRC, SP, FONT, STR)
+The text function draws in characters specified by the string 
+.I str
+and font 
+.I font
+.
+It is equivalent to a series of calls to gendraw using source 
+.I src
+and masks determined by the character shapes.
+The text is positioned with the left of the first character at p.x and the top of the line of text at p.y.
+The source is positioned so 
+.I sp
+in 
+.I src
+corresponds to 
+.I p
+in 
+.I dst
+.
+Text returns a Point that is the position of the next character that would be drawn if the string were longer.
+.PP
+For characters with undefined or zero\-width images in the font, the character at font position 0 is drawn.
+.PP
+.SS SRC.READPIXELS (R, DATA)
+The readpixels function fills the data array with pixels from the specified rectangle of the 
+.I src
+image.
+The pixels are presented one horizontal line at a time, starting with the top\-left pixel of 
+.I r
+.
+Each scan line starts with a new byte in the array, leaving, if necessary, the last byte of the previous line partially empty.
+Pixels are packed as tightly as possible within 
+.I data
+, regardless of the rectangle being extracted.
+Bytes are filled from most to least significant bit order, as the 
+.I x
+coordinate increases, aligned so 
+.I x =0
+would appear as the leftmost pixel of its byte.
+Thus, for ldepth 0, the pixel at 
+.I x
+offset 165 within the rectangle will be in a 
+.I data
+byte at bit\-position 16r04 regardless of the overall rectangle: 165 mod 8 equals 5, and 16r80>>5 equals 16r04.
+It is an error to call readpixels with an array that is too small to hold the rectangle\[aq]s pixels.
+The return value is the number of bytes copied.
+.PP
+.SS DST.WRITEPIXELS (R, DATA)
+The writepixels function copies pixel values from the 
+.I data
+array to the specified rectangle in the 
+.I dst
+image.
+The format of the data is that produced by readpixels.
+The return value is the number of bytes copied.
+It is an error to call writepixels with an array that is too small to fill the rectangle.
+.PP
+.SS WIN.TOP ( )
+If the image 
+.I win
+is a window, top pulls it to the \[aq]top\[aq] of the stack of windows on its Screen, perhaps obscuring other images.
+If 
+.I win
+is not a window, top has no effect.
+.PP
+.SS WIN.BOTTOM ( )
+If the image 
+.I win
+is a window, bottom pulls it to the \[aq]bottom\[aq] of the stack of windows on its Screen, perhaps obscuring it.
+If 
+.I win
+is not a window, bottom has no effect.
+.PP
+.SS IMAGE.FLUSH (FLAG)
+The connection to a display has a buffer used to gather graphics requests generated by calls to the draw library.
+By default, the library flushes the buffer at the conclusion of any call that affects the visible display image itself.
+The flush routine allows finer control of buffer management.
+The 
+.I flag
+has three possible values:
+.PP
+.TS
+tab(@);
+l l.
+T{
+Flushoff
+T}@T{
+This flag turns off all automatic flushing caused by writes to 
+.I image
+, typically a window or the display image itself (buffers may still be written when they fill or when other objects on the display are modified).
+T}
+T{
+Flushnow
+T}@T{
+This flag causes the buffer to be flushed immediately.
+T}
+T{
+Flushon
+T}@T{
+This flag restores the default behavior.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS WIN.ORIGIN (LOG, SRC)
+When a window is created (see 
+.I screen
+), the coordinate system within the window is identical to that of the screen: the upper left corner of the window rectangle is its physical location on the display, not for example (0, 0).
+This symmetry may be broken, however: origin allows control of the location of the window on the display and the coordinate system used by programs drawing on the window.
+.PP
+.TS
+tab(@);
+l l.
+T{
+log
+T}@T{
+sets the upper left corner of the logical (in\-window) coordinate system without changing the position of the window on the screen.
+T}
+T{
+
+.I scr
+
+T}@T{
+sets the upper left corner of physical (on\-screen) coordinate system, that is, the window\[aq]s location on the display, without changing the internal coordinate system.
+Therefore, changing 
+.I scr
+without changing log 
+.I moves
+the window without requiring the client using it to be notified of the change; changing 
+.I log
+without changing 
+.I scr
+allows the client to set up a private coordinate system regardless of the window\[aq]s location.
+It is permissible for values of scr 
+.I to
+move some or all of the window off screen.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The origin function returns \-1 if the image is not a window, or in the case of changes to 
+.I scr
+, if there are insufficient resources available to move the window; otherwise it returns 1.

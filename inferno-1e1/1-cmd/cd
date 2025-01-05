@@ -1,0 +1,36 @@
+.TH CD 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+cd \- change working directory
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+cd [directory]
+.EE
+.PP
+.SH DESCRIPTION
+The cd command changes the working directory for the Inferno shell and all processes in its process group (see 
+.I Note
+on 
+.I pctl
+) to the 
+.I directory
+specified on the command line.
+If no argument is given, the command attempts to change to /usr/
+.I user
+where 
+.I user
+is obtained from /dev/user.
+.PP
+.SH FILES
+/dev/user
+.PP
+.SH SEE ALSO
+.I pwd
+, 
+.I chdir
+, 
+.I pctl
+, and 
+.I cons

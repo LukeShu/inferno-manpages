@@ -1,0 +1,210 @@
+.TH SYS-PRINT 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+print, fprint, sprint \- print formatted output
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+fprint: fn(fd: ref FD, format: string, *): int;
+print:  fn(format: string, *): int;
+sprint: fn(format: string, *): string;
+.EE
+.PP
+.SH DESCRIPTION
+These functions format and print their arguments as UTF text.
+.PP
+.TS
+tab(@);
+l l.
+T{
+print (
+.I format
+, *)
+T}@T{
+Write text to the standard output.
+Return the number of bytes transmitted or a negative value if an error was encountered when writing the output.
+T}
+T{
+fprint (
+.I fd
+, *)
+T}@T{
+Write to the 
+.I fd
+file descriptor.
+Return the number of bytes transmitted or a negative value if an error was encountered when writing the output.
+T}
+T{
+sprint (
+.I format
+, *)
+T}@T{
+Format text into a string and return the string.
+Returns the formatted string.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Each of these functions converts, formats, and prints its trailing arguments under control of a 
+.I format
+string.
+The format contains two types of objects:
+.PP
+.TS
+tab(@);
+l l.
+T{
+plain characters
+T}@T{
+Plain characters are simply copied to the output stream.
+T}
+T{
+conversion specifications
+T}@T{
+Each conversion results in fetching of zero or more arguments.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The Limbo compiler recognizes calls to these functions and checks that the arguments match the format specifications in number and type.
+.PP
+Each conversion specification has the following format:
+.IP
+.EX
+   %[flags]verb
+.EE
+.PP
+.PP
+The 
+.I verb
+is a single character and each flag is a single character or a (decimal) numeric string.
+Up to two numeric strings may be used; the first is called 
+.I f1
+, the second 
+.I f2
+.
+A period can be used to separate them, and if the period is present then 
+.I f1
+and 
+.I f2
+are taken to be zero if missing, otherwise they are omitted.
+Either or both of the numbers may be replaced with the character *, meaning that the actual number will be obtained from the argument list as an integer.
+The flags and numbers are arguments to the 
+.I verb
+described below.
+.PP
+.TS
+tab(@);
+l l.
+T{
+d, x
+T}@T{
+The numeric verbs d and x format their int arguments in decimal and hexadecimal, respectively.
+Each interprets the flags # and \- to mean alternate format and left justified.
+If 
+.I f2
+is not omitted, the number is padded on the left with zeros until at least 
+.I f2
+digits appear.
+Then, if alternate format is specified for x conversion, the number is preceded by 16r.
+Finally, if 
+.I f1
+is not omitted, the number is padded on the left (or right, if left justification is specified) with enough blanks to make the field at least 
+.I f1
+characters long.
+T}
+T{
+e, f, g
+T}@T{
+The floating point verbs e, f, and g take a real argument.
+Each interprets the flags +, \-, and # to mean always print a sign, left justified, and alternate format.
+The 
+.I f1
+flag is the minimum field width and, if the converted value takes up less than 
+.I f1
+characters, it is padded on the left (or right, if \[aq]left justified\[aq]) with spaces.
+The 
+.I f2
+flag is the number of digits that are converted after the decimal place for e and f conversions, and 
+.I f2
+is the maximum number of significant digits for g conversions.
+The f verb produces output of the form [\-]
+.I digits
+.
+[
+.I .digits
+].
+The e conversion appends an exponent e[\-]
+.I digits
+.
+The g verb will output the argument in either e or f with the goal of producing the smallest output.
+Also, trailing zeros are omitted from the fraction part of the output, and a trailing decimal point appears only if it is followed by a digit.
+When alternate format is specified, the result will always contain a decimal point, and for g conversions, trailing zeros are not removed.
+T}
+T{
+c
+T}@T{
+The c verb copies a single character (integer) argument justified within a field of 
+.I f1
+characters as described above.
+T}
+T{
+r
+T}@T{
+The r verb takes no arguments; it prints the error string associated with the most recent system error.
+T}
+T{
+s
+T}@T{
+The s verb copies a string to the output.
+The number of characters copied (
+.I n
+) is the minimum of the size of the string and 
+.I f2
+.
+These n 
+.I characters
+are justified within a field of 
+.I f1
+characters as described above.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo System Modules
+.I  
+.I  and 
+open
+.I 
+
+.PP
+.SH ERRORS
+Output longer than 256 bytes is truncated.
+.PP
+The x verb does not apply the 0x prefix when 
+.I f2
+is present.

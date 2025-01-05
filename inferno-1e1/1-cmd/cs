@@ -1,0 +1,76 @@
+.TH CS 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+cs \- start connection server daemon
+.PP
+.SH SYNOPSIS
+lib/cs
+.PP
+.SH DESCRIPTION
+The cs command creates a file named cs in the /net directory then spawns a daemon process also named cs.
+Command cs then terminates while daemon cs continues execution, monitoring read and write requests to the /net/cs file.
+Once the daemon process is running, application programs can write host names to /net/cs and read that same file to obtain the corresponding internet address.
+The requests can also symbolically name a service (e.g.
+$MAILSERVER) that the daemon resolves by reference to the /services/cs/db file.
+.PP
+The daemon process persists until explicitly terminated.
+The interface file, /net/cs, persists until unmounted from /net.
+.PP
+.SH OPTIONS
+The cs command has no options or arguments.
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/net/cs
+T}@T{
+Application interface to connection server daemon
+T}
+T{
+/services/cs/db
+T}@T{
+Connection server service database
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I 
+db
+.I 
+
+T}@T{
+Format of connection server database file
+T}
+T{
+
+.I 
+cs
+.I 
+
+T}@T{
+Description of connection server daemon
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

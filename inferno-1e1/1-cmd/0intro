@@ -1,0 +1,226 @@
+.TH 0INTRO 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+This chapter contains a detailed reference to Inferno utilities and commands.
+They are grouped into the following sections:
+.PP
+.I Command Line Utilities
+
+.PP
+.I Environmental Utilities
+
+.PP
+.I Limbo Modules
+
+.PP
+.I Inferno Devices
+
+.PP
+.I Inferno File Protocol, Styx
+
+.PP
+.I Format Specifications
+
+.PP
+.I Daemons
+
+.PP
+Command Line Utilities
+.PP
+The Limbo command line utilities are as follows:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I bind
+
+.PP
+mount,
+.PP
+unmount
+T}@T{
+change name space
+T}
+T{
+.I cat
+
+T}@T{
+concatenate files
+T}
+T{
+.I cd
+
+T}@T{
+change working directory
+T}
+T{
+.I chmod
+
+T}@T{
+change file mode (permissions)
+T}
+T{
+.I cmp
+
+T}@T{
+compare files
+T}
+T{
+.I cp
+
+T}@T{
+copy file
+T}
+T{
+.I cs
+
+T}@T{
+start connection server daemon
+T}
+T{
+.I date
+
+T}@T{
+print the date
+T}
+T{
+.I diff
+
+T}@T{
+differential file comparator
+T}
+T{
+.I du
+
+T}@T{
+disk usage
+T}
+T{
+.I echo
+
+T}@T{
+print arguments
+T}
+T{
+.I grep
+
+T}@T{
+search file(s) for a pattern
+T}
+T{
+.I kill
+
+T}@T{
+terminate process(es)
+T}
+T{
+.I ls
+
+T}@T{
+list contents of directory
+T}
+T{
+.I mathcalc
+
+T}@T{
+interface to a TclLib calculator module
+T}
+T{
+.I mkdir
+
+T}@T{
+make a directory
+T}
+T{
+.I mv
+
+T}@T{
+rename/move files
+T}
+T{
+.I netstat
+
+T}@T{
+rename/move files
+T}
+T{
+.I nsbuild
+
+T}@T{
+build Inferno name space
+T}
+T{
+.I os
+
+T}@T{
+interface OS commands (non\-native Inferno only)
+T}
+T{
+.I p
+
+T}@T{
+paginate
+T}
+T{
+.I ps
+
+T}@T{
+process status
+T}
+T{
+.I pwd
+
+T}@T{
+print working directory
+T}
+T{
+.I rm
+
+T}@T{
+remove file(s)
+T}
+T{
+.I sh
+
+T}@T{
+command line interface to the Inferno system
+T}
+T{
+.I sleep
+
+T}@T{
+suspend execution for an interval
+T}
+T{
+.I time
+
+T}@T{
+time command execution
+T}
+T{
+.I unicode
+
+T}@T{
+Interpret Unicode characters
+T}
+T{
+.I wcwish
+
+T}@T{
+word (and other things) counter
+T}
+T{
+.I wish
+
+T}@T{
+interface to the Tk graphics toolkit
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

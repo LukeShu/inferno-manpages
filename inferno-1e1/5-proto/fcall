@@ -1,0 +1,197 @@
+.TH FCALL 5 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Fcall, convS2M, convD2M, convM2S, convM2D, fcallconv, dirconv, dirmodeconv \- C interface to Inferno file protocol
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+#include <lib9.h>
+#include <styx.h>
+int convS2M    (Fcall *f, char *ap)
+int convD2M    (Dir  *d, char *ap)
+int convM2S    (char *ap, Fcall *f, int n)
+int convM2D    (char *ap, Dir *d)
+int dirconv    (va_list *arg, Fconv*)
+int fcallconv  (va_list *arg, Fconv*)
+int dirmodeconv(va_list *arg, Fconv*)
+.EE
+.PP
+.SH DESCRIPTION
+These C language routines, which reside in the lib9 library convert messages in the machine\-independent format of the Inferno file protocol, Styx, to and from a more convenient form, an Fcall structure:
+.IP
+.EX
+typedef struct Fcall {
+     char   type;
+     short  fid;
+     ushort tag;
+     ushort oldtag;      /* T\-Flush */
+     Qid    qid;         /* R\-Attach, R\-Walk, R\-Open, R\-Create */
+     char   uname[NAMELEN]; /* T\-Attach */
+     char   aname[NAMELEN]; /* T\-Attach */
+     char   ename[ERRLEN];  /* R\-Error */
+     long   perm;           /* T\-Create */
+     short  newfid;         /* T\-Clone */
+     char   name[NAMELEN];  /* T\-Walk, T\-Create */
+     char   mode;           /* T\-Create, T\-Open */
+     long   offset;         /* T\-Read, T\-Write */
+     long   count;          /* T\-Read, T\-Write, R\-Read */
+     char   *data;          /* T\-Write, R\-Read */
+     char   stat[DIRLEN];   /* T\-Wstat, R\-Stat */
+ } Fcall; 
+.EE
+.PP
+This structure is defined in <styx.h>.
+See the other pages in this section of the manual for a full description of Styx messages and their encoding.
+For all message types, the type member of an Fcall structure holds one of Tnop, Rnop, Tattach, Rattach, etc.
+(defined in an enumerated type in <styx.h>).
+The fid member is used by most messages, and tag is used by all messages.
+The other fields are used selectively by the message types given in comments.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+convM2S (
+.I ap
+, 
+.I f
+, 
+.I n
+)
+T}@T{
+The convM2S function takes a Styx message at 
+.I ap
+.I of
+length 
+.I n
+, and uses it to fill in Fcall structure 
+.I f
+.
+If the passed message including any data for Twrite and Rread messages is formatted properly, the return value is 
+.I n
+; otherwise it is 0.
+.PP
+For Twrite and Tread messages, f \->data is set to a pointer into the argument message, not a copy.
+T}
+T{
+convS2M 
+.I (f
+, 
+.I ap
+)
+T}@T{
+The convS2M does the reverse conversion of the convM2S function, turning 
+.I f
+into a message starting at 
+.I ap
+.
+The length of the resulting message is returned.
+.PP
+For Twrite and Rread messages, 
+.I f
+\->count bytes starting at 
+.I f
+\->data are copied into the message.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The constant MAXMSG (128) is the length of the longest message, excluding data.
+The constant MAXFDATA (8192) is the maximum count in a read or write message.
+Thus messages are guaranteed to be shorter than MAXMSG+MAXFDATA bytes long.
+.PP
+Another structure is Dir, used by the routines described in 
+.I stat
+.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+convM2D (
+.I ap
+, 
+.I d
+)
+T}@T{
+The convM2D function converts the machine\-independent form starting at 
+.I ap
+into 
+.I d
+.I and
+returns the length of the encoding.
+T}
+T{
+convD2M (
+.I d
+, 
+.I ap
+)
+T}@T{
+The convD2M function does the reverse translation of the convM2D function.
+also returning the length of the encoding.
+T}
+T{
+dirconv (
+.I arg
+, 
+.I Fconv
+)
+T}@T{
+Convert a directory buffer, Dir*, to a string representation.
+.PP
+.PP
+The Inferno emulator installs this function with format letter 
+.I \[aq]D\[aq]
+.
+T}
+T{
+fcallconv (
+.I arg
+, 
+.I Fconv
+)
+T}@T{
+Convert an Fcall structure, 
+.I Fcall*
+, to a string representation.
+.PP
+.PP
+The Inferno emulator installs this function with format letter \[aq]F\[aq].
+Moreover, this function assumes that 
+.I dirconv
+has been installed, by the Inferno emulator, with format letter \[aq]D\[aq].
+.PP
+T}
+T{
+dirmodeconv 
+.I (arg
+, 
+.I Fconv
+)
+T}@T{
+Convert an long value, to a string representation of the corresponding file mode value.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.SH LIMBO MODULES, STAT, AND INFERNO FILE PROTOCOL, STYX NOTES
+The 
+.I offset
+and directory length fields have 8 bytes in the protocol, but these routines assume they fit into a long.
+.PP
+The convS2M function should check for counts exceeding MAXFMSG.

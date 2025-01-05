@@ -1,0 +1,85 @@
+.TH SYS-SEEK 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+seek \- change file offset
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+seek: fn(fd: ref FD, off, start: int): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS SEEK (FD, OFF, START)
+The seek function sets the offset for the file associated with 
+.I fd
+to 
+.I off
+as qualified by the 
+.I start
+argument.
+Negative values for 
+.I off
+are allowed.
+.PP
+The 
+.I start
+argument can have the following values:
+.PP
+.TS
+tab(@);
+l l.
+T{
+SEEKSTART
+T}@T{
+The offset is set to 
+.I off
+bytes from the start of the file.
+T}
+T{
+SEEKRELA
+T}@T{
+The offset is set to its current value plus 
+.I off
+bytes.
+T}
+T{
+SEEKEND
+T}@T{
+The offset is set to the size of the file plus 
+.I off
+bytes.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The new file offset value is returned.
+.PP
+The seek function does not validate the offset being set.
+Subsequent read or write calls to an invalid offset will fail.
+.PP
+Seeking in a directory is not allowed.
+.PP
+The current offset for a file is shared among processes of the same file descriptor group.
+See 
+.I pctl
+.
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+, 
+.I open
+, 
+.I pctl
+, 
+.I read
+, and 
+.I bufio

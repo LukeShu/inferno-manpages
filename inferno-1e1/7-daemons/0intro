@@ -1,0 +1,32 @@
+.TH 0INTRO 7 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Daemons
+.PP
+The Limbo daemons are as follows:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I cs
+
+T}@T{
+connection server daemon
+T}
+T{
+.I httpd
+
+.PP
+echo, stats
+T}@T{
+HTTP server
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

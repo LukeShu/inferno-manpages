@@ -1,0 +1,101 @@
+.TH DRAW-FONT 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Font \- character images for Unicode text
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+Font: adt
+{
+  name:   string;
+  height: int;
+  ascent: int;
+  open:   fn(d: ref Display, name: string)      : ref Font;
+  build:  fn(d: ref Display, name, desc: string): ref Font;
+  width:  fn(f: self ref Font, str: string)     : int;
+};
+.EE
+.PP
+.SH DESCRIPTION
+The Font type defines the appearance of characters drawn with the Image.text primitive (see 
+.I image
+).
+Fonts are usually read from files and are selected based on their size, their style, the portion of Unicode space they represent, and so on.
+.PP
+Fonts are built from a series of subfonts that define contiguous portions of the Unicode character space, such as the ASCII or the Greek alphabet.
+Font files are textual descriptions of the allocation of characters in the various regions of the Unicode space; see 
+.I font
+for the format.
+Subfonts are not visible from Limbo.
+.PP
+A default font, named *default*, is always available.
+.PP
+The type incorporates:
+.PP
+.TS
+tab(@);
+l l.
+T{
+ascent, height
+T}@T{
+These define the vertical sizes of the font, in pixels.
+The ascent is the distance from the font baseline to the top of a line of text; height gives the interline spacing, that is, the distance from one baseline to the next.
+T}
+T{
+name
+T}@T{
+This field identifies the font, either the name of the file from which the font was read, or *default* for the default font.
+T}
+T{
+open (
+.I d, file
+)
+T}@T{
+The open function creates a Font for Display 
+.I d
+by reading the contents of the named 
+.I file
+.
+Fonts are cached, so an open request may return a pointer to an existing Font without rereading the file.
+The name *default* always describes a defined font.
+Fonts are created for an instance of a Display object, even though the creation functions are in type Font.
+T}
+T{
+build (
+.I d
+, 
+.I name
+, 
+.I desc
+)
+T}@T{
+The build function creates a Font object by reading the description from the string desc rather than a file.
+The 
+.I name
+parameter specifies the name of the font to be created.
+T}
+T{
+
+.I dst
+.width (
+.I str
+)
+T}@T{
+The width method returns the width in pixels that 
+.I str
+would occupy if drawn by Image.text in the specified font.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I font

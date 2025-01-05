@@ -1,0 +1,46 @@
+.TH MISC-SRV 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+srv \- miscellaneous services from the host operating system
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]srv.m\[dq]
+srv:= load Srv Srv\->PATH;
+Srv: module
+{
+  PATH:  con \[dq]$Srv\[dq];
+  reads:  fn(str: string, off, nbytes: int): (array of byte, string);
+  iph2a: fn(host: string)                : list of string;
+  ipn2p: fn(net, service: string)        : string;
+};
+.EE
+.PP
+.SH DESCRIPTION
+.SS READS (STRING, OFF, NBYTES)
+The reads function will convert a substring of the given string 
+.I str
+into a returned array of byte.
+The substring is defined by arguments 
+.I off
+(offset) and 
+.I nbytes
+(length).
+.PP
+.SS IPH2A (HOST)
+The iph2a function calls the host\[aq]s gethostbyname function for the argument 
+.I host
+.
+The matching addresses are returned as a list of strings.
+.PP
+.SS IPN2P (NET, SERVICE)
+The ipn2p function calls the host\[aq]s getservbyname function for the specified network (
+.I net
+) and service name (
+.I service
+).
+The port number is returned as a string.
+.PP
+.SH SEE ALSO
+.I cs

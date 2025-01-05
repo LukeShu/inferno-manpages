@@ -1,0 +1,38 @@
+.TH TK-0INTRO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Toolkit Graphic Interface Modules
+.PP
+The Limbo graphic interface modules are as follows:
+.PP
+.SH TOOLKIT MODULES
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I tk
+
+T}@T{
+graphics toolkit
+T}
+T{
+.I tklib
+
+.PP
+tkquote, is_err, tkcmds,
+.PP
+dialog, getstring,
+.PP
+notice, mktabs, tabsctl
+T}@T{
+Tk user interface functions
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

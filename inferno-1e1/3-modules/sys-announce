@@ -1,0 +1,215 @@
+.TH SYS-ANNOUNCE 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+announce, dial, export, listen \- make network connections
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+Connection: adt
+{
+  dfd: ref FD; # data file
+  cfd: ref FD; # control file
+  dir: string; # pathname of line directory
+};
+announce: fn(addr: string):          (int, Connection);
+dial:     fn(addr, local: string):   (int, Connection);
+listen:   fn(c: Connection):         (int, Connection);
+export:   fn(fd: ref FD, flag: int):  int;
+.EE
+.PP
+.SH DESCRIPTION
+These routines establish network connections.
+Their description uses the following definitions:
+.PP
+.TS
+tab(@);
+lw(23.1n) lw(23.1n) lw(23.1n).
+T{
+
+.I addr
+
+T}@T{
+An network address in one of the following forms:
+.PP
+
+.I network
+!
+.I machine
+!
+.I service
+.I network
+!
+.I netaddr
+.I netaddr
+
+T}@T{
+T}
+T{
+
+.I network
+
+T}@T{
+Any directory listed in /net or the special token, net.
+T}@T{
+T}
+T{
+T}@T{
+net
+T}@T{
+A free variable that stands for any network in common between the source and the host 
+.I netaddr
+.
+The netaddr 
+.I portion
+can be a host name, a domain name, a network address, or a meta\-name of the form $
+.I attribute
+, which is resolved according to the information specified in the file /cs/db.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+If a connection attempt is successful 
+.I dir
+is the path name of a 
+.I line
+.I directory
+that has files for accessing the connection.
+One line directory exists for each possible connection.
+.PP
+.TS
+tab(@);
+lw(23.1n) lw(23.1n) lw(23.1n).
+T{
+data
+T}@T{
+The data file in the line directory should be used to communicate with the destination.
+T}@T{
+T}
+T{
+ctl
+T}@T{
+The ctl file in the line directory can be used to send commands to the line.
+See 
+.I ip
+.I 
+for messages that can be written to the ctl file.
+The last close of the data or ctl file will close the connection.
+T}@T{
+T}
+T{
+dial
+.PP
+(
+.I addr
+, 
+.I local
+)
+T}@T{
+The dial routine makes a call to destination 
+.I addr
+.I on
+a multiplexed network.
+If the network in 
+.I addr
+is net, dial will try in succession all networks in common between source and destination until a call succeeds.
+It returns a file descriptor open for reading and writing the data file in the line directory.
+The addr file in the line directory contains the address called.
+If the network allows the local address to be set, as is the case with UDP and TCP port numbers, and 
+.I local
+is non\-empty, the local address will be set to 
+.I local
+.
+T}@T{
+T}
+T{
+announce
+.PP
+(addr) and
+.PP
+listen(c)
+T}@T{
+The announce and listen functions are the complements of dial.
+The announce function establishes a network name to which incoming calls can be made.
+Like dial, announce returns an open Connection abstract data type (adt).
+The listen function takes as its only argument the Connection adt of a successful call to announce.
+When a call is received, listen returns an open Connection adt as if from dial.
+T}@T{
+T}
+T{
+export
+.PP
+(
+.I fd
+, 
+.I flag
+)
+T}@T{
+The export function responds to client requests for file operations on the server\[aq]s file name space.
+This is the server end of a client\[aq]s mount call.
+Typically, export\[aq]s first argument is the dfd member of a Connection returned from listen.
+The export function can take two mutually exclusive flags
+T}@T{
+T}
+T{
+T}@T{
+EXPWAIT
+T}@T{
+The export function blocks until all client requests are complete.
+T}
+T{
+T}@T{
+EXPASYNC
+T}@T{
+Client requests are handled by a background thread while export returns immediately
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH EXAMPLES
+Make a call and return an open file descriptor to use for communications:
+.IP
+.EX
+callkremvax( ): (int, Connection)
+{
+    return sys\->dial(\[dq]tcp!kremvax\[dq], nil);
+}
+.EE
+.PP
+Call the local authentication server:
+.PP
+dialauth(service: string): (int, Connection) { return sys\->dial(\[dq]net!$auth\[dq], nil); }
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I bind
+
+T}@T{
+Discussion of the mount function
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

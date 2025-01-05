@@ -1,0 +1,96 @@
+.TH SYS-PCTL 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+pctl \- process control
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+pctl: fn(flags: int, movefd: list of ref FD): int;
+.EE
+.PP
+.SH DESCRIPTION
+A newly spawned Limbo process (also known as a thread) shares with its parent process a number of resources and properties, such as file name space, open file descriptors, current working directory, and so on.
+The pctl function controls this sharing, allowing a process to gain a copy of a resource rather than to share it, to start with a null resource, and so on.
+.PP
+The set of processes sharing a property are called a group; for example the set of processes sharing a name space are called a name space group.
+Each process is a member of a 
+.I process
+.I group
+, typically the set of threads functioning as a single program.
+All the members of a process group may be terminated at once using the \[dq]killgrp\[dq] control message in the 
+.I prog
+device.
+.PP
+A call to pctl affects the calling process and, indirectly according to 
+.I flags
+, any other processes sharing properties with it.
+The 
+.I flags
+to pctl are:
+.PP
+.TS
+tab(@);
+l l.
+T{
+NEWFD
+T}@T{
+Place the process in a new file descriptor group.
+By default, no files will be open for I/O after this pctl.
+However, any file descriptor passed in the 
+.I movefd
+parameter will be preserved across the call.
+T}
+T{
+FORKFD
+T}@T{
+Place the process in a new file descriptor group containing a copy of the current set of file descriptors.
+After this call, changes the process makes to its set of open file descriptors will not be visible to other processes.
+T}
+T{
+NEWNS
+T}@T{
+Place the process in a new file name space group containing only a root directory, /, made from an attach to 
+.I root
+.
+The current directory is unaffected by this call.
+No files other than / will be accessible by name after this pctl; bind and mount calls will be necessary to build a new name space.
+T}
+T{
+FORKNS
+T}@T{
+Place the process in a new file name space group containing a copy of the current name space.
+After this call, changes the process makes to its name space, including chdir calls, will not affect other processes.
+T}
+T{
+NEWPGRP
+T}@T{
+Establish a new process group with a group id equal to that of the pid of the calling process.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The return value of pctl is the numerical process id of the calling process, which can be used for example to access its 
+.I prog
+files.
+.PP
+.SH NOTE
+Programs run synchronously from the shell share its file name space, so programs like bind and mount and cd can affect the shell\[aq]s environment.
+Programs that need a private space should call this system call with the FORKNS option.
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo System Modules
+.I  
+.I  and 
+sh
+.I 

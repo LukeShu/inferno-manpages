@@ -1,0 +1,195 @@
+.TH EMU 2 "" "" "Inferno Reference "
+.PP
+.SH NAME
+emu \- Inferno emulator
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+emu [Options... ]
+.EE
+.PP
+.SH DESCRIPTION
+The emu command provides the Inferno emulation environment.
+The emulator runs as an application under the machine\[aq]s native operating system, which provides system services.
+.PP
+The emu command starts an Inferno 
+.I shell
+(default /dis/sh.dis), whose path name is interpreted in the Inferno file name space, not in the native operating system\[aq]s name space.
+.PP
+.SH OPTIONS
+Options may be set from the environment variable EMU but are overridden by options supplied on the command line
+.PP
+.TS
+tab(@);
+lw(23.1n) lw(23.1n) lw(23.1n).
+T{
+-c[0\-9]
+T}@T{
+The \-c option determines the manner in which the emulator will process Dis programs.
+T}@T{
+T}
+T{
+T}@T{
+
+.B 0
+
+T}@T{
+(default)
+.PP
+Unless specified otherwise by the module, emu uses an interpreter to execute Dis instructions on the native machine.
+T}
+T{
+T}@T{
+
+.B 1
+
+.PP
+T}@T{
+Setting the option argument to non\-zero changes the default behavior to compile Dis into native instructions when a module is loaded (just\-in\-time compilation).
+This results in faster execution but larger run\-time size.
+T}
+T{
+T}@T{
+
+.B 2\-9
+
+T}@T{
+Setting the option argument to larger values engages compiler trace facilities.
+T}
+T{
+-g
+.I X
+x
+.I Y
+
+T}@T{
+Define screen width and height in pixels.
+The default values are 640 and 480 respectively.
+Values smaller than the defaults are ignored.
+T}@T{
+T}
+T{
+T}@T{
+T}@T{
+T}
+T{
+-f
+.I fontpath
+
+T}@T{
+Specify the default font for the tk module.
+The path is interpreted in the Inferno name space.
+If unspecified, the font variable has value <inferno_root>/fonts/lucm/unicode.9.font.
+.PP
+(See Notes section below for value of <inferno_root>.)
+T}@T{
+T}
+T{
+T}@T{
+T}@T{
+T}
+T{
+-r
+.I rootdir
+
+T}@T{
+Specify directory that emu will serve as its root instead of 
+.I <inferno_root>
+.
+See Notes below for default values.
+T}@T{
+T}
+T{
+-s
+T}@T{
+This option specifies how the emulator deals with traps reported by the operating system.
+By default, traps suspend execution of the offending thread.
+When the \-s option is set, emu makes no arrangements to catch traps and, if they occur, the emu process responds accordingly (e.g., terminates with core file).
+This facilitates debugging of the broken process via tools in the host environment.
+T}@T{
+T}
+T{
+-p
+.I poolname
+.I =maxsize
+
+T}@T{
+T}@T{
+T}
+T{
+T}@T{
+Specify the maximum size (in bytes) of the named memory allocation pool.
+The pools are:
+T}@T{
+T}
+T{
+T}@T{
+main
+T}@T{
+the general malloc arena
+T}
+T{
+T}@T{
+heap
+T}@T{
+the Dis virtual machine heap
+T}
+T{
+T}@T{
+image
+T}@T{
+image storage for the display
+T}
+T{
+-m[012]
+T}@T{
+Garbage collector mark\-and\-sweep trace parameter.
+T}@T{
+T}
+T{
+-7
+T}@T{
+Restrict emu to 7\-bit (128 element) color map.
+The default is 256 elements.
+Useful for X\-terminals with few color maps.
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+/dis/sh.dis
+T}@T{
+The default Inferno shell.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I limbo
+, and 
+.I sh
+
+.PP
+.SH NOTES
+Default value of 
+.I <inferno_root>
+is /usr/inferno on Unix\-hosted systems and \[rs]users\[rs]inferno on Windows\-hosted systems.

@@ -1,0 +1,31 @@
+.TH LIB-WORKDIR 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+workdir \- discover the name of the current working directory
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]lib.m\[dq];
+workdir:= load Workdir Workdir\->PATH;
+init: fn(): string;
+.EE
+.PP
+.SH DESCRIPTION
+The Workdir module returns a string representation of the working directory of the invoking process.
+.PP
+When Inferno boots, the initial process has / for its working directory.
+.PP
+.SH NOTES
+On hosted Inferno systems / corresponds to 
+.I <inferno_root>
+of the host system.
+.PP
+The default value of 
+.I <inferno_root>
+is /usr/inferno on Unix\-hosted systems and \[rs]users\[rs]inferno on Windows\-hosted systems.
+.PP
+.SH SEE ALSO
+.I chdir
+and 
+.I stat

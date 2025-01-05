@@ -1,0 +1,25 @@
+.TH PWD 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+pwd \- print working directory
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+pwd
+.EE
+.PP
+.SH DESCRIPTION
+The pwd command prints the path name of the current directory (synonymous to the \[aq]working\[aq] directory).
+.PP
+.SH CAVEAT
+The pwd command does not guarantee to return the same path that was used to enter the directory.
+The returned path may be another route through the name space to the same working directory.
+This behavior arises when a combination of mounts or binds produces a graph in the file name space.
+.PP
+.SH SEE ALSO
+.I cd
+, 
+.I bind
+, and 
+.I bind

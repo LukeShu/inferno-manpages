@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# build-aux/1e1/html2names - Get manpage names for a given HTML fragment
+#
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+set -euE -o pipefail
+
+# Usage: ./html2names html/mpgs123.phtml >outfile.names
+main() {
+	in_phtml=$1
+
+	n=${in_phtml##*/mpgs}
+	n=${n%%.*}
+
+	intros=(
+		1   # 1-cmd
+		32  # 2-hostos
+		36  # 3-modules
+		105 # 4-dev
+		113 # 5-proto
+		125 # 6-format
+		131 # 7-daemons
+	)
+	module_intros=(
+		37-draw    # 3.1
+		46-keyring # 3.2
+		54-lib     # 3.3
+		62-math    # 3.4
+		66-prefab  # 3.5
+		71-sys     # 3.6
+		90-tk      # 3.7
+		93-misc    # 3.8
+	)		
+
+	isintro=false
+	for i in "${!intros[@]}"; do
+		if [[ $n -lt ${intros[$i]} ]]; then
+			break
+		fi
+		chapter=$((i+1))
+		if [[ $n -eq ${intros[$i]} ]]; then
+			isintro=true
+		fi
+	done
+	subchapter_num=''
+	subchapter_name=''
+	if [[ $chapter -eq 3 ]] && ! $isintro; then
+		for i in "${!module_intros[@]}"; do
+			if [[ $n -lt ${module_intros[$i]%-*} ]]; then
+				break
+			fi
+			subchapter_num=$((i+1))
+			subchapter_name=${module_intros[$i]#*-}
+			if [[ $n -eq ${module_intros[$i]%-*} ]]; then
+				isintro=true
+			fi
+		done
+	fi
+
+	if $isintro; then
+		names=(0intro)
+	else
+		readarray -d $'\n' -t names < <(
+			<"$in_phtml" \
+				"$(dirname -- "${BASH_SOURCE[0]}")/html2name" |
+				sed -E -e 's/\s*-.*//' -e 's/[:,]\s*/\n/g' -e 's/\s+and\s+/\n/g' |
+				tr [A-Z] [a-z])
+	fi
+
+	if [[ -z $subchapter_num ]]; then
+		printf "%s(${chapter})\n" "${names[@]}"
+	else
+		#printf "${subchapter_name}-%s(${chapter}.${subchapter_num})\n" "${names[@]}"
+		printf "${subchapter_name}-%s(${chapter})\n" "${names[@]}"
+	fi
+}
+
+main "$@"

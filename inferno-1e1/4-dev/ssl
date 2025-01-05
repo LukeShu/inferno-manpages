@@ -1,0 +1,94 @@
+.TH SSL 4 "" "" "Inferno Reference "
+.PP
+.SH NAME
+ssl \- secure sockets layer device
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+bind \[aq]#D\[aq] /n/ssl
+/n/ssl/data
+/n/ssl/ctl
+/n/ssl/secretin
+/n/ssl/secretout
+.EE
+.PP
+.SH DESCRIPTION
+The SSL device implements the link layer of the secure sockets layer defined by Netscape.
+Each binding of #D into the name space creates a new ssl device.
+Once associated with a network connection the ssl device can be thought of as a filter for the connection.
+The ssl device can send data in the clear, digested or encrypted.
+In all cases, if an ssl device is associated with both ends of a connection, all messages are delimited.
+As long as reads always specify buffers that are of equal or greater lengths than the writes at the other end of the connection, one write will correspond to one read.
+.PP
+Writing to /n/ssl/ctl controls the ssl device.
+The following control messages are possible:
+.PP
+.TS
+tab(@);
+l l.
+T{
+fd n
+T}@T{
+Associate the network connection on file descriptor 
+.I n
+with the ssl device.
+T}
+T{
+alg clear
+T}@T{
+Allow data to pass in the clear with only message delimiters added.
+The device starts in this mode.
+T}
+T{
+alg sha
+T}@T{
+Append a sha digest to each buffer written to /n/ssl/data.
+The digest covers the outgoing secret (written to /n/ssl/secretout), the message, and a message number which starts at 0 and increments by one each message.
+Messages read have their appended digests compared to a digest computed using the incoming secret (written to /n/ssl/secretin).
+If the comparison fails, so will the read.
+T}
+T{
+alg md5
+T}@T{
+Like sha but using the md5 message digest.
+T}
+T{
+alg rc4
+T}@T{
+RC4 encrypt each message written to /n/ssl/data with the key written to /n/ssl/secretout.
+T}
+T{
+Decrypt
+T}@T{
+Incoming messages with the key written to /n/ssl/secretin.
+T}
+T{
+alg descbc
+T}@T{
+Available only in the commercial product
+T}
+T{
+alg desecb
+T}@T{
+Available only in the commercial product
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Files /n/ssl/secretin and /n/ssl/secretout must be written before the digesting or encryption is turned on.
+If only one is written, they are both assumed to be the same.
+.PP
+The mode may be changed at any time during a connection.
+.PP
+See Also
+.PP
+B. Schneier, 
+.I Applied Cryptography
+, 1996, J. Wiley & Sons, Inc.

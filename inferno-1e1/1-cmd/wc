@@ -1,0 +1,94 @@
+.TH WC 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+wc \- word (and other things) counter
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+wc [\-lwbrc] [file...]
+.EE
+.PP
+.SH DESCRIPTION
+The wc command sends to standard output a tally of words, lines and characters found in the named UTF text 
+.I files
+.
+If no 
+.I files
+are named, standard input is read.
+One line is output per file.
+If multiple files are specified, an additional 
+.I total
+line is produced.
+.PP
+Values are output in decimal format and are output in the same order as the listing of options (below).
+.PP
+The whitespace characters used in this calculation are \[aq] \[aq] (blank), \[aq]\[rs]t\[aq] (tab), and \[aq]\[rs]n\[aq] (newline).
+A 
+.I word
+is defined to be a sequence of non\-whitespace characters separated by one or more whitespace characters.
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I \-l
+(default)
+T}@T{
+Count lines.
+T}
+T{
+
+.I \-w
+(default)
+T}@T{
+Count words.
+T}
+T{
+
+.I \-c
+(default)
+T}@T{
+Count characters.
+T}
+T{
+-b
+T}@T{
+Count bytes.
+T}
+T{
+-e
+T}@T{
+Count erroneously encoded characters.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I utf
+
+T}@T{
+Discussion of the UTF format
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

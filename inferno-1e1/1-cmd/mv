@@ -1,0 +1,67 @@
+.TH MV 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+mv \- rename/move files
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+mv fromfile tofile 
+mv fromfile... todir 
+.EE
+.PP
+.SH DESCRIPTION
+The mv command can be used in several ways.
+.PP
+If there are two arguments of the same type (i.e., both directories or both not) then mv will rename the 
+.I fromfile
+to 
+.I tofile
+.
+.PP
+For files, a previously file named 
+.I tofile
+will be (silently) removed.
+This requires write permission for the current directory.
+Write permission is not needed for 
+.I tofile
+.
+.PP
+For directories, a previously named directory 
+.I tofile
+will be (silently) removed if empty; otherwise, the action will fail.
+.PP
+If the last argument is a directory, the earlier arguments (all files) will be moved into that directory.
+Any previously existing files of the same name will be overwritten.
+.PP
+Directories cannot be moved into other directories.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l l.
+T{
+.I stat
+
+T}@T{
+changing file attributes (e.g., 
+.I name
+)
+T}@T{
+T}
+T{
+.I remove
+
+T}@T{
+removing files and directories
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

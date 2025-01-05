@@ -1,0 +1,229 @@
+.TH DRAW-DISPLAY 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Display \- connection to draw device
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+draw:= load Draw Draw\->PATH;
+Display: adt
+{
+ image:       ref Image;
+ ones:        ref Image;
+ zeros:       ref Image;
+ allocate:    fn(dev: string)                               :ref Display;
+ startrefresh:fn(d: self ref Display);
+ publicscreen:fn(d: self ref Display, id: int)              :ref Screen;
+ newimage:    fn(d: self ref Display,
+                 r: Rect, ldepth, repl, color: int)         :ref Image;
+ color:       fn(d: self ref Display,   color: int)         :ref Image;
+ rgb:         fn(d: self ref Display, red, green, blue: int):ref Image;
+ open:       fn(d: self ref Display, name: string)         :ref Image;
+ readimage: fn(d: self ref Display, fd: ref Sys\->FD)      :ref Image;
+ writeimage:fn(d: self ref Display, fd: ref Sys\->FD, i:ref Image)
+                                                                  :int;
+ rgb2cmap:    fn(d: self ref Display, red, green, blue: int)      :int;
+ cmap2rgb:    fn(d: self ref Display, color: int)     :(int, int, int);
+};
+.EE
+.PP
+.SH DESCRIPTION
+The Display type represents a connection to a 
+.I draw
+device.
+This device is the representation of a physical display, such as a CRT, and its associated memory.
+It contains the storage for all images, objects must be allocated through Display member functions.
+Graphics operations that use multiple Image objects may not mix images from different Displays.
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+image
+T}@T{
+The visible contents of the display.
+Draw on image to change the display.
+T}
+T{
+ones, zeros
+T}@T{
+Replicated images of a single pixel, either all ones (true) or all zeros (false).
+Useful as masks for basic graphical operations.
+T}
+T{
+allocate (
+.I dev
+)
+T}@T{
+Attach to a new display, represented by the 
+.I draw
+device mounted in the specified dev directory.
+If 
+.I dev
+is the empty string, /dev is used.
+The return value is nil if the allocation fails.
+T}
+T{
+
+.I d
+.startrefresh ( )
+T}@T{
+Receive and process window refresh events from the device.
+After allocating a Display object, the application should spawn a thread to call startrefresh.
+T}
+T{
+
+.I d
+.publicscreen (
+.I id
+)
+T}@T{
+Create a locally addressable pointer to a public Screen.
+See 
+.I screen
+.
+T}
+T{
+
+.I d
+.newimage
+.PP
+(
+.I clipr
+, 
+.I ldepth
+, 
+.I repl
+, 
+.I color
+)
+T}@T{
+Allocate an off\-screen Image.
+The arguments supply the values for that are used to paint the image when created.
+T}
+T{
+
+.I d
+.color (
+.I color
+)
+T}@T{
+Create a single\-pixel, replicated off\-screen image of the specified 
+.I color
+.
+The Draw module defines constants for several common colors: Black, Blue, Green, Red, White, and Yellow.
+T}
+T{
+
+.I d
+.rgb
+.PP
+(
+.I red
+, 
+.I green
+, 
+.I blue
+)
+T}@T{
+Use the values (from 0 [no color] through 255 [saturated]) of red, green, and blue to find the closest matching color map entry, and creates a single\-pixel replicated image of that color.
+Equivalent to 
+.I d
+.color(
+.I d
+.rgb2cmap(
+.I red
+, 
+.I green
+, 
+.I blue
+)).
+T}
+T{
+
+.I d
+.open (
+.I file
+)
+T}@T{
+Read an image description from 
+.I file
+and return an Image holding the picture.
+This function will implicitly handle either 
+.I compressed
+or 
+.I uncompressed
+formats.
+See 
+.I image
+.I 
+for further details.
+T}
+T{
+
+.I d
+.readimage (
+.I fd
+)
+T}@T{
+Analogous to open, except the image is obtained from an open file descriptor, 
+.I fd
+, rather than a named file.
+T}
+T{
+
+.I d
+.writeimage (
+.I fd
+, 
+.I i
+)
+T}@T{
+Complement of readimage: Write an image file representing image 
+.I i
+to the open file descriptor, 
+.I fd
+.
+This image is always written in a 
+.I compressed
+format.
+See 
+.I image
+.I 
+for further details.
+T}
+T{
+
+.I d
+.rgb2cmap
+.PP
+(
+.I red
+, 
+.I green
+, 
+.I blue
+)
+T}@T{
+Return the color map index of the color that best matches the color triple.
+The values of the components range from 0 (no color) to 255 (saturated).
+T}
+T{
+
+.I d
+.cmap2rgb (
+.I color
+)
+T}@T{
+Decompose the color into a color triple and return the result.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

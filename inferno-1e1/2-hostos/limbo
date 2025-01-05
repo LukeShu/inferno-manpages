@@ -1,0 +1,397 @@
+.TH LIMBO 2 "" "" "Inferno Reference "
+.PP
+.SH NAME
+limbo \- Limbo compiler
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+limbo [option... ] [file... ]
+.EE
+.PP
+.SH DESCRIPTION
+The limbo compiles the named Limbo 
+.I files
+into machine\-independent object files for the Dis virtual machine.
+Depending on the options, the compiler may create output files or write information to its standard output.
+Conventional files and their extensions include the following.
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I file
+.b
+T}@T{
+Limbo source file.
+T}
+T{
+
+.I file
+.dis
+T}@T{
+Object code for the Dis virtual machine.
+T}
+T{
+
+.I file
+.m
+T}@T{
+Limbo source file for module declarations.
+T}
+T{
+
+.I file
+.s
+T}@T{
+Assembly code.
+T}
+T{
+
+.I file
+.sbl
+T}@T{
+Symbolic debugging information.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+With no options, limbo produces a .dis file for each source file.
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+l l l.
+T{
+-a
+T}@T{
+Print on standard output type definitions and call frames useful for writing C language implementations of Limbo modules.
+Suppresses normal output file generation.
+T}@T{
+T}
+T{
+-C
+T}@T{
+Mark the Dis object file to prevent run\-time compilation.
+T}@T{
+T}
+T{
+-c
+T}@T{
+Mark the Dis object file to guarantee run\-time compilation.
+T}@T{
+T}
+T{
+-D 
+.I flags
+
+T}@T{
+Turn on debugging flags for specific language features.
+The flags include:
+T}@T{
+T}
+T{
+T}@T{
+
+.B A
+
+T}@T{
+arrays
+T}
+T{
+T}@T{
+
+.B a
+
+T}@T{
+alt statements
+T}
+T{
+T}@T{
+
+.B b
+
+T}@T{
+booleans
+T}
+T{
+T}@T{
+
+.B C
+
+T}@T{
+case body statements
+T}
+T{
+T}@T{
+
+.B c
+
+T}@T{
+case statements
+T}
+T{
+T}@T{
+
+.B D
+
+T}@T{
+use descriptors
+T}
+T{
+T}@T{
+
+.B d
+
+T}@T{
+declarations
+T}
+T{
+T}@T{
+
+.B e
+
+T}@T{
+expressions
+T}
+T{
+T}@T{
+
+.B E
+
+T}@T{
+extended expressions
+T}
+T{
+T}@T{
+
+.B F
+
+T}@T{
+function information
+T}
+T{
+T}@T{
+
+.B f
+
+T}@T{
+constant folding
+T}
+T{
+T}@T{
+
+.B m
+
+T}@T{
+modules
+T}
+T{
+T}@T{
+
+.B n
+
+T}@T{
+nil reference
+T}
+T{
+T}@T{
+
+.B P
+
+T}@T{
+program counter manipulations
+T}
+T{
+T}@T{
+
+.B r
+
+T}@T{
+reference types
+T}
+T{
+T}@T{
+
+.B S
+
+T}@T{
+type signature
+T}
+T{
+T}@T{
+
+.B s
+
+T}@T{
+code generation summary
+T}
+T{
+T}@T{
+
+.B T
+
+T}@T{
+tuples
+T}
+T{
+T}@T{
+
+.B t
+
+T}@T{
+type checking
+T}
+T{
+T}@T{
+
+.B v
+
+T}@T{
+variable initialization
+T}
+T{
+-e
+T}@T{
+Increase the number of errors the compiler will report before exiting from 20, the default, to 1000.
+T}@T{
+T}
+T{
+-G
+T}@T{
+Annotate assembly language output with debugging information.
+This option has no effect unless \-S is set.
+T}@T{
+T}
+T{
+-g
+T}@T{
+Generate debugging information for the input files and place it in a file named by stripping any trailing .b from the input file name and appending .sbl.
+T}@T{
+T}
+T{
+-I 
+.I dir
+
+T}@T{
+An include file whose name does not begin with slash is sought first relative to the working directory, regardless of the source file argument.
+If this fails, limbo sequences through directories named in \-I options, then searches in <inferno_root> /module.
+(See Notes section below for value of 
+.I <inferno_root>
+.)
+An include file contains Limbo source code, normally holding one or more module declarations.
+T}@T{
+T}
+T{
+-o 
+.I obj
+
+T}@T{
+Place output in file 
+.I obj
+(allowed only if there is a single input 
+.I file
+).
+The output file will hold either object or assembly code, depending on \-S.
+The default behavior is to take the last element of the input file name, strip any trailing, .b and append .dis for object code and .s for assembly code.
+Thus, the default output file for dir/mod.b would be mod.dis.
+T}@T{
+T}
+T{
+-S
+T}@T{
+Create assembly language output instead of object code.
+T}@T{
+T}
+T{
+-T 
+.I module
+
+T}@T{
+Print on standard output C stub functions, useful for implementing Limbo modules in the C language for linkage with the interpreter.
+T}@T{
+T}
+T{
+-t 
+.I module
+
+T}@T{
+Print on standard output a table of runtime functions, to link C language implementations of modules with the Limbo interpreter.
+Suppresses normal output file generation.
+T}@T{
+T}
+T{
+-w
+T}@T{
+Print warning messages about unused variables, etc.
+More w\[aq]s (e.g., \-ww) increase the pedantry of the checking.
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH FILES
+.PP
+.TS
+tab(@);
+l l.
+T{
+<
+.I inferno_root
+>/module
+T}@T{
+System directory for Limbo include modules.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I bind
+, 
+.I grep
+, 
+.I auth
+, 
+.I Limbo Draw Modules
+, 
+.I Limbo Modules
+, 
+.I ir
+, 
+.I Limbo Math Modules
+, 
+.I mpeg
+, 
+.I Limbo Prefab Modules
+, 
+.I srv
+, 
+.I Limbo System Modules
+, and 
+.I tk
+
+.PP
+.SH NOTES
+Default value of 
+.I <inferno_root>
+is /usr/inferno on Unix\-based systems and \[rs]users\[rs]inferno on Windows\-based systems.

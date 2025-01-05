@@ -1,0 +1,18 @@
+.TH SLEEP 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+sleep \- suspend execution for an interval
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+sleep time
+.EE
+.PP
+.SH DESCRIPTION
+The sleep command suspends its own execution for 
+.I time
+seconds then returns.
+.PP
+.SH SEE ALSO
+.I sleep

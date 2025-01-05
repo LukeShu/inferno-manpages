@@ -1,0 +1,89 @@
+.TH SYS-BYTE2CHAR 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+byte2char, char2byte \- convert between bytes and characters
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+byte2char: fn(buf: array of byte, n: int): (int, int, int);
+char2byte: fn(c: int, buf: array of byte, n: int): int;
+.EE
+.PP
+.SH DESCRIPTION
+.SS BYTE2CHAR (BUF, N)
+The byte2char function converts a byte sequence to one Unicode character.
+The 
+.I buf
+argument gives an array of bytes holding the sequence and 
+.I n
+gives the number of bytes in the array.
+The returned tuple, (
+.I c
+, 
+.I len
+, 
+.I status
+), specifies the result of the translation:
+.PP
+.TS
+tab(@);
+l l.
+T{
+c
+T}@T{
+
+.I The
+resulting Unicode character.
+T}
+T{
+len
+T}@T{
+The number of bytes consumed by the translation.
+T}
+T{
+status
+T}@T{
+Non\-zero if the bytes are a valid UTF sequence and zero otherwise.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+If the input sequence is not long enough to determine its validity, byte2char consumes zero bytes.
+If the input sequence is otherwise invalid, byte2char consumes one input byte and generates an error character (16r80, Sys\->UTFerror), which prints (in most fonts) as a boxed question mark.
+.PP
+.SS CHAR2BYTE (C, BUF, N)
+The char2byte performs the inverse of byte2char.
+It translates a Unicode character, 
+.I c
+, to a UTF byte sequence.
+The results are placed in 
+.I buf
+, which should have at least 
+.I n
+bytes available.
+The longest UTF sequence for a single Unicode character is Sys\->UTFmax (3) bytes.
+.PP
+If the translation succeeds, char2byte returns the number of bytes placed in the buffer.
+If 
+.I n
+bytes are too few to hold the result, char2byte returns zero and leaves the array unchanged.
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+, 
+.I utfbytes
+, and 
+.I utf
+
+.PP
+.SH NOTES
+If the array bounds are invalid or insufficient to hold results, a run\-time error occurs.

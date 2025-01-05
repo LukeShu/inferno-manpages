@@ -1,0 +1,226 @@
+.TH MISC-REGEX 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+regex \- regular expression recognizer
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]regex.m\[dq];
+regex:= load Regex \[dq]/dis/regex.dis\[dq];
+compile: fn(e: string)       : Re;
+execute: fn(x: Re; s: string): (int,int);
+.EE
+.PP
+.SH DESCRIPTION
+The compile function returns a compiled form of the regular expression given in string 
+.I e,
+or nil if 
+.I e
+is not a valid regular expression.
+.PP
+The execute function matches the compiled regular expression 
+.I x
+against string 
+.I s.
+It returns indexes of the first character of the longest leftmost match and of the next character beyond the match, or (\-1,\-1) if no match exists.
+.PP
+The primitives in regular expressions are:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+&.
+T}@T{
+matches any character other than newline
+T}
+T{
+[rs]
+.I c
+
+T}@T{
+matches character 
+.I c
+, except \[rs]n matches newline
+T}
+T{
+
+.I c
+
+T}@T{
+matches character 
+.I c
+other than one of:
+.PP
+[rs] .
+[ha] $ ( ) [ ] ?
+* +
+T}
+T{
+(
+.I e
+)
+T}@T{
+matches what regular expression 
+.I e
+matches
+T}
+T{
+()
+T}@T{
+matches an empty substring
+T}
+T{
+[ha]
+T}@T{
+matches an empty substring at the beginning of a string
+T}
+T{
+$
+T}@T{
+matches an empty substring at the end of a string
+T}
+T{
+[
+.I set
+]
+.PP
+[\[ha]
+.I set
+]
+T}@T{
+matches any character in a 
+.I set
+(or its complement), given as a sequence of zero or more items \- characters and ranges.
+An item consists at least of a literal character, not \[rs] or ], or of a character escaped with \[rs].
+If this is followed by a literal \-, it is the lower limit of an inclusive range of Unicode characters.
+The upper limit is a similarly expressed character after the \-.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+Repetitions are built from primitives, 
+.I p,
+in these ways.
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I p
+
+T}@T{
+one match to 
+.I p
+
+T}
+T{
+
+.I p
+?
+T}@T{
+zero or one matches to 
+.I p
+
+T}
+T{
+
+.I p
+*
+T}@T{
+zero or more matches to 
+.I p
+
+T}
+T{
+
+.I p
++
+T}@T{
+one or more matches to 
+.I p
+
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+
+.I Regular
+expressions are built from repetitions, 
+.I r,
+and other regular expressions, 
+.I e1,
+.I e2,
+in these ways.
+.PP
+.TS
+tab(@);
+l l.
+T{
+
+.I r
+
+T}@T{
+
+.I a
+repetition
+T}
+T{
+
+.I re1
+
+T}@T{
+concatenation
+.I :
+a match to 
+.I r
+followed by a match to 
+.I e1
+
+T}
+T{
+
+.I e1
+|
+.I e2
+
+T}@T{
+alternation: a match to either 
+.I e1
+or 
+.I e2
+; concatenation takes precedence over alternation
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH EXAMPLES
+.IP
+.EX
+(beg, end):=
+regex.execute(regex.compile(\[dq][ABCb\-z]+\[dq]), s:=\[dq]aAbBcCdD\[dq]);
+s[beg:end] == \[dq]AbBcCd\[dq];
+(beg, end):= regex.execute(regex.compile(\[dq]a*b*\[dq]), \[dq]bbaabb\[dq]);
+(beg, end) == (0,2);
+re:= regex.compile(\[dq](thick)*(chocolate|raspberry)?(topp|fill)ing\[dq]);
+.EE

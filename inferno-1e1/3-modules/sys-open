@@ -1,0 +1,135 @@
+.TH SYS-OPEN 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+open, create \- open/create a file for reading or writing
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]sys.m\[dq];
+sys:= load Sys Sys\->PATH;
+open:  fn(file: string, omode: int)      : ref FD;
+create:fn(file: string, omode, perm: int): ref FD;
+.EE
+.PP
+.SH DESCRIPTION
+.SS OPEN (FILE, OMODE)
+The open function opens the 
+.I file
+for I/O and returns an associated file descriptor.
+The 
+.I omode
+argument is one of
+.PP
+.TS
+tab(@);
+l l.
+T{
+Sys\->OREAD
+T}@T{
+open for reading
+T}
+T{
+Sys\->OWRITE
+T}@T{
+open for writing
+T}
+T{
+Sys\->ORDWR
+T}@T{
+open for reading and writing
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The following values may be OR\[aq]ed with the above values for additional actions:
+.PP
+.TS
+tab(@);
+l l.
+T{
+Sys\->OTRUNC
+T}@T{
+Truncate the file before opening it; this requires write permission even if 
+.I omode
+is Sys\->OREAD.
+T}
+T{
+Sys\->ORCLOSE
+T}@T{
+Remove the file on closure.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The open function returns nil if the file does not exist or the user does not have permission to open it as requested (see 
+.I stat
+for a description of permissions).
+.PP
+.SS CREATE (FILE, OMODE, PERM)
+The create function creates a new file 
+.I or
+prepares to rewrite an existing 
+.I file
+, opens it according to 
+.I omode
+(as described for open), and returns an associated file descriptor.
+.PP
+If the file is new, the owner is set to the 
+.I user
+.I id
+of the creating process group, the group to that of the containing directory, and the permissions to perm 
+.I AND\[aq]ed
+with the permissions of the containing directory.
+See 
+.I The create Transaction
+section of 
+.I open
+.
+.PP
+If the file already exists, it is truncated to 0 length, and the permissions, owner, and group remain unchanged.
+.PP
+The created file will be a directory if the Sys\->CHDIR bit is set in 
+.I omode
+.
+.PP
+The create function returns nil if the path up to the last element of file 
+.I cannot
+be evaluated, if the user does not have write permission in the final directory, or if the file already exists and does not permit the access defined by 
+.I omode
+.
+.PP
+If the file is new and the directory in which it is created is a union directory (see 
+.I Limbo System Modules
+) then the constituent directory where the file is created depends on the structure of the union: see 
+.I bind
+.
+.PP
+.SH CAVEAT
+There is no explicit \[aq]close\[aq] routine; when the last reference to the file descriptor is released, the system closes the associated file.
+.PP
+For devices and network protocols where shutdown must be guaranteed, write a \[dq]hangup\[dq] message to the associated control file and use the return value of the write to verify closure.
+For example, see 
+.I ip
+.
+.PP
+.SH SEE ALSO
+.I Limbo System Modules
+: 
+.I bind
+, 
+.I stat
+, and 
+.I open

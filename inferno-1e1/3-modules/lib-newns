@@ -1,0 +1,85 @@
+.TH LIB-NEWNS 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+newns \- build a new name space from a description file
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]lib.m\[dq];
+ns:=   load Newns Newns\->PATH;
+newns: fn(user: string, nsfile: string): string;
+.EE
+.PP
+.SH DESCRIPTION
+The Newns module reads file 
+.I nsfile
+and builds a new name space based on the commands it contains.
+If 
+.I nsfile
+is nil or empty, then newns attempts to read the file \[dq]namespace\[dq] in the current directory.
+.PP
+The name space description file contains one or more lines each of which specifies one name space operation.
+The operations and their arguments are:
+.PP
+.SS BIND [\-ABRCI] OLD NEW
+Use 
+.I new
+as an alias for file or directory 
+.I old
+.
+Options a, b, c, and r translate to flag values Sys\->MAFTER, Sys\->MBEFORE, Sys\->MCREATE, and Sys\->MREPL, respectively, of 
+.I bind
+.
+Option i means to ignore errors.
+.PP
+.SS CD DIRECTORY
+Change working directory to 
+.I directory
+.
+.PP
+.SS FORK
+Split the name space before modification.
+This is equivalent to passing a value of Sys\->FORKNS to the pctl system call.
+See 
+.I pctl
+.
+.PP
+.SS NODEV
+Disallow device attaches.
+This is equivalent to passing a value of Sys\->NODEVS to the pctl system call.
+See 
+.I pctl
+.
+.PP
+.SS MOUNT [\-ABRCI] [NET!] MACHINE TO [SPEC]
+Mount the file tree of machine 
+.I upon
+directory 
+.I to
+.
+Options a, b, c, i, and r are the same as for bind.
+The tokens to and 
+.I 
+.I spec
+translate to old and 
+.I 
+.I aname
+of mount as described under 
+.I bind
+.
+.PP
+.SH SEE ALSO
+.I nsbuild
+, 
+.I bind
+, 
+.I chdir
+, and 
+.I pctl
+
+.PP
+.SH NOTES
+The 
+.I user
+string is ignored.

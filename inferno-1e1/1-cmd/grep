@@ -1,0 +1,82 @@
+.TH GREP 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+grep \- search file(s) for a pattern
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+grep [\-l] [\-n] [\-e pattern] [\-v] pattern [file... ]
+.EE
+.PP
+.SH DESCRIPTION
+The grep command searches the input 
+.I files
+(standard input, by default) for lines that match the 
+.I pattern
+, a regular expression as defined in 
+.I regex
+.
+Lines matching the pattern (\[aq]matching\[aq] lines) are printed to the standard output.
+.PP
+The minus (
+.I \[aq] \- \[aq]
+) sign can be used on the command line to explicitly name standard input as an input source.
+The following command will search 
+.I file1
+, then standard input, then 
+.I file2
+.
+.IP
+.EX
+   grep pattern file1 \- file2
+.EE
+.PP
+.SH OPTIONS
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+-l
+T}@T{
+Print (once) the names of files with any matching lines; the matched lines are not printed.
+T}
+T{
+-n
+T}@T{
+Prefix each line of output with its line number within its file.
+T}
+T{
+-v
+T}@T{
+Reverse: print lines that do not match the pattern.
+T}
+T{
+-e 
+.I pattern
+
+T}@T{
+Use the following field as the 
+.I pattern
+for selecting lines.
+Handy when searching for patterns that might be interpreted as options.
+The following command searches for instances of \-n in 
+.I file
+.
+.IP
+.EX
+    grep \-e \-n file
+.EE
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SEE ALSO
+.I regex

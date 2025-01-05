@@ -1,0 +1,32 @@
+.TH WISH 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+wish \- interface to the Tk graphics toolkit
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+wish [file...]
+.EE
+.PP
+.SH DESCRIPTION
+The 
+.I wish
+command provides a command line interface to the Tk graphics toolkit.
+A Tk module is first loaded and initialized.
+Then input is packaged into Tk commands and sent to that module.
+The input should be in the format of Tk commands as specified in 
+.I tk
+.
+.PP
+Input is first taken from the files, if any, named as command line arguments; thereafter, commands are read from standard input.
+.PP
+Input sequences consisting of a backslash, \[rs], followed by an n, t, b, or \[rs] are converted into newline, tab, blank, and backslash, respectively.
+.PP
+.SH FILES
+/dev/pointer
+.PP
+/dev/keyboard
+.PP
+.SH SEE ALSO
+.I tk

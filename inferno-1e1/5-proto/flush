@@ -1,0 +1,48 @@
+.TH FLUSH 5 "" "" "Inferno Reference "
+.PP
+.SH NAME
+flush \- abort a message
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+Tflush tag [2] oldtag [2]
+Rflush tag [2]
+.EE
+.PP
+.SH DESCRIPTION
+When the response to a request is no longer needed, such as when a user interrupts a process doing a 
+.I read
+, a Tflush request is sent to the server to purge the pending response.
+The message being flushed is identified by 
+.I oldtag
+.
+The semantics of flush depend on messages arriving in order.
+.PP
+The server must answer the flush message immediately.
+If it recognizes 
+.I oldtag
+as the tag of a pending transaction, it should abort any pending response and discard that tag.
+In either case, it should respond with an Rflush echoing the 
+.I tag
+(not 
+.I oldtag
+) of the Tflush message.
+The response to a Tflush message should never be an Rerror message.
+.PP
+When the client sends the Tflush, it should disregard all messages received with tag 
+.I oldtag
+until the corresponding Rflush is received, at which point 
+.I oldtag
+may be recycled for subsequent messages.
+.PP
+The following exceptional conditions are handled correctly by the above specification:
+.IP \[bu] 2
+Sending multiple flushes for a single tag.
+.IP \[bu] 2
+Flushing a Tflush.
+.IP \[bu] 2
+Flushing an invalid tag.
+.PP
+.SH SEE ALSO
+.I read

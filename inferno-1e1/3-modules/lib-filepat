@@ -1,0 +1,98 @@
+.TH LIB-FILEPAT 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+filepat: expand, match \- file pattern matching
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]lib.m\[dq];
+filepat:= load Filepat Filepat\->PATH;
+expand:   fn(pat: string)      : list of string;
+match:    fn(pat, name: string): int;
+.EE
+.PP
+.SH DESCRIPTION
+.PP
+.TS
+tab(@);
+l l.
+T{
+expand (
+.I pat
+)
+T}@T{
+The expand function builds a list of file names in alphabetical order that matches the pattern 
+.I pat
+.
+The pattern is tokenized using / as a delimiter.
+T}
+T{
+match (
+.I pat
+, 
+.I name
+)
+T}@T{
+The match function returns the length of name 
+.I if
+it matches the pattern 
+.I pat
+.
+Otherwise, it returns 0.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+The 
+.I pat
+passed to match and each token of 
+.I pat
+passed to expand may include combinations of the special characters *,?, [, and].
+.PP
+The asterisk * matches a string of zero or more characters.
+.PP
+The query ?
+matches any single character.
+.PP
+The notation [
+.I s
+], where 
+.I s
+is a non\-empty string, matches any single character in 
+.I s
+.
+A range of characters can be expressed by a string 
+.I s
+of the form 
+.I c
+~start~\-
+.I c
+~end~.
+The notation [\[ha]
+.I s
+], where 
+.I s
+is a non\-empty string, matches any single character not in 
+.I s
+.
+The characters *,?, and [ lose their special meaning if they occur in 
+.I s
+.
+.PP
+If any character is preceded by the character \[rs], that character loses any special meaning and is interpreted literally.
+.PP
+.SH SEE ALSO
+
+.I 
+tokenize
+.I  
+.I  and 
+readdir
+.I 

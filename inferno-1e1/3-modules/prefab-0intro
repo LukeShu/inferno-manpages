@@ -1,0 +1,80 @@
+.TH PREFAB-0INTRO 3 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Limbo Prefab Modules
+.PP
+The Limbo Prefab modules are similar to interactive television (ITV) tookit and are as follows:
+.PP
+.SH PREFAB MODULES
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I compound
+
+T}@T{
+windows for ITV toolkit
+T}
+T{
+.I element
+
+T}@T{
+menu and display elements for ITV toolkit
+T}
+T{
+.I environ
+
+T}@T{
+environment for ITV toolkit to provide a graphics framework for a item collections
+T}
+T{
+.I style
+
+T}@T{
+fonts and colors for ITV toolkit
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+include \[dq]draw.m\[dq];
+include \[dq]prefab.m\[dq];
+prefab:= load Prefab Prefab\->PATH;
+.EE
+.PP
+.SH DESCRIPTION
+The Prefab module contains components for building graphics objects suitable for Interactive Television (ITV) applications using infrared remote controls.
+Using the Draw module\[aq]s operations for simple text and images (see 
+.I Limbo Draw Modules
+), the toolkit can group individual items, treat those groups as units, and then activate the items on command.
+The other user interface toolkit, (see 
+.I tk)
+, provides facilities for keyboard\- and mouse\-driven applications.
+.PP
+The objects on the screen are of type Compound, each of which occupies a unique window on the display and contains objects of type Element.
+An Element may be a single object or a list of further Elements that can be used to build hierarchically structured components.
+.PP
+Prefab defines Environ and Style types that specify the appearance of objects: their colors, fonts, backgrounds, and so on.
+A Style gives font and color information, while an Environ identifies the Screen upon which the items will be displayed and the Style in which they will be drawn.
+.PP
+Applications should allocate an Element or Compound only through the appropriate member functions as described in the corresponding sections of the manual.
+Moreover, except where indicated, applications should not modify the data members directly.
+Although the type definitions make data members visible, the members should be treated as read\-only data.
+.PP
+.SH SEE ALSO
+
+.I 
+Limbo Draw Modules
+.I  
+.I  and 
+ir
+.I 

@@ -1,0 +1,54 @@
+.TH 0INTRO 6 "" "" "Inferno Reference "
+.PP
+.SH NAME
+Format Specifications
+.PP
+The following utilities are used for formatting in Limbo:
+.PP
+.TS
+tab(@);
+lw(35.0n) lw(35.0n).
+T{
+.I db
+
+T}@T{
+connection service database
+T}
+T{
+.I font
+,
+.PP
+subfont
+T}@T{
+external format for character fonts and subfonts
+T}
+T{
+.I image
+
+T}@T{
+external format for images
+T}
+T{
+.I rgbv
+
+T}@T{
+color map
+T}
+T{
+.I utf
+
+.PP
+unicode,
+.PP
+ascii
+T}@T{
+character set and format
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE

@@ -1,0 +1,33 @@
+.TH CLUNK 5 "" "" "Inferno Reference "
+.PP
+.SH NAME
+clunk \- forget about a fid
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+Tclunk tag [2] fid [2]
+Rclunk tag [2] fid [2]
+.EE
+.PP
+.SH DESCRIPTION
+The clunk request informs the file server that the current file represented by 
+.I fid
+is no longer needed by the client.
+The actual file is not removed on the server.
+.PP
+Once a fid has been 
+.I clunk
+\[aq]ed, the same fid can be reused in a new clone request.
+.PP
+Even if the clunk returns an error, the 
+.I fid
+is no longer valid.
+.PP
+.SH ENTRY POINTS
+A clunk message is generated when a file descriptor is closed (usually by the garbage collector) and indirectly by other actions such as failed 
+.I open calls.
+
+.PP
+.SH SEE ALSO
+.I open

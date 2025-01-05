@@ -1,0 +1,255 @@
+.TH LS 1 "" "" "Inferno Reference "
+.PP
+.SH NAME
+ls \- list contents of directory
+.PP
+.SH SYNOPSIS
+.IP
+.EX
+ls [\-dlpqrstu] files...
+.EE
+.PP
+.SH DESCRIPTION
+For each directory argument, ls lists (to standard output) the contents of the directory; for each file argument, ls repeats its name and any other information requested.
+When no argument is given, the current directory is listed.
+.PP
+.SH OPTIONS
+There are a number format/content options:
+.PP
+.TS
+tab(@);
+l l.
+T{
+-d
+T}@T{
+If argument is a directory, list it, not its contents.
+T}
+T{
+-l
+T}@T{
+List in long format, giving mode (see below), file system type (e.g., for devices, the # code letter that names it; see 
+.I Inferno Devices
+), the instance or subdevice number, owner, group, size in bytes, and time of last modification for each file.
+T}
+T{
+-p
+T}@T{
+Print only the final path element of each file name.
+T}
+T{
+-q
+T}@T{
+Include the 
+.I qid
+(see 
+.B \f[BI]stat
+.B 
+.B ) of each file.
+By default, the output is sorted alphabetically by name; however, there are a number of sorting options.
+
+T}
+T{
+-r
+T}@T{
+Reverse the order of sort.
+T}
+T{
+-s
+T}@T{
+Sort by size.
+T}
+T{
+-t
+T}@T{
+Sort by time modified (latest first) instead of by name.
+T}
+T{
+-u
+T}@T{
+Sort by time of last access.
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SS THE LONG FORMAT
+The information given under the \-l format consists of eight fields:
+.PP
+.TS
+tab(@);
+l l l.
+T{
+mode
+T}@T{
+The 
+.I mode
+contains ten characters.
+The first character is
+T}@T{
+T}
+T{
+T}@T{
+d
+T}@T{
+if the entry is a directory;
+T}
+T{
+T}@T{
+-
+T}@T{
+if the entry is a plain file.
+T}
+T{
+T}@T{
+The remaining nine characters are interpreted as three sets of three bits each.
+The first set refers to owner (
+.I uid
+) permissions; the next to permissions to others in the same user\-group (
+.I gid
+); and the last to all others.
+T}@T{
+T}
+T{
+T}@T{
+Within each set the three characters indicate permission respectively to read, to write, or to execute the file as a program.
+T}@T{
+T}
+T{
+T}@T{
+For a directory, \[ga]execute\[aq] permission means permission to search the directory for a specified file.
+T}@T{
+T}
+T{
+T}@T{
+The permissions are indicated as follows:
+T}@T{
+T}
+T{
+T}@T{
+r
+T}@T{
+if the file is readable;
+T}
+T{
+T}@T{
+w
+T}@T{
+if the file is writable;
+T}
+T{
+T}@T{
+x
+T}@T{
+if the file is executable;
+T}
+T{
+T}@T{
+-
+T}@T{
+if none of the above permissions is granted.
+T}
+T{
+devtype
+T}@T{
+The 
+.I device type
+for the file, a single character representing the root of a file tree implemented by a particular kernel device driver.
+T}@T{
+T}
+T{
+
+.I device
+.I number
+
+T}@T{
+A number provided by the file system server.
+T}@T{
+T}
+T{
+uid
+T}@T{
+The user identity string.
+T}@T{
+T}
+T{
+gid
+T}@T{
+The group identity string.
+T}@T{
+T}
+T{
+size
+T}@T{
+The size of the file in bytes.
+T}@T{
+T}
+T{
+
+.I modification
+.I time
+
+T}@T{
+The modification time of the file formatted per Daytime\->filet: files less than 6 months old appear with month, day\-of\-month, and time\-of\-day; files over 6 months old show appear with month, day\-of\-month, and year.
+T}@T{
+T}
+T{
+name
+T}@T{
+The file name.
+T}@T{
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
+.PP
+.SH NOTES
+The sorting options correspond to the 
+.I sortkey
+options of the 
+.I readdir
+module.
+See 
+.I readdir
+.
+.PP
+.SH SEE ALSO
+.PP
+.TS
+tab(@);
+l l.
+T{
+.I stat
+
+T}@T{
+for general discussion of file attributes
+T}
+T{
+.I Inferno Devices
+
+T}@T{
+for discussion of device type
+T}
+T{
+.I stat
+
+T}@T{
+for definition of modification time
+T}
+.TE
+.PP
+.TS
+tab(@);
+l.
+T{
+T}
+.TE
