@@ -144,7 +144,7 @@ $(tmp_dir)/%.phtml: $(bin_dir)/html/%.phtml | $(tmp_dir)/chars
 # Populate $(tmp_dir): Clean/pre-process those HTML files ######################
 
 $(tmp_dir)/%.phtml: $(tmp_dir)/%.htm $(bin_dir)/htmlstrip $(bin_dir)/htmlclean $(bin_dir)/htmlclean.fixlinks.lua $(target/img-phtmls)
-	<$< $(bin_dir)/htmlstrip | $(bin_dir)/htmlclean $(tmp_dir) $(imageurls) >$@
+	<$< $(bin_dir)/htmlstrip | SELF=$* $(bin_dir)/htmlclean $(tmp_dir) $(imageurls) >$@
 
 # Populate $(tmp_dir): Turn those into manpages ################################
 

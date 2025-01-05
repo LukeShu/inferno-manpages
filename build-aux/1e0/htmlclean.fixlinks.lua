@@ -42,5 +42,8 @@ function Link(el)
    if el.target == 'md_sec14.phtml#847464' then el.target = el.target:gsub('14', '15') end
    if el.target == 'md_sec19.phtml#846000' then el.target = el.target:gsub('19', '20') end
 
+   -- Generic
+   el.target  = el.target:gsub('^' .. os.getenv('SELF') .. '.phtml', '')
+
    return el
 end
