@@ -9,7 +9,7 @@
 |   4 | hostOS   | cmd_env  | Inferno Host O/S Utilities              | 4-hostos     |                                        |
 |   5 | cmd      | cmd      | Inferno Command Line Utilities          | 5-cmd        |                                        |
 |   6 | daemon   | daemons  | Inferno Daemons                         | 6-daemon     |                                        |
-|   7 | -        | -        | Introduction to Limbo Modules           | 7-md         | slot for module overview?              |
+|   7 | -        | i_modu   | Introduction to Limbo Modules           | 7-md         |                                        |
 |   8 | sys      | md_sys   | Limbo System Module                     | 8-md_sys     |                                        |
 |   9 | sec      | md_sec   | Inferno Security Modules and Utilities  | 9-md_sec     |                                        |
 |  10 | -        | -        | -                                       | -            | where md_math is in i_modu.htm         |

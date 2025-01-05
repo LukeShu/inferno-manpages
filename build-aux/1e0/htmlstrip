@@ -6,6 +6,7 @@
 
 awk '
 BEGIN                                                             { doprint=0 }
+/<a name=/                                          && doprint==0 { sub(/.*<a name=/, "<a name="); sub(/>.*/, "></a>"); print; }
 /<hr><br>/                                          && doprint==0 { doprint=1; next }
 /<hr><br>|^<a href="index.htm"><img src="Top\.gif"/ && doprint==1 { doprint=2; next }
 doprint==1                                                        { print }

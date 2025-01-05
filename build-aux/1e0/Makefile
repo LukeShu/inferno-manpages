@@ -21,13 +21,14 @@ htmlnames = $(filter-out $(htmlnames/deny),$(htmlnames/src)) $(htmlnames/extra)
 # values found in $(src_dir)
 htmlnames/src = $(patsubst $(src_dir)/%.htm,%,$(src/htmls))
 
+# NB: ./htmlclean contains a "duplicate" of this list.
                             # There is no chapter 1.
 htmlnames/intros  = devices # chapter 2
 htmlnames/intros += proto   # chapter 3
 htmlnames/intros += cmd_env # chapter 4
 htmlnames/intros += cmd     # chapter 5
 htmlnames/intros += daemons # chapter 6
-htmlnames/intros += md      # chapter 7
+htmlnames/intros += md      # chapter 7, also i_modu.htm
 htmlnames/intros += md_sys  # chapter 8
 htmlnames/intros += md_sec  # chapter 9
                             # There is no chapter 10.
