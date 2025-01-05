@@ -67,39 +67,8 @@ main() {
 		' | sed -E 's,(<(h[0-9]+)>.*)<figure>,\1</\2><figure>,'
 	} | {
 		# Normalize the HTML.
-		pandoc --from=html --to=html --mathml --wrap=preserve
-	} | {
-		# Make the HTML browsable locally.
-		sed -E \
-		    -e '# Generic' \
-		    -e 's/\.htm\b/.phtml/g' \
-		    -e 's,<a href="[^"]*"></a>,,g' \
-		    \
-		    -e '# See $(htmlnames/intros) in Makefile' \
-		    -e '                                         # There is no chapter 1.' \
-		    -e 's/"(devices)\.phtml\b/"\1-0intro.phtml/g # chapter 2' \
-		    -e 's/"(proto)\.phtml\b/"\1-0intro.phtml/g   # chapter 3' \
-		    -e 's/"(cmd_env)\.phtml\b/"\1-0intro.phtml/g # chapter 4' \
-		    -e 's/"(cmd)\.phtml\b/"\1-0intro.phtml/g     # chapter 5' \
-		    -e 's/"(daemons)\.phtml\b/"\1-0intro.phtml/g # chapter 6' \
-		    -e 's/"i_modu\.phtml\b/"md-0intro.phtml/g    # chapter 7' \
-		    -e 's/"(md_sys)\.phtml\b/"\1-0intro.phtml/g  # chapter 8' \
-		    -e 's/"(md_sec)\.phtml\b/"\1-0intro.phtml/g  # chapter 9' \
-		    -e '                                         # There is no chapter 10.' \
-		    -e 's/"(md_draw)\.phtml\b/"\1-0intro.phtml/g # chapter 11' \
-		    -e 's/"(md_pref)\.phtml\b/"\1-0intro.phtml/g # chapter 12' \
-		    -e 's/"(md_tk)\.phtml\b/"\1-0intro.phtml/g   # chapter 13' \
-		    -e 's/"(md_math)\.phtml\b/"\1-0intro.phtml/g # chapter 14' \
-		    -e 's/"(md_misc)\.phtml\b/"\1-0intro.phtml/g # chapter 15' \
-		    -e 's/"(formats)\.phtml\b/"\1-0intro.phtml/g # chapter A' \
-		    \
-		    -e '# See $(htmlnames/deny) in Makefile' \
-		    -e 's/"md_sec(1|2|3|22)\.phtml\b/"md_sec-0intro.phtml/g' \
-		    -e 's/"md_tk1\.phtml\b/"md_tk-0intro.phtml/g' \
-		    \
-		    -e '# These seem to be mistakes in the HTML' \
-		    -e 's/md_sec14\.phtml#847464/md_sec15\.phtml#847464/g' \
-		    -e 's/md_sec19\.phtml#846000/md_sec20\.phtml#846000/g'
+		pandoc --from=html --to=html --mathml --wrap=preserve \
+		       --lua-filter="${BASH_SOURCE[0]}.fixlinks.lua"
 	}
 }
 
