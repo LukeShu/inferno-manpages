@@ -29,7 +29,7 @@ function Link(el)
    el.target = el.target:gsub('^(md_tk)%.phtml'  , '%1-0intro.phtml') -- chapter 13
    el.target = el.target:gsub('^(md_math)%.phtml', '%1-0intro.phtml') -- chapter 14
    el.target = el.target:gsub('^(md_misc)%.phtml', '%1-0intro.phtml') -- chapter 15
-   el.target = el.target:gsub('^(formats)%.phtml', '%1-0intro.phtml') -- chapter A
+   el.target = el.target:gsub('^(formats)%.phtml', '%1-0intro.phtml') -- appendix A
 
    -- This mirrors $(htmlnames/deny) in Makefile
    el.target = el.target:gsub('^md_sec1%.phtml' , 'md_sec-0intro.phtml')

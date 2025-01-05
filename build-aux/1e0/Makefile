@@ -37,7 +37,7 @@ htmlnames/intros += md_pref # chapter 12
 htmlnames/intros += md_tk   # chapter 13
 htmlnames/intros += md_math # chapter 14
 htmlnames/intros += md_misc # chapter 15
-htmlnames/intros += formats # chapter A
+htmlnames/intros += formats # appendix A
 
 # values to ignore from $(htmlnames/src)
 # `$(src_dir)/{value}.htm`.
