@@ -4,6 +4,6 @@
 # SPDX-License-Identifier: MIT
 
 all:
-	./build-aux/download.sh
+	./build-aux/download
 	$(MAKE) -f build-aux/1e0/Makefile
 .PHONY: all

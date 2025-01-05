@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# build-aux/download.sh - Download the source data fro the inferno-manpages.git archive
+# build-aux/download - Download the source data fro the inferno-manpages.git archive
 #
 # Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
 # SPDX-License-Identifier: MIT
 
 set -euE -o pipefail
 
-rm -rf -- inferno-*
+rm -rf -- inferno-* cache/tmp
 
 while read -r dir url; do
 	git_url="${url%/commit/*}"
@@ -14,6 +14,7 @@ while read -r dir url; do
 	if ! [[ -d "$git_dir" ]]; then
 		git clone --bare "$git_url" "$git_dir"
 	fi
+	git -C "$git_dir" worktree prune
 	if [[ "$url" = */commit/* ]]; then
 		git -C "$git_dir" worktree add "$PWD/cache/tmp" "${url#*/commit/}"
 	else
