@@ -32,14 +32,14 @@ main() {
 	else
 		readarray -d $'\n' -t names < <(
 			<"$in_phtml" \
-				pandoc --from=html --to=man --wrap=preserve |
-				grep -A1 '\.SH Name' |
-				sed 1d |
-				sed -e 's/\s*\\-.*//' -e 's/[:,]\s*/\n/g' |
+				"$(dirname -- "${BASH_SOURCE[0]}")/html2name" |
+				sed -e 's/\s*-.*//' -e 's/[:,]\s*/\n/g' |
 				tr [A-Z] [a-z])
 	fi
+
+	# kludges
 	IFS=,
-	case "${names[*]}" in # kludges
+	case "${names[*]}" in
 		'ipint adt') names=(ipint);;
 		'login,getauthinfo') names=(login);;
 	esac

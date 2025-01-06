@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# build-aux/1e1/html2name - Get as plaintext the NAME section from an HTML fragment
+#
+# Copyright (C) 2025  Luke T. Shumaker <lukeshu@lukeshu.com>
+# SPDX-License-Identifier: MIT
+
+set -eEu -o pipefail
+
+awk '
+BEGIN                     { doprint=0 }
+/<h1.*Name/ && doprint==0 { doprint=1; next }
+/<h1/       && doprint==1 { doprint=2; next }
+doprint==1                { print }
+' | sed 's/<[^>]*>//g' | tr $'\n' ' ' | sed -E -e 's/\s+/ /g' -e 's/\s+$//'

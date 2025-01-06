@@ -62,13 +62,15 @@ all: copy
 target/man-htms   = $(foreach x,$(htmlnames),$(tmp_dir)/$x.htm)
 target/man-phtmls = $(foreach x,$(htmlnames),$(tmp_dir)/$x.phtml)
 target/man-mans   = $(foreach x,$(htmlnames),$(tmp_dir)/$x.man)
+target/man-names  = $(foreach x,$(htmlnames),$(tmp_dir)/$x.names)
 target/img-phtmls = $(foreach x,$(imageurls),$(tmp_dir)/$x.phtml)
 
 man-htms: $(target/man-htms)
 man-phtmls: $(target/man-phtmls)
 man-mans: $(target/man-mans)
+man-names: $(target/man-names)
 img-phtmls: $(target/img-phtmls)
-.PHONY: man-htms man-phtmls man-mans img-phtmls
+.PHONY: man-htms man-phtmls man-mans man-names img-phtmls
 
 # Configure Make itself #########################################################
 
@@ -148,12 +150,12 @@ $(tmp_dir)/%.phtml: $(tmp_dir)/%.htm $(bin_dir)/htmlstrip $(bin_dir)/htmlclean $
 
 # Populate $(tmp_dir): Turn those into manpages ################################
 
-$(tmp_dir)/%.names: $(tmp_dir)/%.phtml $(bin_dir)/html2names
+$(tmp_dir)/%.names: $(tmp_dir)/%.phtml $(bin_dir)/html2names $(bin_dir)/html2name
 	$(bin_dir)/html2names $< >$@
 
-$(tmp_dir)/%.man: $(tmp_dir)/%.phtml $(tmp_dir)/%.names $(tmp_dir)/%.htm $(bin_dir)/html2man $(bin_dir)/html2man.fixlinks.lua $(MAKEFILE_LIST)
+$(tmp_dir)/%.man: $(tmp_dir)/%.phtml $(tmp_dir)/%.names $(tmp_dir)/%.htm $(bin_dir)/html2man $(bin_dir)/html2man.fixlinks.lua $(target/man-names) $(MAKEFILE_LIST)
 	tmp_dir=$(tmp_dir) $(bin_dir)/html2man \
-	  $$(<$(filter %.names,$^) sed -En '1s/(.*)\((.*)\)/\1 \2/p') \
+	  $$(<$(tmp_dir)/$*.names sed -En '1s/(.*)\((.*)\)/\1 \2/p') \
 	  "$$(<$(filter %.htm,$^) sed -En 's,.*<title>(.*)</title>.*,\1,p' | sed 's/<br>/ /g' | sed -E 's/\s+/ /g')" \
 	  <$< \
 	  >$@
